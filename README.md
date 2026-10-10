@@ -13,6 +13,7 @@ Telicity 랜딩페이지. 빌드 단계 없는 정적 사이트로, `main`에 �
 | `assets/mark.svg`, `icon.svg`, `favicon.ico`, `*.png` | 로고 마크, 파비콘, 앱 아이콘, OG 이미지 |
 | `index.md`, `ko/index.md` | 페이지의 마크다운 사본 (LLM용) |
 | `llms.txt`, `llms-full.txt` | [llmstxt.org](https://llmstxt.org) 형식 요약 / 전문 |
+| `site.webmanifest` | 웹 앱 매니페스트 (name, description, 아이콘) |
 | `robots.txt` | 검색·AI 크롤러 전부 허용 + `Content-Signal` |
 | `sitemap.xml` | 두 페이지, `lastmod` |
 | `4acb9e4c1b7422b8e68ecae7207ad4f4.txt` | IndexNow 키 |
@@ -29,7 +30,7 @@ python3 -m http.server 4173
 
 문구는 여러 파일에 복제되어 있다. 하나를 바꾸면 아래를 모두 맞춘다.
 
-1. `index.html` / `ko/index.html`: 본문, `<title>`, description, OG/Twitter, JSON-LD
+1. `index.html` / `ko/index.html`: 본문, `<title>`, description, OG/Twitter, JSON-LD. `site.webmanifest`의 `description`은 영어 meta description과 같은 문장
 2. `index.md` / `ko/index.md`, `llms.txt`
 3. `llms-full.txt` 재생성:
    ```bash

@@ -6,7 +6,7 @@ Not to be confused with telicity, the linguistics term, although the company is 
 
 - Korean name: 텔리시티. Also written as Telicity AI.
 - Status: in development.
-- Contact: hello@telicity.ai
+- Contact: hello@telicity.ai (general, partnership and press inquiries).
 - The site has the same content in English (https://telicity.ai/) and Korean (https://telicity.ai/ko/).
 
 텔리시티(Telicity)는 AI를 위한 운영체제와 인프라를 만드는 회사입니다. 첫 단계로 사람의 의도를 분석해 분명한 목표로 세우고 끝까지 해내는 개인 AI 비서이자 사용자를 닮아 가는 트윈을 개발하고 있습니다.
@@ -14,11 +14,7 @@ Not to be confused with telicity, the linguistics term, although the company is 
 ## Pages
 
 - [Telicity (English)](https://telicity.ai/index.md): What Telicity is building, why, and where the name comes from.
-- [텔리시티 (한국어)](https://telicity.ai/ko/index.md): 같은 내용의 한국어 페이지.
-
-## Contact
-
-- [Email](mailto:hello@telicity.ai): General, partnership and press inquiries.
+- [텔리시티(한국어)](https://telicity.ai/ko/index.md): 같은 내용의 한국어 페이지.
 
 ## Optional
 

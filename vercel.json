@@ -10,18 +10,13 @@
       "permanent": true
     },
     {
-      "source": "/en",
+      "source": "/en/",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/kr",
+      "source": "/kr/",
       "destination": "/ko/",
-      "permanent": true
-    },
-    {
-      "source": "/kr/:path*",
-      "destination": "/ko/:path*",
       "permanent": true
     }
   ],
@@ -65,11 +60,11 @@
       ]
     },
     {
-      "source": "/.well-known/security.txt",
+      "source": "/llms-full.txt",
       "headers": [
         {
-          "key": "Content-Type",
-          "value": "text/plain; charset=utf-8"
+          "key": "Link",
+          "value": "<https://telicity.ai/>; rel=\"canonical\""
         }
       ]
     },

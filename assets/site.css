@@ -92,6 +92,7 @@ a:focus-visible {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  overflow-x: clip;
   padding: 36px var(--edge) 20px;
 }
 
@@ -135,7 +136,9 @@ a:focus-visible {
 }
 
 .task {
-  text-decoration: underline 1px var(--rule);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule);
   text-underline-offset: calc(0.1em + 1px);
   -webkit-tap-highlight-color: transparent;
   transition: text-decoration-color 0.15s;
@@ -154,10 +157,11 @@ a:focus-visible {
   background: var(--sand);
   color: var(--ink);
   pointer-events: none;
+  visibility: hidden;
   opacity: 0;
   scale: 0.4;
   transform-origin: 0 100%;
-  transition: scale 0.15s, opacity 0.15s;
+  transition: scale 0.15s, opacity 0.15s, visibility 0.15s;
 }
 
 .reaction svg {
@@ -172,9 +176,10 @@ a:focus-visible {
 }
 
 .task.is-reacting .reaction {
+  visibility: visible;
   opacity: 1;
   scale: 1;
-  transition: scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.12s;
+  transition: scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.12s, visibility 0s;
 }
 
 .task.is-reacting .reaction svg {
@@ -186,7 +191,9 @@ a:focus-visible {
 
 .cta {
   font-weight: 600;
-  text-decoration: underline 0.42em var(--sand);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.42em;
+  text-decoration-color: var(--sand);
   text-underline-offset: -0.2em;
   text-decoration-skip-ink: none;
   transition: text-decoration-color 0.15s;
@@ -242,6 +249,11 @@ a:focus-visible {
 }
 
 /* ---------- Korean ---------- */
+
+/* Keeps a closing quote and the particle after it on one line. */
+.nw {
+  white-space: nowrap;
+}
 
 :lang(ko) body,
 body:lang(ko) {
@@ -310,6 +322,6 @@ body:lang(ko) {
   .task.is-reacting .reaction,
   .task.is-reacting .reaction svg {
     scale: 1;
-    transition: opacity 0.12s;
+    transition: opacity 0.12s, visibility 0.12s;
   }
 }

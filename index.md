@@ -19,6 +19,6 @@ It will turn “I should call Mom” into a standing Sunday call, “I never use
 - Mission: building the operating system and infrastructure for AI.
 - First product: a personal AI assistant and twin that analyzes a person’s intent, turns it into a clear goal, and completes it.
 - Status: in development.
-- Name: telicity (n.), from Greek telos, “end, purpose”: in linguistics, the property of an action or event that has a built-in endpoint, as in “run a mile” versus “run.” The company takes its name from it because it is building software that carries a person’s intent through to a finished result.
+- Name origin: telicity (n.), from Greek telos, “end, purpose”: in linguistics, the property of an action or event that has a built-in endpoint, as in “run a mile” versus “run.” The company takes its name from it because it is building software that carries a person’s intent through to a finished result.
 - Contact: hello@telicity.ai
 - GitHub: https://github.com/telicity-ai

@@ -8,7 +8,9 @@
 
   const show = (task, x, y) => {
     const r = box.getBoundingClientRect();
-    task.style.setProperty("--rx", `${x - r.left}px`);
+    // 6px offset + 36px bubble + 8px margin must fit inside the viewport.
+    const maxX = document.documentElement.clientWidth - 50;
+    task.style.setProperty("--rx", `${Math.min(x, maxX) - r.left}px`);
     task.style.setProperty("--ry", `${y - r.top}px`);
     task.classList.add("is-reacting");
   };
