@@ -1,0 +1,315 @@
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/assets/fonts/newsreader.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --bg: #ffffff;
+  --ink: #1f2322;
+  --ink-muted: #6b6667;
+  --rule: rgb(31 35 34 / 0.2);
+  --sand: #e1d5cd;
+  --sand-strong: #d3c3b8;
+  --selection: #f4efec;
+
+  --serif: "Newsreader", "Iowan Old Style", "Charter", Georgia, serif;
+  --serif-ko: "Newsreader", "Noto Serif KR", "AppleMyungjo", "Nanum Myeongjo", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Pretendard", system-ui, sans-serif;
+
+  --text: clamp(20px, 5.4vw, 24px);
+  --leading: 1.3;
+  --gap: calc(var(--text) * 1.9);
+  --edge: 16px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121413;
+    --ink: #eceae6;
+    --ink-muted: #9c9897;
+    --rule: rgb(236 234 230 / 0.24);
+    --sand: #4a423c;
+    --sand-strong: #5e544c;
+    --selection: #2c2825;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--text);
+  line-height: var(--leading);
+  letter-spacing: -0.01em;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+
+/* ---------- Layout ---------- */
+
+.site {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 36px var(--edge) 20px;
+}
+
+.mark {
+  display: block;
+  width: fit-content;
+  color: var(--ink);
+}
+
+.mark svg {
+  display: block;
+  width: 88px;
+  height: auto;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap);
+  max-width: 41rem;
+  margin: 64px 0 20vh;
+}
+
+.intro > * {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit;
+}
+
+.intro strong,
+.intro h1 {
+  font-weight: 600;
+}
+
+/* ---------- Examples with doodle reactions ---------- */
+
+.examples {
+  position: relative;
+}
+
+.task {
+  text-decoration: underline 1px var(--rule);
+  text-underline-offset: calc(0.1em + 1px);
+  -webkit-tap-highlight-color: transparent;
+  transition: text-decoration-color 0.15s;
+}
+
+.reaction {
+  position: absolute;
+  left: var(--rx, 0);
+  top: var(--ry, 0);
+  width: 36px;
+  height: 36px;
+  margin: -42px 0 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sand);
+  color: var(--ink);
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.4;
+  transform-origin: 0 100%;
+  transition: scale 0.15s, opacity 0.15s;
+}
+
+.reaction svg {
+  width: 20px;
+  height: 20px;
+  scale: 0.4;
+  transition: scale 0.15s;
+}
+
+.task.is-reacting {
+  text-decoration-color: var(--ink);
+}
+
+.task.is-reacting .reaction {
+  opacity: 1;
+  scale: 1;
+  transition: scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.12s;
+}
+
+.task.is-reacting .reaction svg {
+  scale: 1;
+  transition: scale 0.43s 0.07s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- CTA ---------- */
+
+.cta {
+  font-weight: 600;
+  text-decoration: underline 0.42em var(--sand);
+  text-underline-offset: -0.2em;
+  text-decoration-skip-ink: none;
+  transition: text-decoration-color 0.15s;
+}
+
+.cta svg {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-left: 0.1em;
+  vertical-align: -0.18em;
+}
+
+@media (hover: hover) {
+  .cta:hover {
+    text-decoration-color: var(--sand-strong);
+  }
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer a {
+  position: relative;
+}
+
+.footer a::after {
+  content: "";
+  position: absolute;
+  inset: -14px -8px;
+}
+
+@media (hover: hover) {
+  .footer a:hover {
+    color: var(--ink-muted);
+  }
+}
+
+/* ---------- Korean ---------- */
+
+:lang(ko) body,
+body:lang(ko) {
+  font-family: var(--serif-ko);
+  --text: clamp(19px, 5vw, 22px);
+  --leading: 1.6;
+  --gap: calc(var(--text) * 1.6);
+  letter-spacing: -0.015em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* ---------- Wider screens ---------- */
+
+@media (min-width: 80rem) {
+  :root {
+    --edge: 20px;
+  }
+
+  .site {
+    padding-top: 44px;
+  }
+
+  .mark svg {
+    width: 100px;
+  }
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.mark,
+.intro > *,
+.footer {
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 90ms) both;
+}
+
+.intro > :nth-child(1) { --i: 1; }
+.intro > :nth-child(2) { --i: 2; }
+.intro > :nth-child(3) { --i: 3; }
+.intro > :nth-child(4) { --i: 4; }
+.intro > :nth-child(5) { --i: 5; }
+.footer { --i: 6; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mark,
+  .intro > *,
+  .footer {
+    animation: fade 0.3s ease both;
+  }
+
+  .reaction,
+  .reaction svg,
+  .task.is-reacting .reaction,
+  .task.is-reacting .reaction svg {
+    scale: 1;
+    transition: opacity 0.12s;
+  }
+}
