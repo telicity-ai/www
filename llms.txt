@@ -9,7 +9,7 @@ Not to be confused with telicity, the linguistics term, although the company is 
 - Contact: hello@telicity.ai (general, partnership and press inquiries).
 - The site has the same content in English (https://telicity.ai/) and Korean (https://telicity.ai/ko/).
 
-텔리시티(Telicity)는 AI를 위한 운영체제와 인프라를 만드는 회사입니다. 첫 단계로 사람의 의도를 분석해 분명한 목표로 세우고 끝까지 해내는 개인 AI 비서이자 사용자를 닮아 가는 트윈을 개발하고 있습니다.
+텔리시티(Telicity)는 AI를 위한 운영체제와 인프라를 만드는 회사입니다. 첫 단계로 사람의 의도를 파악해 분명한 목표로 정리하고 끝까지 해내는 개인 AI 비서이자 사용자를 닮아 가는 트윈을 개발하고 있습니다.
 
 ## Pages
 
@@ -20,4 +20,5 @@ Not to be confused with telicity, the linguistics term, although the company is 
 
 - [Full text](https://telicity.ai/llms-full.txt): Both pages in one file.
 - [GitHub](https://github.com/telicity-ai): Telicity on GitHub.
+- [Privacy Policy](https://telicity.ai/privacy/): How Telicity handles the email addresses people leave for news. The Korean original is at https://telicity.ai/ko/privacy/.
 - [Sitemap](https://telicity.ai/sitemap.xml)

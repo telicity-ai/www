@@ -4,8 +4,8 @@
   "description": "Telicity is building an OS for AI, starting with a personal AI assistant and AI twin that turns your intent into a clear goal and sees it through.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#f6f6f3",
+  "theme_color": "#f6f6f3",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },

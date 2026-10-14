@@ -1,44 +1,209 @@
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V4 */
+
+/*
+  Telicity: a page painted on canvas, annotated in charcoal.
+
+  The serif text is the print: it paints at once, crisp, and never moves.
+  The ground is a faint woven canvas. The drawn lines are charcoal crayon:
+  the ring, the margin notes' strokes, one word struck out, the arrow and
+  underline at the email link. Only those reveal themselves. The page ends
+  on one drawing, a still lake: stepping stones out over the water to a
+  rock where the mouse sits.
+*/
+
 @font-face {
   font-family: "Newsreader";
   font-style: normal;
   font-weight: 400 600;
   font-display: swap;
   src: url("/assets/fonts/newsreader.woff2") format("woff2");
+  /* Kept on purpose. The file is a Latin subset, and this range tells the
+     browser so: Hangul on /ko/ goes straight to Gowun Batang instead of
+     waiting on this file. It does not change line metrics, because U+0020 is
+     in range and Newsreader stays the first available font. The pen ring
+     takes its offsets from its own phrase's font (see .ring). */
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/*
+  The other faces are self-hosted subsets cut from the page copy by
+  tools/fonts.py, which also names each file by its content hash and updates
+  the url() below (the fonts folder is cached as immutable). After a copy
+  change, run `python3 tools/fonts.py`; `--check` fails if a rendered
+  character is missing from its subset.
+
+  Caveat: the English handwriting (margin notes, the email link, the 404
+  link). Weights 500-600 from one variable file.
+*/
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 500 600;
+  font-display: swap;
+  src: url("/assets/fonts/caveat.b8d38185.woff2") format("woff2");
+}
+
+/* Korean print and pen on /ko/ only: these family names are used only inside
+   html:lang(ko) below, so the English page never fetches them. Gowun Batang
+   is preloaded on /ko/ because it sets the headline. */
+@font-face {
+  font-family: "Gowun Batang";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/gowun-batang.fbf1985e.woff2") format("woff2");
+}
+
+/* The bold words on Korean pages: the consent notice's purpose and retention
+   period (they must stand out: 개인정보 보호법 시행령 제17조③), the privacy
+   policy's lead-ins and the colophon's 개인정보 처리방침. A real bold cut,
+   not a smeared synthetic one. */
+@font-face {
+  font-family: "Gowun Batang";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/gowun-batang-bold.0863f6ae.woff2") format("woff2");
+}
+
+/* The Korean print that only the long pages use (/ko/privacy/,
+   /ko/unsubscribe/, the sign-up's reply page): just the characters the /ko/
+   subset lacks, with their unicode-range (written by tools/fonts.py), so
+   /ko/ itself never fetches it. */
+@font-face {
+  font-family: "Gowun Batang Ext";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/gowun-batang-ext.cc47ccd4.woff2") format("woff2");
+  unicode-range: U+300C-300D, U+AC01, U+AC10, U+AC12, U+AC19, U+AC74, U+AC80, U+AC83, U+ACA8, U+ACB0, U+ACBD, U+ACF5, U+AD8C, U+ADDC, U+ADFC, U+AE00, U+AE08, U+AE34, U+AE41, U+AF2D, U+AF34, U+B00C, U+B0A8, U+B0BC, U+B0C5, U+B123, U+B137, U+B204, U+B2A5-B2A6, U+B2F4, U+B2F9, U+B41C, U+B454, U+B458, U+B461, U+B4F1, U+B5A4, U+B610, U+B77D, U+B78C, U+B7EC, U+B7FD, U+B839, U+B8E8, U+B8F0, U+B960, U+B974, U+B984-B985, U+B9B4, U+B9BC, U+B9C9, U+B9D9, U+B9DD, U+B9E1, U+BAB0, U+BB34, U+BBC0, U+BBFC, U+BC00, U+BC0F, U+BC16, U+BC18, U+BC1C-BC1D, U+BC31, U+BC95, U+BCA0, U+BCC0, U+BCC4, U+BCF5, U+BE0C, U+C0AD, U+C0B4, U+C0DD, U+C13C, U+C1A1, U+C501, U+C554, U+C558, U+C55E, U+C564, U+C57D, U+C591, U+C5BC, U+C5C5, U+C5C7, U+C5ED, U+C5F0, U+C608, U+C628, U+C62E, U+C644, U+C65C, U+C6B0, U+C6C1, U+C6D0, U+C6F9, U+C784, U+C7AC, U+C7C1, U+C808, U+C811, U+C870, U+C900, U+C99D, U+C9C1, U+C9C4, U+CBE4, U+CC28-CC29, U+CC30, U+CC45, U+CCD0, U+CD09, U+CD5C, U+CD94, U+CE58, U+CE5C, U+CE69, U+CE6D, U+CFE0, U+D07C, U+D0A4, U+D0B5, U+D0DC, U+D1A0, U+D2B9, U+D305, U+D3B8, U+D53C, U+D560, U+D5C8, U+D638, U+D658, U+D6A8, U+D765;
+}
+
+@font-face {
+  font-family: "Nanum Pen Script";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/nanum-pen.e11a6680.woff2") format("woff2");
+}
+
+/* The few Korean words on the English pages: the footer's 한국어 and the
+   404's Korean line. */
+@font-face {
+  font-family: "Gowun Batang Lite";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/gowun-batang-lite.9c4de975.woff2") format("woff2");
+}
+
+/*
+  Metric-matched stand-ins while the fonts load, so the swap does not reflow
+  the page or move the pen ring. Georgia at 91.7% sets Latin text and word
+  spaces at Newsreader's widths (0.223em space), with Newsreader's ascent
+  and descent (0.735 / 0.265em). This matters on /ko/ too, where every word
+  space is Newsreader's: the small Korean file often lands first.
+*/
+@font-face {
+  font-family: "Newsreader Fallback";
+  src: local("Georgia");
+  size-adjust: 91.7%;
+  ascent-override: 80.2%;
+  descent-override: 28.9%;
+  line-gap-override: 0%;
+}
+
+/*
+  The Korean faces the same way. Gowun Batang's Hangul advance is
+  about 0.906em against 1em in the system Myeongjo faces, and its hhea
+  ascent / descent are 1.16 / 0.288em; the overrides are those divided by
+  size-adjust. Nanum Pen Script is about 0.7 the width of a system gothic.
+*/
+@font-face {
+  font-family: "Gowun Batang Fallback";
+  src: local("AppleMyungjo"), local("Batang"), local("NotoSerifCJKkr-Regular"), local("Noto Serif CJK KR");
+  size-adjust: 90.6%;
+  ascent-override: 128%;
+  descent-override: 31.8%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Nanum Pen Fallback";
+  src: local("AppleSDGothicNeo-Regular"), local("Malgun Gothic"), local("NotoSansCJKkr-Regular"), local("Noto Sans CJK KR");
+  size-adjust: 70%;
+}
+
+/* ---------- Canvas & charcoal ---------- */
+
+/*
+  Contrast is WCAG against the ground's mean (#f6f6f3; #f6f6f4 measured at
+  2x) and its darker texels: p02 about #ededea, the rare darkest thread about
+  #e5e5e1. Colour lives only in the closing drawing (water, mountains,
+  meadows) and in the "run a mile" endpoint dot, whose butter comes back
+  once there, as the low evening sun.
+*/
 :root {
-  --bg: #ffffff;
-  --ink: #1f2322;
-  --ink-muted: #6b6667;
-  --rule: rgb(31 35 34 / 0.2);
-  --sand: #e1d5cd;
-  --sand-strong: #d3c3b8;
-  --selection: #f4efec;
+  --paper-seen: #f6f6f3;     /* what the eye sees: the page colour, overscroll, theme-color, manifest */
+  --ink: #1d2128;            /* print: 14.9:1 on the ground, 13.8:1 on p02, 12.8:1 on the darkest thread */
+  --ink-2: #454c57;          /* secondary print (colophon): 8.0:1 / 7.4:1 / 6.9:1 */
+  --pen: #171b22;            /* charcoal: notes, CTA, logo, crayon, focus ring: 16.0:1 / 14.7:1 */
+  --rule: rgb(23 27 34 / 0.16);
+  --line: #80868f;           /* the form's ruled line, a field boundary: 3.4:1 / 3.2:1 (WCAG 1.4.11) */
+  --ink-3: #5f6570;          /* the placeholder: 5.6:1 / 5.2:1 */
+  --butter: #f7ec98;         /* the endpoint dot and the drawing's sun (non-text, inside a charcoal ring) */
+  --water: #cfe0f9;          /* the lake's water; text selection is --selection below */
+  --selection: rgb(207 224 249 / 0.9); /* --water at 0.9: WebKit and Blink wash an opaque selection colour out with white */
 
-  --serif: "Newsreader", "Iowan Old Style", "Charter", Georgia, serif;
-  --serif-ko: "Newsreader", "Noto Serif KR", "AppleMyungjo", "Nanum Myeongjo", serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Pretendard", system-ui, sans-serif;
+  /* The canvas: a 120px seamless tile (tools/canvas/gen.py). Its first layer
+     is the paint, #dfdfd8; over it lie white-alpha threads (weft, warp and a
+     twill diagonal broken up by stitched feTurbulence, plus slubs, grain and
+     mottle). Together they read #f6f6f3 with an L sd of about 3.4 at 2x and 3x
+     (4.0 at 1x): a cloth you can see at arm's length. The paint is inside the
+     tile, so until the tile draws, or if it never does, the page shows
+     --paper-seen, never a bare grey. It is vector, so it re-rasterises crisp
+     at 1x, 2x and 3x. */
+  --weave-ground: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cdefs%3E%3ClinearGradient id='f' gradientUnits='userSpaceOnUse' x2='0' y2='2.5' spreadMethod='repeat'%3E%3Cstop stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23fff' stop-opacity='0.571'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='w' gradientUnits='userSpaceOnUse' x2='3.3333' y2='0' spreadMethod='repeat'%3E%3Cstop stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23fff' stop-opacity='0.524'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='d' gradientUnits='userSpaceOnUse' x2='2.4' y2='3.2' spreadMethod='repeat'%3E%3Cstop stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23fff' stop-opacity='0.714'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='tf' x='0' y='0' width='120' height='120' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.28 0.4' numOctaves='1' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3CfeComposite in='SourceGraphic' operator='arithmetic' k1='1.4' k2='0.3'/%3E%3C/filter%3E%3Cfilter id='tw' x='0' y='0' width='120' height='120' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.3 0.25' numOctaves='1' seed='12' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3CfeComposite in='SourceGraphic' operator='arithmetic' k1='1.4' k2='0.3'/%3E%3C/filter%3E%3Cfilter id='td' x='0' y='0' width='120' height='120' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.15 0.15' numOctaves='1' seed='13' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3CfeComposite in='SourceGraphic' operator='arithmetic' k1='1.3' k2='0.35'/%3E%3C/filter%3E%3Cfilter id='ts' x='0' y='0' width='120' height='120' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05 0.45' numOctaves='2' seed='14' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7467 0 0 0 -0.2987' result='a'/%3E%3CfeComposite in='SourceGraphic' in2='a' operator='in'/%3E%3C/filter%3E%3Cfilter id='tg' x='0' y='0' width='120' height='120' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4 0.9' numOctaves='1' seed='15' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1742 0 0 0 -0.4462' result='a'/%3E%3CfeComposite in='SourceGraphic' in2='a' operator='in'/%3E%3C/filter%3E%3Cfilter id='tm' x='0' y='0' width='120' height='120' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04 0.05' numOctaves='2' seed='17' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5169 0 0 0 -0.1809' result='a'/%3E%3CfeComposite in='SourceGraphic' in2='a' operator='in'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='120' height='120' fill='%23dfdfd8'/%3E%3Crect width='120' height='120' fill='url(%23f)' filter='url(%23tf)'/%3E%3Crect width='120' height='120' fill='url(%23w)' filter='url(%23tw)'/%3E%3Crect width='120' height='120' fill='url(%23d)' filter='url(%23td)'/%3E%3Crect width='120' height='120' fill='%23fff' filter='url(%23ts)'/%3E%3Crect width='120' height='120' fill='%23fff' filter='url(%23tm)'/%3E%3Crect width='120' height='120' fill='%23fff' filter='url(%23tg)'/%3E%3C/svg%3E");
 
-  --text: clamp(20px, 5.4vw, 24px);
-  --leading: 1.3;
-  --gap: calc(var(--text) * 1.9);
-  --edge: 16px;
+  --serif: "Newsreader", "Newsreader Fallback", "Iowan Old Style", "Charter", Georgia, serif;
+  --hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+  --ko-serif: "Gowun Batang Lite", "AppleMyungjo", "Nanum Myeongjo", "Batang", serif;
+  /* Korean set with Newsreader's spaces and punctuation: the print on /ko/
+     and the 404's Korean line. It resolves on the root, so on /ko/ it picks
+     up the full Gowun Batang stack below and elsewhere the Lite one. */
+  --serif-mixed: "Newsreader", "Newsreader Fallback", var(--ko-serif);
+
+  /* Type in rem, like the breakpoints and the column, so a reader's larger
+     default size scales the text with the layout. At the 16px default these
+     are exactly the px values in the comments. */
+  --text: clamp(1.1875rem, 4.9vw, 1.3125rem);   /* 19-21px */
+  --leading: 1.55;
+  --h1: clamp(1.9375rem, 8.4vw, 3rem);          /* 31-48px */
+  --h1-leading: 1.18;
+  --note: 1.36em;
+
+  /* The pen's curves. */
+  --ease-pen: cubic-bezier(0.45, 0.05, 0.4, 1);   /* crayon wipes, the ring's sweep, the logo's stroke */
+  --ease-write: cubic-bezier(0.4, 0, 0.3, 1);     /* the handwriting writing itself in */
+  --ease-dab: cubic-bezier(0, 0, 0.58, 1);        /* the logo's eye: pressed on, then settles (ease-out) */
+
+  --col: 36rem;
+  --margin: 14.5rem;
+  --gutter: 3.5rem;
+  --edge: 20px;
 
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121413;
-    --ink: #eceae6;
-    --ink-muted: #9c9897;
-    --rule: rgb(236 234 230 / 0.24);
-    --sand: #4a423c;
-    --sand-strong: #5e544c;
-    --selection: #2c2825;
-    color-scheme: dark;
-  }
+html:lang(ko) {
+  --ko-serif: "Gowun Batang", "Gowun Batang Ext", "Gowun Batang Fallback", "AppleMyungjo", "Nanum Myeongjo", "Batang", serif;
+  --serif: var(--serif-mixed);
+  --hand: "Nanum Pen Script", "Nanum Pen Fallback", cursive;
+  --text: clamp(1.125rem, 4.7vw, 1.25rem);      /* 18-20px */
+  --leading: 1.78;
+  --h1: clamp(1.625rem, 7vw, 2.5rem);           /* 26-40px */
+  --h1-leading: 1.32;
+  --note: 1.5em;
 }
 
 *,
@@ -47,26 +212,41 @@
   box-sizing: border-box;
 }
 
+/* overflow-x: clip on both html and body: nothing outside .sheet (an
+   injected banner, an extension's node) can ever scroll the page sideways.
+   clip, not hidden, so nothing becomes a scroll container. */
 html {
+  overflow-x: clip;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  background-color: var(--paper-seen);
 }
 
 body {
+  overflow-x: clip;
   margin: 0;
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--bg);
   color: var(--ink);
+  background-color: var(--paper-seen);
+  background-image: var(--weave-ground);
+  background-size: 120px 120px;
   font-family: var(--serif);
   font-size: var(--text);
   line-height: var(--leading);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.003em;
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+html:lang(ko) body {
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 ::selection {
@@ -80,248 +260,1763 @@ a {
 }
 
 a:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 2px solid var(--pen);
+  outline-offset: 4px;
+  border-radius: 3px;
 }
 
+/* Keeps a closing quote and its particle, or a short phrase, on one line. */
+.nw {
+  white-space: nowrap;
+}
 
-/* ---------- Layout ---------- */
+/* English headline from 22.5rem: personal AI assistant and that turns what
+   you mean stay whole, so every line is a whole phrase in Chrome as well as
+   Safari: Telicity is building a / personal AI assistant / that turns what
+   you mean / into a clear goal, / then sees it through. Below 22.5rem no
+   five lines of whole phrases fit, and binding anything adds a sixth. */
+@media (min-width: 22.5rem) {
+  .nw-md {
+    white-space: nowrap;
+  }
+}
 
-.site {
+/* Korean headline below 60rem: keeps 하려던 일을 and 분명한 목표로 whole.
+   Phones set 텔리시티는 하려던 일을 / 분명한 목표로 정리하고 / 끝까지 해내 주는
+   / 개인 AI 비서를 만들고 있습니다. in Chrome as well as Safari. From 37.5rem
+   the headline is capped at 38px, which fits 텔리시티는 하려던 일을 분명한
+   목표로 (568px) in the 576px column. From 60rem it is back to 40px and
+   breaks after 분명한 on purpose: that puts the ring at the end of line 2,
+   where the margin note's arrow lands. */
+@media not all and (min-width: 60rem) {
+  .nw-sm {
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 37.5rem) and (max-width: 59.99rem) {
+  html:lang(ko) {
+    --h1: 2.375rem;   /* 38px */
+  }
+}
+
+/* Below a 320px-equivalent width (a 20px default font on a 256px-wide
+   screen, say) the Korean bundles would push past the edge: let them wrap. */
+@media (max-width: 19.99rem) {
+  .nw {
+    white-space: normal;
+  }
+}
+
+/* ---------- Sheet ---------- */
+
+.sheet {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: calc(var(--col) + var(--edge) * 2);
+  margin: 0 auto;
+  padding: 26px var(--edge) 22px;
   overflow-x: clip;
-  padding: 36px var(--edge) 20px;
+}
+
+/* The letterhead: the mouse at the left and, at the right edge the colophon
+   and the drawing share, the other language (the same link as in the
+   colophon, so a reader who lands on the wrong language need not scroll).
+   Centred on the mouse; the masthead stays the mouse's height. */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mark {
   display: block;
   width: fit-content;
-  color: var(--ink);
+  color: var(--pen);
 }
 
 .mark svg {
   display: block;
-  width: 88px;
+  width: 62px;
   height: auto;
+  overflow: visible;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--gap);
-  max-width: 41rem;
-  margin: 64px 0 20vh;
+/* Below the email link comes the closing drawing (.lakeside); the 404 has
+   none, and keeps its old distance to the colophon. */
+.page {
+  margin: 52px 0 72px;
 }
 
-.intro > * {
+.page-404 {
+  margin-bottom: 96px;
+}
+
+.page p,
+.page h1 {
   margin: 0;
-  font-size: inherit;
+}
+
+/* ---------- Print ---------- */
+
+h1 {
+  font-size: var(--h1);
+  line-height: var(--h1-leading);
   font-weight: 400;
-  line-height: inherit;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
 }
 
-.intro strong,
-.intro h1 {
-  font-weight: 600;
+html:lang(ko) h1 {
+  letter-spacing: -0.02em;
 }
 
-/* ---------- Examples with doodle reactions ---------- */
-
-.examples {
-  position: relative;
+.row-h1 {
+  margin-bottom: 1.5em;
 }
 
-.task {
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--rule);
-  text-underline-offset: calc(0.1em + 1px);
-  -webkit-tap-highlight-color: transparent;
-  transition: text-decoration-color 0.15s;
+.row-body p {
+  text-wrap: pretty;
 }
 
-.reaction {
+/* Book-style paragraphs: indent the one that follows another. */
+.row-body + .row-body p {
+  text-indent: 1.4em;
+}
+
+/* ---------- Pen (shared) ---------- */
+
+.pen {
+  fill: none;
+  stroke: var(--pen);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/*
+  Crayon. Drawn lines get a charcoal filter: the stroke's blurred profile
+  plus fractal grain, thresholded, then gated to about one stroke width so
+  specks stay near the line. The filters sit in the hidden .crayon-defs svg
+  right after <body>; each one's W is the stroke width in the units of the
+  svg it is used in (ring 5.6 in em space, strike 9.5, everything else 2.2),
+  so the grain keeps its size at every text size. Only from 2dppx: below
+  that the grain is smaller than a pixel and aliases into rope, so on 1x
+  screens every drawn line, the marks and the drawing's outlines alike, is
+  a plain round-capped charcoal stroke (one line style either way). The
+  woven canvas stays in the fills. Letterforms, the logo, the colophon and
+  the focus ring stay crisp everywhere.
+*/
+.crayon-defs {
   position: absolute;
-  left: var(--rx, 0);
-  top: var(--ry, 0);
-  width: 36px;
-  height: 36px;
-  margin: -42px 0 0 6px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--sand);
-  color: var(--ink);
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+@media (min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 2) {
+  .ring .pen {
+    filter: url(#cr-ring);
+  }
+
+  .strike .pen {
+    filter: url(#cr-strike);
+  }
+
+  .note .pen,
+  .cta-arrow .pen,
+  .cta .pen,
+  .wl-dot .pen {
+    filter: url(#cr-pen);
+  }
+}
+
+.note,
+.cta {
+  font-family: var(--hand);
+  color: var(--pen);
+  letter-spacing: 0;
+}
+
+/* Margin notes are drawings, not copy: their words live in data-note so the
+   page text (and what crawlers and screen readers get) stays the printed
+   text alone. */
+[data-note]::after {
+  content: attr(data-note);
+}
+
+/* A loose loop around a phrase. The loop is drawn in em space (100 viewBox
+   units to the em) at the phrase's own width, so it hugs the glyphs with an
+   even margin: above the ascenders, below the descenders and clear of the
+   words on either side. Offsets are in em from the phrase's content box,
+   which comes from the phrase's own font (Newsreader: 0.735em above the
+   baseline; Gowun Batang: 1.16em). Path and offsets come from
+   tools/ring.py. The <svg> is the span's first child: a whitespace-only
+   text node next to it would drop out of the h1's accessible name. The left
+   margin plus the word space keeps the loop about 0.2em clear of the word
+   before, the same as its clearance inside. */
+.ring {
+  position: relative;
+  margin-left: 0.3em;
+  white-space: nowrap;
+}
+
+.ring > svg {
+  position: absolute;
+  left: -0.345em;
+  top: -0.237em;
+  width: calc(100% + 0.77em);
+  height: 1.51em;
+  overflow: visible;
   pointer-events: none;
-  visibility: hidden;
-  opacity: 0;
-  scale: 0.4;
-  transform-origin: 0 100%;
-  transition: scale 0.15s, opacity 0.15s, visibility 0.15s;
 }
 
-.reaction svg {
-  width: 20px;
-  height: 20px;
-  scale: 0.4;
-  transition: scale 0.15s;
+/* viewBox units: about 2px of ink at every headline size. */
+.ring .pen {
+  stroke-width: 6.2;
 }
 
-.task.is-reacting {
-  text-decoration-color: var(--ink);
+/* Korean: the phrase is set in Gowun Batang outright, so the loop is placed
+   against one known font. Its word spaces are brought back to the
+   Newsreader width used in the rest of the headline (Gowun Batang's space
+   is 0.311em, Newsreader's 0.223em). The room for the ink on the left sits
+   on the word before (.pre-ring): when the phrase starts a line, that room
+   stays at the end of the line above, the ink hangs into the gutter and the
+   print stays flush left. */
+html:lang(ko) .ring {
+  font-family: var(--ko-serif);
+  word-spacing: -0.088em;
+  margin: 0 0.2em 0 0;
 }
 
-.task.is-reacting .reaction {
-  visibility: visible;
-  opacity: 1;
-  scale: 1;
-  transition: scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.12s, visibility 0s;
+html:lang(ko) .pre-ring {
+  margin-right: 0.26em;
 }
 
-.task.is-reacting .reaction svg {
-  scale: 1;
-  transition: scale 0.43s 0.07s cubic-bezier(0.34, 1.56, 0.64, 1);
+html:lang(ko) .ring > svg {
+  left: -0.431em;
+  top: -0.027em;
+  width: calc(100% + 0.83em);
+  height: 1.527em;
+}
+
+html:lang(ko) .ring .pen {
+  stroke-width: 6.8;
+}
+
+@media (min-width: 40rem) {
+  .ring .pen {
+    stroke-width: 5;
+  }
+
+  html:lang(ko) .ring .pen {
+    stroke-width: 5.5;
+  }
+}
+
+/* ---------- Margin notes ---------- */
+
+.note {
+  font-size: var(--note);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+html:lang(ko) .note,
+html:lang(ko) .cta {
+  font-weight: 400;
+}
+
+/* The h1 note: under the headline on phones; on wide screens level with the
+   ring, from the margin (Korean) or stepped in beside the short last line
+   (English). */
+.note-h1 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 4px;
+  margin: 6px 4px 0 0;
+  rotate: -2deg;
+}
+
+.note-h1 svg {
+  width: 74px;
+  height: 32px;
+  flex: none;
+  overflow: visible;
+  margin-top: -4px;
+}
+
+.note-h1 span {
+  padding-top: 14px;
+  white-space: nowrap;
+}
+
+/* Korean: the ringed phrase is never on the headline's last line below
+   60rem, so a note under the h1 would point at the wrong words. The ring
+   carries it alone there; the note comes back in the margin, level with the
+   ring, on wide screens. */
+@media not all and (min-width: 60rem) {
+  html:lang(ko) .note-h1 {
+    display: none;
+  }
+
+  html:lang(ko) .row-h1 {
+    margin-bottom: 1.9em;
+  }
+}
+
+/* run ~~~··· / run a mile ——● */
+.note-run {
+  display: grid;
+  grid-template-columns: max-content 112px;
+  align-items: center;
+  gap: 2px 12px;
+  width: fit-content;
+  margin: 18px 8px 4px auto;
+  rotate: -1.5deg;
+}
+
+.note-run span {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.note-run svg {
+  width: 112px;
+  height: 22px;
+  overflow: visible;
+}
+
+/* The endpoint: a butter dot, its charcoal ring drawn a little off-register. */
+.dot-fill {
+  fill: var(--butter);
+  stroke: none;
+}
+
+/* ---------- The scene ---------- */
+
+/* A new movement after the run / run a mile paragraph, so it starts flush
+   after a little air; its closing line is indented like any paragraph that
+   follows another. */
+.row-scene {
+  margin-top: 1.7em;
+}
+
+.row-scene > p:first-child {
+  text-indent: 0;
+}
+
+/* The Korean closing line wraps plainly. Its nowrap groups (해야지, 해야지
+   and 마음 한구석에 걸려 있지 않습니다.) plus the indent throw WebKit's
+   text-wrap: pretty off: from 414 to about 445px it sets four lines, with
+   일상에서는 at the start of the second. Plain wrapping gives 저희가 만들어
+   가려는 일상에서는 / 해야지, 해야지 하던 일이 더는 / 마음 한구석에 걸려 있지
+   않습니다. at every phone width (320-440px). */
+html:lang(ko) .row-scene > p + p {
+  text-wrap: wrap;
+}
+
+/* A word crossed out in pen: one quick stroke through the print that rises
+   a little as it goes. Like the ring, it is drawn in em space (100 viewBox
+   units to the em) at the word's own width, so the stroke keeps its angle
+   and weight at every text size and travels with its word when the line
+   wraps. The box is the span's content box, which comes from Newsreader on
+   both pages (it is the first font, and the space is in its range): the
+   baseline sits at y = 73.5. The <svg> is the span's first child, with no
+   whitespace text node beside it. */
+.strike {
+  position: relative;
+  white-space: nowrap;
+}
+
+.strike > svg {
+  position: absolute;
+  left: -0.07em;
+  top: 0;
+  width: calc(100% + 0.13em);
+  height: 1em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* viewBox units: about 1.9px of ink at body sizes. */
+.strike .pen {
+  stroke-width: 9.5;
+}
+
+/* The struck words stay part of the sentence. The charcoal is the same tone
+   as the print, so a full-strength stroke would merge with the mid-height
+   bars of Hangul (언제 한번) and blot them: it is laid lighter instead, and
+   the print shows through it. */
+.strike > svg {
+  opacity: 0.6;
 }
 
 /* ---------- CTA ---------- */
 
-.cta {
-  font-weight: 600;
-  text-decoration-line: underline;
-  text-decoration-thickness: 0.42em;
-  text-decoration-color: var(--sand);
-  text-underline-offset: -0.2em;
-  text-decoration-skip-ink: none;
-  transition: text-decoration-color 0.15s;
+.row-cta {
+  margin-top: 2.2em;
 }
 
-.cta svg {
-  display: inline-block;
-  width: 0.9em;
-  height: 0.9em;
-  margin-left: 0.1em;
-  vertical-align: -0.18em;
-}
-
-@media (hover: hover) {
-  .cta:hover {
-    text-decoration-color: var(--sand-strong);
-  }
-}
-
-/* ---------- Footer ---------- */
-
-.footer {
-  margin-top: auto;
+.cta-line {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 24px;
-  font-family: var(--sans);
-  font-size: 13px;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* The arrow gives way before the label does: on a narrow column (a small
+   phone zoomed in) it shrinks from 90px toward 56px, keeping its shape, so
+   the label stays on one line. */
+.cta-arrow {
+  flex: 0 1 90px;
+  width: 90px;   /* also gives height: auto its ratio in WebKit */
+  min-width: 56px;
+  height: auto;
+  overflow: visible;
+  margin-bottom: 0.32em;
+}
+
+/* Clickable text stays on one line. The box reaches 8px below the letters
+   and gives 4px of it back as margin, so the crayon underline sits inside
+   the focus ring and nothing at rest moves. */
+.cta {
+  position: relative;
+  display: inline-block;
+  font-size: 1.7em;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0 2px 8px;
+  margin-bottom: -4px;
   white-space: nowrap;
 }
 
-.footer p {
+/* Below this even the 56px arrow cannot make room: wrap rather than clip. */
+@media (max-width: 17.2rem) {
+  .cta {
+    white-space: normal;
+  }
+}
+
+/* Tap target: about 48px tall without changing the drawing. */
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: -6px -4px;
+}
+
+html:lang(ko) .cta {
+  font-size: 1.85em;
+}
+
+.cta > svg {
+  position: absolute;
+  left: -3px;
+  bottom: -1px;
+  width: calc(100% + 6px);
+  height: 10px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* ---------- The sign-up: a line to write on ---------- */
+
+/*
+  The CTA row is a printed reply slip. The pen writes one line (We'll write
+  when there's news.), draws the loop arrow from the mouse's tail to a ruled
+  line, and underlines the handwritten Sign up at the end. Everything else is
+  print: the field's label, the consent notice in small type (one line always
+  shown, the whole notice behind Details right above the boxes), two drawn
+  boxes.
+  Without JavaScript the form posts to /api/waitlist/ and the function
+  answers with a page; with it (site.js) the answer lands here, in the live
+  region under the button. When it is done the ruled line ends in the
+  butter endpoint dot, the same mark as run a mile's.
+*/
+.wl {
+  --wl-arrow: 90px;   /* the arrow's width; the field and its message start after it */
+  position: relative;
   margin: 0;
 }
 
-.footer a {
+/* Small phones: a shorter arrow leaves the field room for an address. */
+@media (max-width: 23.4rem) {
+  .wl {
+    --wl-arrow: 66px;
+  }
+}
+
+.wl-lead {
+  font-family: var(--hand);
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0;
+  color: var(--pen);
+  text-wrap: balance;
+}
+
+html:lang(ko) .wl-lead {
+  font-size: 1.7em;
+  font-weight: 400;
+}
+
+.wl-lead .writes {
+  display: inline-block;
+}
+
+/* The arrow and the ruled line. The arrow's head lands just above the rule,
+   where the address is written. */
+.wl-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.wl-line .cta-arrow {
+  flex: none;
+  width: var(--wl-arrow);
+  min-width: 0;
+  margin-bottom: 0.32em;
+}
+
+.wl-field {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wl-label {
+  font-size: 0.9375rem;   /* 15px */
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--ink-2);
+}
+
+/* Underline only. The rule is an inset shadow, so a heavier rule on focus
+   moves nothing; every state keeps one box. */
+.wl-input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 6px 2px 7px;
+  border: 0;
+  border-radius: 0;
+  background: transparent no-repeat left bottom / 12px 6px;
+  box-shadow: inset 0 -1px 0 var(--line);
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: 0;
+  outline: none;
+  caret-color: var(--pen);
+}
+
+.wl-input::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .wl-input:hover {
+    box-shadow: inset 0 -1px 0 var(--ink-2);
+  }
+}
+
+/* Focus: the rule turns to charcoal at twice the weight (16:1 against the
+   ground), the field's own focus ring. */
+.wl-input:focus {
+  box-shadow: inset 0 -2px 0 var(--pen);
+}
+
+/* Error: the rule becomes a proofreader's squiggle, with the words below.
+   It sits 4px up, where it clears the focus rule, so it doesn't move when
+   the field takes or loses focus. */
+.wl-input[aria-invalid="true"] {
+  box-shadow: none;
+  background-position: left calc(100% - 4px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 3.5c3-3 3-3 6 0s3 3 6 0' fill='none' stroke='%23171b22' stroke-width='1.6'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+
+.wl-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.wl-input:read-only {
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+/* Focus always shows, whatever else the field is saying: the error and the
+   done (read-only) rules above come later than .wl-input:focus at the same
+   weight, so these (0,3,0) selectors restate it. Don't fold them back into
+   .wl-input:focus. */
+.wl-input:read-only:focus,
+.wl-input[aria-invalid="true"]:focus {
+  box-shadow: inset 0 -2px 0 var(--pen);
+}
+
+/* Autofill: the browser sets its fill colour (Chrome's blue, Safari's
+   yellow) with !important, so it can't be overridden. Paint the canvas
+   colour over it with an inset shadow; the first shadow listed is drawn on
+   top, so the rule stays visible. The hover, focus and read-only rules
+   follow the plain ones above, in the same order. :-webkit-autofill alone
+   (every engine knows it); in a list with :autofill an older engine would
+   drop the whole rule. The browser also drops the error squiggle
+   (background-image: none !important); the message below still says it,
+   and typing ends autofill and the error together. */
+.wl-input:-webkit-autofill {
+  box-shadow: inset 0 -1px 0 var(--line), inset 0 0 0 100vmax var(--paper-seen);
+  -webkit-text-fill-color: var(--ink);
+}
+
+@media (hover: hover) {
+  .wl-input:-webkit-autofill:hover {
+    box-shadow: inset 0 -1px 0 var(--ink-2), inset 0 0 0 100vmax var(--paper-seen);
+  }
+}
+
+.wl-input:-webkit-autofill:focus {
+  box-shadow: inset 0 -2px 0 var(--pen), inset 0 0 0 100vmax var(--paper-seen);
+}
+
+.wl-input:-webkit-autofill:read-only {
+  box-shadow: inset 0 -1px 0 var(--line), inset 0 0 0 100vmax var(--paper-seen);
+}
+
+.wl-input:-webkit-autofill:read-only:focus {
+  box-shadow: inset 0 -2px 0 var(--pen), inset 0 0 0 100vmax var(--paper-seen);
+}
+
+/* The endpoint, shown once the sign-up is in. */
+.wl-dot {
+  display: none;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0 0 -8px -13px;   /* centred on the rule's end, like run a mile's */
+  overflow: visible;
+}
+
+.wl.is-done .wl-dot {
+  display: block;
+}
+
+/* The email field's own message, under the line, in line with the field. */
+.wl .wl-err {
+  margin: 8px 0 0 calc(var(--wl-arrow) + 10px);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* Empty, they take no room but stay displayed: a live region that is
+   display: none when its words arrive is not announced by every screen
+   reader. */
+.wl .wl-err:empty,
+.wl .wl-status:empty {
+  margin: 0;
+}
+
+/* The notice, set small: the legend, one line that is always shown (what
+   the address is for and how long it is kept, those two in bold), then the
+   whole notice folded behind Details / 자세히 보기, with the policy link
+   beside it. */
+.wl-consent {
+  min-inline-size: 0;
+  margin: 30px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.wl-legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+/* Small print is held to about 70 characters a line (28rem; in rem, not ch:
+   Newsreader's wide 0 would let a ch measure run past 80). The field and
+   the button keep the whole column. */
+.wl-brief,
+.wl-notice {
+  max-width: 28rem;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.wl-brief {
+  text-wrap: pretty;
+}
+
+.wl-notice {
+  margin-top: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+html:lang(ko) .wl-brief,
+html:lang(ko) .wl-notice,
+html:lang(ko) .wl-more,
+html:lang(ko) .wl-check {
+  line-height: 1.65;
+}
+
+/* Details and the policy link share one printed line. Opened, the notice
+   takes the column under Details and pushes the link below it, so nothing
+   the reader pressed moves. Native <details>: it opens without JavaScript,
+   from the keyboard (Enter, Space), and says expanded or collapsed. */
+.wl-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 28px;
+  row-gap: 10px;
+  max-width: 28rem;
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.wl-details {
+  min-width: 0;
+}
+
+.wl-details[open] {
+  flex-basis: 100%;
+}
+
+/* The browser's own display for summary is kept (WebKit has tied the
+   disclosure role to it before); the marker is replaced by the caret. */
+.wl-summary {
+  position: relative;
+  width: fit-content;
+  list-style: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.wl-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The caret: a small hand-drawn chevron that turns down when open. Its
+   stroke is currentColor, so forced colours draw it in the theme's text. */
+.wl-caret {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  margin-right: 0.3em;
+  vertical-align: -0.04em;
+  overflow: visible;
+  color: var(--pen);
+}
+
+.wl-caret path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wl-details[open] .wl-caret {
+  rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wl-caret {
+    transition: rotate 0.18s var(--ease-pen);
+  }
+}
+
+/* A taller target than the line (about 44px), as for the colophon's
+   links; the line itself doesn't grow. */
+.wl-summary::after,
+.wl-policy::after {
+  content: "";
+  position: absolute;
+  inset: -11px -8px;
+}
+
+.wl-policy {
   position: relative;
 }
 
-.footer a::after {
+/* Open, the targets stop short of the notice between them. */
+.wl-details[open] > .wl-summary::after {
+  bottom: -4px;
+}
+
+.wl-details[open] + .wl-policy::after {
+  top: -4px;
+}
+
+.wl-summary:focus-visible {
+  outline: 2px solid var(--pen);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.wl-notice li {
+  position: relative;
+  padding-left: 1em;
+  text-wrap: pretty;
+}
+
+.wl-notice li + li {
+  margin-top: 5px;
+}
+
+.wl-notice li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--ink-2);
+}
+
+/* Hangul is taller than Newsreader's x-height: lift the dash to its middle. */
+html:lang(ko) .wl-notice li::before {
+  top: -0.08em;
+}
+
+/* The Korean middle dot (수집·이용) from the Korean face: Newsreader's sits
+   at its own x-height and reads as a period beside Hangul. */
+.mid {
+  font-family: var(--ko-serif);
+}
+
+strong {
+  font-weight: 600;
+}
+
+.wl-brief strong,
+.wl-notice strong {
+  color: var(--ink);
+}
+
+/* Printed links: a fine underline that clears the descenders. Details
+   wears the same underline: in this print, what can be pressed is
+   underlined, and its caret says it opens rather than leaves. */
+.wl-notice a,
+.wl-policy,
+.wl-summary > span,
+.wl-err a,
+.wl-status a,
+.wl-aside a,
+.reply-msg a,
+.doc a {
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-2);
+}
+
+@media (hover: hover) {
+  .wl-notice a:hover,
+  .wl-policy:hover,
+  .wl-summary:hover > span,
+  .wl-status a:hover,
+  .wl-aside a:hover,
+  .reply-msg a:hover,
+  .doc a:hover {
+    text-decoration-color: var(--ink);
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* The two boxes, drawn by hand: a wobbly square, a tick that runs past its
+   corner, and, when one is missing, a loose ring around it. The whole label
+   is the target. */
+.wl-check {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: start;
+  max-width: 28rem;
+  margin-top: 14px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* No lone 동의합니다. or "from Telicity." on a last line. */
+.wl-check > span {
+  text-wrap: pretty;
+}
+
+.wl-check input {
+  --cb-box: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M5.6 7.1C11.1 6.5 18.1 6.2 24.5 6.6M23.8 5.8C24.1 11.6 24 18.1 23.6 24.4M24.4 23.7C18.1 24 11.6 24.1 6.3 23.8M6.9 24.5C6.5 18.1 6.4 11.6 6.7 6.2' fill='none' stroke='%23171b22' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  --cb-box-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M6.7 7C11.6 6.6 18.3 6.5 23.8 6.7C24 11.6 23.9 18.2 23.6 23.6C18.2 23.9 11.7 24 6.8 23.7C6.5 18.1 6.4 11.7 6.7 7Z' fill='%23171b22' fill-opacity='0.07'/%3E%3Cpath d='M5.6 7.1C11.1 6.5 18.1 6.2 24.5 6.6M23.8 5.8C24.1 11.6 24 18.1 23.6 24.4M24.4 23.7C18.1 24 11.6 24.1 6.3 23.8M6.9 24.5C6.5 18.1 6.4 11.6 6.7 6.2' fill='none' stroke='%23171b22' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  --cb-tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M9.4 15.4C11 16.8 12.3 18.6 13.5 20.9C16.6 13.8 21.3 7.6 27.3 2.9' fill='none' stroke='%23171b22' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --cb-ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M16.2 2.4C23.4 2.6 28.7 7.6 28.5 14.9C28.3 22.5 22.4 27.9 14.9 27.7C7.6 27.5 2.1 22.2 2.3 14.7C2.5 7.9 7.7 3.1 14.4 2.9C17 2.8 19.9 3.5 21.8 4.8' fill='none' stroke='%23171b22' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  -webkit-appearance: none;
+  appearance: none;
+  /* Positioned, so the box, not the 44px targets of Details and the policy
+     link above it, takes taps on its top edge where those targets reach. */
+  position: relative;
+  width: 30px;
+  height: 30px;
+  /* The label's 15px, not the control font (11px in WebKit, 13.33px in
+     Chrome), so the em below means the same in every engine. The box's
+     centre (15px is half of it) then sits 0.67em below the label's top: the
+     middle of the first line's ink, in English (between cap height and
+     x-height) and in Hangul alike, so one rule serves both pages. */
+  font-size: inherit;
+  margin: calc(0.67em - 15px) 0 0;
+  border: 0;
+  border-radius: 6px;
+  background: var(--cb-box) center / 30px 30px no-repeat;
+  cursor: pointer;
+}
+
+.wl-check input:checked {
+  background-image: var(--cb-tick), var(--cb-box);
+}
+
+@media (hover: hover) {
+  .wl-check:hover input {
+    background-image: var(--cb-box-hover);
+  }
+
+  .wl-check:hover input:checked {
+    background-image: var(--cb-tick), var(--cb-box-hover);
+  }
+}
+
+.wl-check input:focus-visible {
+  outline: 2px solid var(--pen);
+  outline-offset: 0;
+}
+
+.wl-check input:active {
+  translate: 0 1px;
+}
+
+.wl-check input[aria-invalid="true"] {
+  background-image: var(--cb-ring), var(--cb-box);
+}
+
+.wl-check input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* The honeypot: off screen, out of the tab order, hidden from assistive
+   technology. People never fill it; form-filling scripts do. */
+.wl-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.wl .wl-act {
+  margin: 34px 0 0;
+}
+
+/* The handwritten button is the old email link's twin: the same hand, the
+   same crayon underline that redraws on hover. */
+.wl-submit {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--pen);
+  cursor: pointer;
+  text-align: left;
+}
+
+.wl-submit:focus-visible {
+  outline: 2px solid var(--pen);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* Disabled while the request is out: dimmed, and the pointer says so. */
+.wl-submit[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.wl-submit[aria-disabled="true"]:active {
+  translate: none;
+}
+
+/* Loading: the label says what is happening and the crayon keeps
+   underlining it until the answer comes. */
+.wl.is-loading .wl-submit {
+  cursor: progress;
+}
+
+.wl .wl-status {
+  margin: 22px 0 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* The confirmation takes focus (site.js). After a keyboard submit the
+   browser carries :focus-visible over to it: the page's charcoal ring, not
+   the system blue. */
+.wl .wl-status:focus-visible {
+  outline: 2px solid var(--pen);
+  outline-offset: 6px;
+  border-radius: 3px;
+}
+
+html:lang(ko) .wl-status,
+html:lang(ko) .wl-err {
+  line-height: 1.7;
+}
+
+/* The way out, as easy to find as the way in: under the button (and under
+   any message), a quiet printed line to the unsubscribe page. It steps aside
+   once the sign-up is done; the confirmation links the page itself. */
+.wl .wl-aside {
+  margin: 18px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Korean: greedy breaks. With the nowrap bundle in it, WebKit's pretty
+   splits the link (구독 해지 / 페이지에서) on phones. */
+html:lang(ko) .wl-aside {
+  line-height: 1.7;
+  text-wrap: wrap;
+}
+
+/* Text for screen readers only (the loading line: the button already says
+   it on screen). */
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Done: the notice and the button step aside; the line keeps the address
+   and ends in the endpoint dot; the confirmation sits under it. */
+.wl.is-done .wl-status {
+  margin-top: 26px;
+  max-width: 34rem;
+}
+
+/* The unsubscribe form has no notice: the button follows the line. */
+.wl.wl-unsub .wl-act {
+  margin-top: 30px;
+}
+
+/* ---------- The lakeside: where the page ends ---------- */
+
+/* A long, still lake: stepping stones lead out over the water to a flat
+   rock where the mouse sits, the last step, and looks across to soft
+   mountains and a low evening sun. One aria-hidden block between the main
+   text and the colophon (tools/lake/gen.py) with two inline svgs: a closer
+   crop on phones, the panorama from 40rem, the full content width (at
+   60rem its ink runs from the text column's left edge to the colophon
+   rule's right edge). No text, and nothing in it moves. Its fills are flat
+   paint under /assets/weave.png, the same cloth as the ground; its outlines
+   carry their own charcoal filters. It sits outside every [data-draw]
+   group, so no --t0 change ever reaches it and its filters run once. */
+.lakeside {
+  /* On a screen taller than the page the spare height opens above the
+     lake, so the drawing always rests on the colophon. */
+  margin-top: auto;
+  padding-bottom: 30px;
+}
+
+.lakeside + .foot {
+  margin-top: 0;
+}
+
+.lakeside-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Up to 40rem the phone crop, which stops growing at 440px (past that its
+   line would come out heavier than the page's pen) and then sits centred
+   over the colophon. */
+.lakeside-narrow {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.lakeside-wide {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .lakeside-narrow {
+    display: none;
+  }
+
+  .lakeside-wide {
+    display: block;
+  }
+}
+
+/* Tablets: the panorama is drawn at 864 units and shown at the 576px column,
+   two thirds of its size; its outlines and the broken ripple under the rock
+   (.ls-cr) are thickened to match, so they stay about the page pen's 2px.
+   Its cloth is rescaled the same way: the weave layers switch to a 180-unit
+   tile (120 CSS px there, the ground's own tile), the water to its mirrored
+   twin, so the paint and the ground stay one fabric. */
+@media (min-width: 40rem) and (max-width: 59.99rem) {
+  .lakeside-wide .ls-ch,
+  .lakeside-wide .ls-cr {
+    stroke-width: 3;
+  }
+
+  .lakeside-wide .ls-wv {
+    fill: url(#lw-wvt);
+  }
+
+  .lakeside-wide .ls-ww {
+    fill: url(#lw-wwt);
+  }
+}
+
+/* Below 2dppx the fine grain would break the outlines into dots: they are
+   drawn as plain round-capped charcoal, like the marks (see Crayon). The
+   mouse's line is a little lighter there (1.5 in the logo's units) so its
+   eye stays clear. */
+@media (max-resolution: 1.99dppx), (-webkit-max-device-pixel-ratio: 1.99) {
+  .ls-ch,
+  .ls-cr,
+  .ls-cm {
+    filter: none;
+  }
+
+  .lakeside-narrow .ls-cm {
+    stroke-width: 2.25;
+  }
+
+  .lakeside-wide .ls-cm {
+    stroke-width: 2.5;
+  }
+}
+
+@media (min-width: 60rem) {
+  .lakeside {
+    padding-bottom: 38px;
+  }
+}
+
+/* ---------- Footer: a colophon line ---------- */
+
+.foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 22px;
+  font-size: 0.875rem;   /* 14px */
+  line-height: 1.2;
+  color: var(--ink-2);
+  letter-spacing: 0.01em;
+}
+
+.foot p {
+  margin: 0 auto 0 0;
+}
+
+/* The privacy policy link is set apart in bold on every page (the Korean
+   label must be exactly 개인정보 처리방침 and easy to find). */
+.foot-privacy strong {
+  font-weight: 600;
+}
+
+/* Phones: four items no longer fit one line, so the colophon is two:
+   the year and the policy, then the language and the address, each pair
+   flush to the frame's edges. Not below 16px between columns: the links'
+   8px hit areas would overlap. */
+@media not all and (min-width: 40rem) {
+  .foot {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    row-gap: 12px;
+  }
+
+  .foot > :nth-child(even) {
+    justify-self: end;
+  }
+
+  .foot p {
+    margin: 0;
+  }
+}
+
+@media (max-width: 22.4rem) {
+  .foot {
+    column-gap: 16px;
+  }
+}
+
+.foot a,
+.mast-lang {
+  position: relative;
+  color: var(--ink);
+}
+
+/* The masthead's language link, set like the colophon's. */
+.mast-lang {
+  font-size: 0.875rem;   /* 14px */
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+/* Only the explicit Korean links on the English pages; the email address on
+   /ko/ stays in Newsreader like the rest of the line. */
+.foot a[lang="ko"],
+.mast-lang[lang="ko"] {
+  font-family: var(--ko-serif);
+}
+
+/* The 404's Korean line: spaces and the period from Newsreader, as on /ko/,
+   and broken between words, as on /ko/. */
+.ko-line {
+  font-family: var(--serif-mixed);
+  word-break: keep-all;
+}
+
+/* Its way back to /ko/, on a line of its own: a plain printed link, quieter
+   than the handwritten one below. The underline clears the Hangul's feet. */
+.ko-line a {
+  position: relative;
+  color: var(--ink);
+  white-space: nowrap;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-2);
+}
+
+.foot a::after,
+.mast-lang::after {
   content: "";
   position: absolute;
   inset: -14px -8px;
 }
 
+.ko-line a::after {
+  content: "";
+  position: absolute;
+  inset: -10px -8px;
+}
+
+/* Phones: the colophon's two rows are 12-15px apart. Split that gap between
+   them, so a tap just below the policy link never opens the mail app; the
+   outer edges keep their 14px. After the rule above, and heavier than it. */
+@media not all and (min-width: 40rem) {
+  .foot > :nth-child(-n+2)::after {
+    bottom: -6px;
+  }
+
+  .foot > :nth-child(n+3)::after {
+    top: -6px;
+  }
+}
+
+/* Longhands: Safari drops the thickness and offset from the shorthand. */
 @media (hover: hover) {
-  .footer a:hover {
-    color: var(--ink-muted);
+  .foot a:hover,
+  .mast-lang:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
 }
 
-/* ---------- Korean ---------- */
-
-/* Keeps a closing quote and the particle after it on one line. */
-.nw {
-  white-space: nowrap;
+/* Press: a quiet, instant acknowledgement that moves no layout. On iOS the
+   system tap highlight stays the press feedback. */
+.cta:active {
+  translate: 0 1px;
 }
 
-:lang(ko) body,
-body:lang(ko) {
-  font-family: var(--serif-ko);
-  --text: clamp(19px, 5vw, 22px);
-  --leading: 1.6;
-  --gap: calc(var(--text) * 1.6);
-  letter-spacing: -0.015em;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+.mark:active,
+.mast-lang:active,
+.foot a:active,
+.ko-line a:active,
+.doc a:active,
+.wl-notice a:active,
+.wl-policy:active,
+.wl-summary:active,
+.wl-status a:active,
+.wl-aside a:active,
+.reply-msg a:active {
+  opacity: 0.7;
 }
 
-/* ---------- Wider screens ---------- */
+/* ---------- Plain pages: the privacy policy, unsubscribe, replies ---------- */
 
-@media (min-width: 80rem) {
+/* The function's reply after a post without JavaScript: the 404's layout
+   with one printed paragraph. */
+.reply-msg {
+  max-width: 34rem;
+  text-wrap: pretty;
+}
+
+/* The privacy policy: the same print, set for long reading. Smaller than
+   the page's body text, with a little more air between lines. */
+.doc-head h1 {
+  font-size: clamp(1.875rem, 7vw, 2.625rem);   /* 30-42px */
+}
+
+html:lang(ko) .doc-head h1 {
+  font-size: clamp(1.75rem, 6.4vw, 2.375rem);  /* 28-38px */
+}
+
+.page .doc-meta {
+  margin-top: 0.8em;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+
+.doc {
+  margin-top: 2.2em;
+  font-size: 1.0625rem;   /* 17px */
+  line-height: 1.62;
+}
+
+html:lang(ko) .doc {
+  line-height: 1.82;
+}
+
+.doc h2 {
+  margin: 2.3em 0 0.6em;
+  font-size: 1.3em;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.006em;
+  text-wrap: balance;
+  scroll-margin-top: 24px;
+}
+
+.doc h3 {
+  margin: 1.7em 0 0.4em;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.page .doc p,
+.doc ul,
+.doc ol {
+  margin: 0 0 0.85em;
+  text-wrap: pretty;
+}
+
+.doc ul,
+.doc ol {
+  padding-left: 1.35em;
+}
+
+.doc li {
+  padding-left: 0.15em;
+}
+
+.doc li + li {
+  margin-top: 0.35em;
+}
+
+.doc li::marker {
+  color: var(--ink-2);
+}
+
+/* The summary opens the policy as its own small block, under a hairline. */
+.doc .doc-short {
+  padding-bottom: 1.2em;
+  border-bottom: 1px solid var(--rule);
+}
+
+.doc .doc-short h2 {
+  margin-top: 0;
+}
+
+/* Korean terms on the English policy ((광고), the redress bodies) are set
+   like the 404's Korean line. */
+.doc [lang="ko"] {
+  font-family: var(--serif-mixed);
+}
+
+/* Long addresses (hello@telicity.ai, privacy@...) may break on a phone. */
+.doc a {
+  overflow-wrap: anywhere;
+}
+
+/* Unsubscribe: a heading, one paragraph, then the line and the button
+   (the CTA row, spaced as on the home page). */
+.page .unsub-lead {
+  max-width: 34rem;
+  margin-top: 1em;
+  text-wrap: pretty;
+}
+
+
+/* ---------- Wide screens: text block + an outer margin for notes ---------- */
+
+@media (min-width: 60rem) {
   :root {
-    --edge: 20px;
+    --edge: 32px;
   }
 
-  .site {
-    padding-top: 44px;
+  .sheet {
+    max-width: calc(var(--col) + var(--gutter) + var(--margin) + var(--edge) * 2);
+    padding-top: 38px;
   }
 
   .mark svg {
-    width: 100px;
+    width: 70px;
+  }
+
+  .page {
+    margin: 80px 0 88px;
+  }
+
+  .page-404 {
+    margin-bottom: 120px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, var(--col)) var(--margin);
+    column-gap: var(--gutter);
+    align-items: start;
+  }
+
+  /* Print stays in the text column, including the scene's second paragraph,
+     which would otherwise flow into the margin. */
+  .row > :first-child,
+  .row > p {
+    grid-column: 1;
+  }
+
+  .row > .note {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .note-h1 {
+    align-self: end;
+    justify-content: flex-start;
+    margin: 0 0 0.3em calc(var(--gutter) * -1 - 1.75rem);
+    rotate: -2.5deg;
+  }
+
+  .note-h1 svg {
+    width: 92px;
+    height: 40px;
+    margin-top: -12px;
+  }
+
+  /* In English the ringed phrase ends the headline's short last line (then
+     sees it through.), so the note steps in from the margin until its arrow
+     tip is again about 36px past the ring. Rem, like the headline. */
+  html:lang(en) .note-h1 {
+    margin-left: calc(var(--gutter) * -1 - 7.75rem);
+  }
+
+  /* In Korean the ringed phrase sits mid-headline, so the note does too. */
+  html:lang(ko) .note-h1 {
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  /* Right-flush, as on phones: the endpoint dot lands on the frame's right
+     edge (the colophon rule's), and a wider label (한 바퀴 달리다) spills
+     left into the gutter instead of past the page. */
+  .note-run {
+    margin: 0.2em 0 0;
+    justify-self: end;
   }
 }
 
-/* ---------- Entrance ---------- */
+/* ---------- Revealing the marks ---------- */
 
-@keyframes rise {
+/*
+  A crayon filter's result is cached while nothing under it changes, so the
+  filtered lines are revealed from outside the filter: a clip-path wipe or a
+  conic mask sweep on the whole svg, never stroke-dashoffset, which would
+  re-run the filter on every frame. One system at every pixel density. The
+  logo is unfiltered and keeps its pen draw; the handwriting keeps its
+  write-in clip.
+*/
+@property --sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 360deg;
+}
+
+@keyframes draw {
   from {
-    opacity: 0;
-    translate: 0 8px;
+    stroke-dashoffset: 1.02;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
 
-@keyframes fade {
+@keyframes write {
   from {
-    opacity: 0;
+    clip-path: inset(-25% 100% -25% -8%);
+  }
+  to {
+    clip-path: inset(-25% -8% -25% -8%);
   }
 }
 
-.mark,
-.intro > *,
-.footer {
-  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 90ms) both;
+@keyframes dab {
+  from {
+    transform: scale(0);
+  }
 }
 
-.intro > :nth-child(1) { --i: 1; }
-.intro > :nth-child(2) { --i: 2; }
-.intro > :nth-child(3) { --i: 3; }
-.intro > :nth-child(4) { --i: 4; }
-.intro > :nth-child(5) { --i: 5; }
-.footer { --i: 6; }
+@keyframes wipe {
+  from {
+    clip-path: inset(-80% 100% -80% -4%);
+  }
+  to {
+    clip-path: inset(-80% -4% -80% -4%);
+  }
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .mark,
-  .intro > *,
-  .footer {
-    animation: fade 0.3s ease both;
+@keyframes wipe-rtl {
+  from {
+    clip-path: inset(-80% -4% -80% 100%);
+  }
+  to {
+    clip-path: inset(-80% -4% -80% -4%);
+  }
+}
+
+@keyframes sweep {
+  from {
+    --sweep: 0deg;
+  }
+  to {
+    --sweep: 360deg;
+  }
+}
+
+/*
+  Timing. Marks in a [data-draw] group start from the group's --t0: a late
+  start when the page loads with the group on screen, so the marks appear
+  top to bottom, and a short one (.is-late, set by site.js) when the reader
+  scrolls the group into view. The handwriting adds its own delay (--d) and
+  duration (--dur).
+*/
+.mark .eye { --d: 1.02s; }
+
+.note-h1 .writes { --d: 1.25s; --dur: 0.6s; }
+
+.row-body { --t0: 0.95s; }
+.row-body.is-late { --t0: 0.1s; }
+.nr-1 { --d: 0s; --dur: 0.3s; }
+.nr-2 { --d: 0.25s; --dur: 0.45s; }
+
+.row-scene { --t0: 1.6s; }
+.row-scene.is-late { --t0: 0.15s; }
+
+.row-cta { --t0: 2.2s; }
+.row-cta.is-late { --t0: 0.2s; }
+.wl-lead .writes { --d: 0s; --dur: 0.75s; }
+
+/* The 404 has no script and nothing below the fold: reveal straight away. */
+.page-404 .row-cta { --t0: 0.4s; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The logo: one pen stroke, then the eye. */
+  .mark .ink {
+    stroke-dasharray: 1 1.1;
+    animation: draw 0.95s var(--ease-pen) 0.1s backwards;
   }
 
-  .reaction,
-  .reaction svg,
-  .task.is-reacting .reaction,
-  .task.is-reacting .reaction svg {
-    scale: 1;
-    transition: opacity 0.12s, visibility 0.12s;
+  .dab {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dab 0.16s var(--ease-dab) var(--d, 0s) backwards;
+  }
+
+  .writes {
+    animation: write var(--dur, 0.6s) var(--ease-write) calc(var(--t0, 0s) + var(--d, 0s)) backwards;
+  }
+
+  /* The ring sweeps round from where the crayon starts (upper left),
+     clockwise like the stroke. At rest --sweep is 360deg: all of it shows.
+     Without @property the mask is invalid and the ring simply shows. */
+  .ring > svg {
+    -webkit-mask-image: conic-gradient(from -82deg at 50% 50%, #000 var(--sweep), transparent 0);
+    mask-image: conic-gradient(from -82deg at 50% 50%, #000 var(--sweep), transparent 0);
+    animation: sweep 0.8s var(--ease-pen) 0.45s backwards;
+  }
+
+  /* The h1 note's arrow points back at the ring, so it comes in from the right. */
+  .note-h1 svg {
+    animation: wipe-rtl 0.55s var(--ease-pen) 1.15s backwards;
+  }
+
+  .nr-a {
+    animation: wipe 0.6s var(--ease-pen) calc(var(--t0, 0s) + 0.1s) backwards;
+  }
+
+  /* The line, then the endpoint dot last. */
+  .nr-b {
+    animation: wipe 0.45s var(--ease-pen) calc(var(--t0, 0s) + 0.45s) backwards;
+  }
+
+  .strike > svg {
+    animation: wipe 0.32s var(--ease-pen) calc(var(--t0, 0s) + 0.2s) backwards;
+  }
+
+  .cta-arrow {
+    animation: wipe 0.87s var(--ease-pen) var(--t0, 0s) backwards;
+  }
+
+  .cta > svg {
+    animation: wipe 0.3s var(--ease-pen) calc(var(--t0, 0s) + 0.85s) backwards;
+  }
+
+  /* The sign-up: the line is written, then the arrow drawn to the rule,
+     then the button underlined. */
+  .wl .cta-arrow {
+    animation-delay: calc(var(--t0, 0s) + 0.6s);
+  }
+
+  .wl .cta > svg {
+    animation-delay: calc(var(--t0, 0s) + 1.45s);
+  }
+
+  /* Loading: the crayon keeps underlining until the answer comes. */
+  .wl.is-loading .wl-submit .pen {
+    animation: wipe 0.9s var(--ease-pen) infinite;
+  }
+
+  /* Groups below the fold wait until they are scrolled into view (site.js). */
+  .is-waiting svg,
+  .is-waiting .writes {
+    animation-play-state: paused;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  /* Run the crayon under the link again. On the path, not the svg, so it
+     never restarts the svg's entrance wipe when the pointer leaves. */
+  .cta:hover .pen {
+    animation: wipe 0.4s var(--ease-pen);
+  }
+}
+
+/* With reduced motion there is no redraw: the link answers the pointer by
+   settling 1px instead, still one signal. */
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .cta:hover {
+    translate: 0 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce), print {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+}
+
+/*
+  Forced colors (Windows High Contrast). url() backgrounds survive there, so
+  on a dark theme the white-alpha weave would turn into a mid-grey texture
+  behind the forced text, logo and focus ring: drop it. The marks are drawn
+  in the theme's own colours, without grain. On a dark theme the drawing's
+  charcoal outlines would vanish into the black and leave pastel blobs; it
+  is decorative (aria-hidden), so it steps aside there.
+*/
+@media (forced-colors: active) {
+  body {
+    background-image: none;
+  }
+
+  .pen,
+  .ring .pen,
+  .strike .pen,
+  .note .pen,
+  .cta-arrow .pen {
+    filter: none;
+    stroke: CanvasText;
+  }
+
+  .cta .pen {
+    filter: none;
+    stroke: LinkText;
+  }
+
+  .wl-input,
+  .wl-input:read-only {
+    box-shadow: none;
+    border-bottom: 1px solid CanvasText;
+  }
+
+  .wl-input:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .wl-input[aria-invalid="true"] {
+    background-image: none;
+    border-bottom-style: dashed;
+  }
+
+  .wl-input:-webkit-autofill {
+    -webkit-text-fill-color: currentcolor;
+  }
+
+  .wl-check input {
+    -webkit-appearance: checkbox;
+    appearance: auto;
+    width: 20px;
+    height: 20px;
+    margin: 0.2em 5px 0;
+    background: none;
+  }
+
+  .dot-fill {
+    fill: CanvasText;
+  }
+}
+
+@media (forced-colors: active) and (prefers-color-scheme: dark) {
+  .lakeside {
+    display: none;
+  }
+
+  .lakeside + .foot {
+    margin-top: auto;
   }
 }

@@ -8,9 +8,11 @@ Over time it becomes your twin, learning how you decide. It’s our first step t
 
 In linguistics, telicity means having an endpoint: not “run,” but “run a mile.” We’d rather ask one good question than ten, and we know when to stop.
 
-It will turn “I should call Mom” into a standing Sunday call, “I never use that gym” into a canceled membership, “I need sun” into booked flights, or “maybe I’ll start running” into a 10K on the calendar.
+Some Sunday evening, you’ll be on your weekly call with Mom, telling her the dates for the trip you two kept calling “someday.” Neither the call nor the trip will have become one more thing to remember.
 
-[Email us](mailto:hello@telicity.ai)
+That’s the kind of week we’re building toward, when the back of your mind goes quiet.
+
+We’ll write when there’s news. [Sign up for news](https://telicity.ai/#waitlist)
 
 ## Facts
 

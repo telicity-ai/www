@@ -1,12 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>Telicity</title>
+  <!-- Charcoal comes from the attributes, so the mark still draws where a
+       CSP blocks this <style>; the style only turns it to the light canvas
+       colour on dark tab bars. -->
   <style>
-    path { stroke: #1f2322; }
-    circle { fill: #1f2322; }
     @media (prefers-color-scheme: dark) {
-      path { stroke: #eceae6; }
-      circle { fill: #eceae6; }
+      path { stroke: #f6f6f3; }
+      circle { fill: #f6f6f3; }
     }
   </style>
-  <path d="M4.5 18.7c.6-6.4 8.6-7.6 7.7-2-.6 3.6-5.4 3-3.9-1.2 1.8-4.8 8.6-3.6 7.6 1.4-.3 1.6 1.1 1.9 3.6 1.6" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="25.4" cy="17.8" r="3.6"/>
+  <path d="M2.2 20.4C2.37 21.3 2.35 22.26 2.7 23.1C3.07 23.97 3.67 24.86 4.4 25.5C5.16 26.17 6.19 26.64 7.2 27C8.28 27.39 9.44 27.52 10.7 27.7C12.15 27.91 13.82 28.1 15.4 28.1C17.02 28.1 18.71 27.99 20.3 27.7C21.87 27.42 23.53 26.93 24.9 26.4C26.09 25.94 27.17 25.4 28.1 24.8C28.91 24.28 29.5 23.67 30.2 23.1C29.9 22.07 29.7 20.97 29.3 20C28.92 19.07 28.48 18.17 27.9 17.4C27.34 16.64 26.63 15.98 25.9 15.4C25.17 14.82 24.31 14.45 23.5 13.9C22.61 13.3 21.47 12.75 20.8 11.9C20.13 11.05 19.58 9.86 19.5 8.8C19.41 7.73 19.68 6.36 20.3 5.5C20.93 4.62 22.22 3.83 23.3 3.6C24.38 3.37 25.9 3.54 26.8 4.1C27.68 4.65 28.41 5.85 28.7 6.9C29 7.98 28.9 9.45 28.5 10.5C28.11 11.51 27.27 12.42 26.4 13.1C25.51 13.8 24.34 14.41 23.2 14.6C22.01 14.8 20.71 14.33 19.4 14.2C17.99 14.06 16.44 13.66 15 13.8C13.57 13.93 12.06 14.36 10.8 15C9.56 15.63 8.35 16.62 7.5 17.6C6.74 18.48 6.15 19.5 5.8 20.5C5.48 21.44 5.33 22.41 5.4 23.4C5.48 24.46 6.03 25.58 6.35 26.67" fill="none" stroke="#171b22" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="20" r="2" fill="#171b22"/>
 </svg>
