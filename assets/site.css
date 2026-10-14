@@ -1665,6 +1665,8 @@ html:lang(ko) .doc {
    like the 404's Korean line. */
 .doc [lang="ko"] {
   font-family: var(--serif-mixed);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* Long addresses (hello@telicity.ai, privacy@...) may break on a phone. */

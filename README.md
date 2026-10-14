@@ -24,7 +24,7 @@ Telicity 랜딩페이지. 빌드 단계 없는 정적 사이트로, `main`에 �
 | `sitemap.xml` | 첫 화면 두 개와 처리방침 두 개, `lastmod`, hreflang 짝 |
 | `4acb9e4c1b7422b8e68ecae7207ad4f4.txt` | IndexNow 키 |
 | `.well-known/security.txt` | 보안 연락처 (Expires 2027-10-01 전에 갱신) |
-| `vercel.json` | clean URL, 트레일링 슬래시, 리디렉트, 헤더(CSP의 `form-action 'self'`는 신청 양식 때문), 함수 리전 `iad1`(미국 동부, Redis와 같은 곳) |
+| `vercel.json` | clean URL, 트레일링 슬래시, 리디렉트, 헤더(CSP의 `form-action 'self'`는 신청 양식 때문), 함수 리전 `iad1`(미국 동부, Redis와 같은 곳). `/.well-known/` 아래에는 Vercel이 이 헤더와 트레일링 슬래시 리디렉트를 적용하지 않는다(플랫폼 동작. 거기에는 평문 `security.txt`만 있어 그대로 둔다) |
 | `tools/legal.py`, `tools/waitlist.py`, `tools/tests/` | 처리방침 페이지 생성·법적 문구 검사기, 명단 관리 도구(개수, 내보내기, 삭제, 2년 확인 대상, 로그), 신청 함수의 단위 테스트. 배포되지 않는다 |
 | `tools/ring.py`, `tools/fonts.py`, `tools/lake/`, `tools/canvas/`, `tools/brand/` | 고리 경로 생성기, 폰트 서브셋 생성·검사기, 호숫가 그림 생성기(`gen.py`, 장면 데이터 `wide.py`·`narrow.py`, 산 능선 `mtn.py`), 캔버스 직조·크레용 필터 생성기(`gen.py`)와 PNG 굽기(`bake.py`)·칠 색 풀이(`solve.py`), OG 카드·아이콘 생성기(`gen.py`). 배포되지 않는다(`.vercelignore`) |
 
