@@ -11,11 +11,10 @@ the site's print, with the masthead and colophon of the other pages.
   - a {PLACEHOLDER} is still in a policy (the owner must fill them before
     the pages go live),
   - the built pages differ from what the Markdown gives (run this script),
-  - the consent notice on / or /ko/ (legend, the line always shown, the
-    folded notice and its Details label, the policy link, the boxes, the
-    button) differs from legal/consent/<version>.md for the version the form
-    posts, or that version is not the newest id in consentVersions
-    (api/_lib/copy.mjs), or an id there has no file.
+  - the consent notice on / or /ko/ (the printed line under the button,
+    links included, and the button) differs from legal/consent/<version>.md
+    for the version the form posts, or that version is not the newest id in
+    consentVersions (api/_lib/copy.mjs), or an id there has no file.
 Not deployed (.vercelignore).
 """
 import html
@@ -164,7 +163,7 @@ def page(lang):
         "isPartOf": {"@id": "https://telicity.ai/#website"},
         "about": {"@id": "https://telicity.ai/#organization"},
         "datePublished": "2026-10-14",
-        "dateModified": "2026-10-14",
+        "dateModified": "2026-10-15",
     }
     head_lang = f'<a class="mast-lang" href="{other_href}" hreflang="{other_lang}" lang="{other_lang}">{other_name}</a>'
     return f"""<!doctype html>
@@ -237,26 +236,14 @@ def page(lang):
 # ---------- Checks ----------
 
 class NoticeText(HTMLParser):
-    """The consent notice as a reader sees it, one line per element, in the
-    form legal/consent/<version>.md records it:
-
-        ### legend
-        the line that is always shown (p.wl-brief)
-        <details><summary>label</summary>
-        - each item of the folded notice
-        </details>
-        [the policy link beside Details](href)
-        - [ ] each box's label
-
-    and the button's words."""
-
-    CAPTURE = ("legend", "p", "summary", "li", "label")
+    """The consent notice as a reader sees it, in the form
+    legal/consent/<version>.md records it: the printed line under the button
+    (p.wl-aside, links as [text](href), bold as **text**), and the button's
+    words. Signing up is the consent, so there are no boxes to read."""
 
     def __init__(self):
         super().__init__()
-        self.depth = 0  # inside the fieldset
-        self.cur = None  # text of the element being read
-        self.tag = None  # and its tag
+        self.cur = None  # text of the notice line being read
         self.href = None
         self.parts = []
         self.button = None
@@ -268,46 +255,27 @@ class NoticeText(HTMLParser):
         cls = (a.get("class") or "").split()
         if tag == "input" and a.get("name") == "consent_version":
             self.version = a.get("value")
-        if tag == "fieldset" and "wl-consent" in cls:
-            self.depth = 1
-            return
         if tag == "button" and "wl-submit" in cls:
             self.in_button, self.button = True, ""
-        if not self.depth:
+        if tag == "p" and "wl-aside" in cls:
+            self.cur = ""
             return
-        if self.cur is None and (tag in self.CAPTURE or tag == "a"):
-            self.cur, self.tag = "", tag
-            if tag == "a":
-                self.href = a.get("href")
+        if self.cur is None:
             return
-        if tag == "a" and self.cur is not None:
+        if tag == "a":
             self.cur += "["
             self.href = a.get("href")
-        if tag == "strong" and self.cur is not None:
+        if tag == "strong":
             self.cur += "**"
 
     def handle_endtag(self, tag):
-        if tag == "fieldset" and self.depth:
-            self.depth = 0
         if tag == "button":
             self.in_button = False
-        if not self.depth:
-            return
-        if tag == "details":
-            self.parts.append("</details>")
         if self.cur is None:
             return
-        if tag == self.tag:
-            text = " ".join(self.cur.split())
-            self.parts.append({
-                "legend": "### {}",
-                "p": "{}",
-                "summary": "<details><summary>{}</summary>",
-                "li": "- {}",
-                "label": "- [ ] {}",
-                "a": "[{}](" + str(self.href) + ")",
-            }[tag].format(text))
-            self.cur = self.tag = None
+        if tag == "p":
+            self.parts.append(" ".join(self.cur.split()))
+            self.cur = None
         elif tag == "a":
             self.cur += f"]({self.href})"
         elif tag == "strong":

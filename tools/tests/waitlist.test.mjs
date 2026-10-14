@@ -136,7 +136,7 @@ function deps(db, extra = {}) {
 }
 
 const enc = (o) => Object.entries(o).map(([k, v]) => encodeURIComponent(k) + "=" + encodeURIComponent(v)).join("&");
-const FORM = { email: "Mina.Park+news@Example.com ", consent_privacy: "yes", consent_ads: "yes", lang: "en", page: "/", consent_version: CURRENT_VERSION, wl_note: "" };
+const FORM = { email: "Mina.Park+news@Example.com ", lang: "en", page: "/", consent_version: CURRENT_VERSION, wl_note: "" };
 
 function req(fields = FORM, { json = true, headers = {}, method = "POST", body } = {}) {
   return {
@@ -340,19 +340,15 @@ test("invalid email: 400, nothing stored, no Upstash call", async () => {
   eq(db.calls.length, 0);
 });
 
-test("both consents are required, checked on the server", async () => {
-  for (const f of [{ consent_privacy: "" }, { consent_ads: "" }, { consent_privacy: "no" }, { consent_ads: undefined }]) {
+test("signing up is the consent: no boxes are asked for, under any known notice", async () => {
+  eq(CURRENT_VERSION, "2026-10-15");
+  for (const version of COPY.consentVersions) {
     const db = mockUpstash();
-    const fields = { ...FORM, ...f };
-    for (const k of Object.keys(fields)) if (fields[k] === undefined) delete fields[k];
-    const r = await signup(req(fields, { json: true, headers: {} }), deps(db).d);
-    eq(r.status, 400, JSON.stringify(f));
-    eq(parse(r).error, "consent");
-    eq(parse(r).message, COPY.en.errorConsent);
-    eq(db.calls.length, 0);
+    const r = await signup(req({ ...FORM, consent_version: version }), deps(db).d);
+    eq(r.status, 200, version);
+    ok(db.kv.get(KEYS.sub + "mina.park+news@example.com").value["consent:" + version], version + " recorded");
   }
-  const ko = await signup(req({ ...FORM, lang: "ko", consent_ads: "" }), deps(mockUpstash()).d);
-  eq(parse(ko).message, COPY.ko.errorConsent);
+  ok(!("errorConsent" in COPY.en) && !("errorConsent" in COPY.ko), "no message asks for boxes");
 });
 
 test("an unknown or missing consent version is refused", async () => {
@@ -574,7 +570,7 @@ test("each form's messages, action and consent version match the server", () => 
     eq(attr(form, "data-msg-invalid"), COPY[lang].errorInvalid, file + " invalid");
     eq(attr(form, "data-msg-server"), COPY[lang][kind === "signup" ? "errorServer" : "unsubErrorServer"], file + " server");
     if (kind === "signup") {
-      eq(attr(form, "data-msg-consent"), COPY[lang].errorConsent, file + " consent");
+      eq(attr(form, "data-msg-consent"), null, file + " no consent message");
       eq(attr(html, 'name="consent_version" value'), CURRENT_VERSION, file + " version");
       eq(attr(html, 'name="page" value'), lang === "ko" ? "/ko/" : "/", file + " page");
     }
@@ -583,27 +579,20 @@ test("each form's messages, action and consent version match the server", () => 
     ok(!html.includes('name="website"'), file + " no field autofill would fill");
     if (kind === "signup") {
       const unsub = lang === "ko" ? "/ko/unsubscribe/" : "/unsubscribe/";
-      ok(new RegExp('<p class="wl-aside">[^<]*<a href="' + unsub + '">').test(html), file + " links the unsubscribe page");
+      ok(new RegExp('<p class="wl-aside">(?:(?!</p>)[\\s\\S])*<a href="' + unsub + '">').test(html), file + " links the unsubscribe page");
     }
   }
 });
 
-test("the consent notice: one line and the policy link shown, the rest folded above the boxes", () => {
+test("the consent notice: one printed line under the button, no boxes", () => {
   for (const [file, policy] of [["index.html", "/privacy/"], ["ko/index.html", "/ko/privacy/"]]) {
     const html = readText(file);
-    const fs = /<fieldset class="wl-consent">([\s\S]*?)<\/fieldset>/.exec(html)[1];
-    const at = (s) => fs.indexOf(s);
-    const details = /<details class="wl-details">[\s\S]*?<\/details>/.exec(fs)[0];
-    ok(at('<p class="wl-brief">') > at("</legend>"), file + " the summary line follows the legend");
-    ok(/<p class="wl-brief">[^]*<strong>[^]*<\/strong>[^]*<\/p>/.test(fs), file + " purpose and retention in bold");
-    ok(at('<details class="wl-details">') > at('<p class="wl-brief">'), file + " the full notice comes after the summary line");
-    ok(!/<details[^>]*\sopen/.test(details), file + " folded when the page loads");
-    ok(/^<details class="wl-details">\s*<summary class="wl-summary">/.test(details), file + " Details is the summary, first in <details>");
-    ok(!/<summary[^>]*>(?:(?!<\/summary>)[\s\S])*<a\s/.test(details), file + " nothing to press inside the summary");
-    eq((details.match(/<li>/g) || []).length, 6, file + " all six items are in the folded notice");
-    ok(!details.includes('class="wl-policy"'), file + " the policy link is outside the fold");
-    ok(new RegExp('<a class="wl-policy" href="' + policy + '">').test(fs), file + " the policy link");
-    ok(at('class="wl-policy"') < at('<label class="wl-check">'), file + " all of it above the boxes");
+    const form = /<form[^>]*data-wl[\s\S]*?<\/form>/.exec(html)[0];
+    ok(!form.includes('type="checkbox"') && !form.includes("<fieldset"), file + " no boxes, no fieldset");
+    const aside = /<p class="wl-aside">([\s\S]*?)<\/p>/.exec(form);
+    ok(aside, file + " the notice line");
+    ok(form.indexOf('class="wl-act"') < form.indexOf('class="wl-aside"'), file + " under the button");
+    ok(aside[1].includes('<a href="' + policy + '">'), file + " links the privacy policy");
   }
 });
 

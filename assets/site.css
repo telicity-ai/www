@@ -51,7 +51,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/assets/fonts/gowun-batang.fbf1985e.woff2") format("woff2");
+  src: url("/assets/fonts/gowun-batang.32952528.woff2") format("woff2");
 }
 
 /* The bold words on Korean pages: the consent notice's purpose and retention
@@ -63,7 +63,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("/assets/fonts/gowun-batang-bold.0863f6ae.woff2") format("woff2");
+  src: url("/assets/fonts/gowun-batang-bold.d85cfdf4.woff2") format("woff2");
 }
 
 /* The Korean print that only the long pages use (/ko/privacy/,
@@ -75,8 +75,8 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/assets/fonts/gowun-batang-ext.cc47ccd4.woff2") format("woff2");
-  unicode-range: U+300C-300D, U+AC01, U+AC10, U+AC12, U+AC19, U+AC74, U+AC80, U+AC83, U+ACA8, U+ACB0, U+ACBD, U+ACF5, U+AD8C, U+ADDC, U+ADFC, U+AE00, U+AE08, U+AE34, U+AE41, U+AF2D, U+AF34, U+B00C, U+B0A8, U+B0BC, U+B0C5, U+B123, U+B137, U+B204, U+B2A5-B2A6, U+B2F4, U+B2F9, U+B41C, U+B454, U+B458, U+B461, U+B4F1, U+B5A4, U+B610, U+B77D, U+B78C, U+B7EC, U+B7FD, U+B839, U+B8E8, U+B8F0, U+B960, U+B974, U+B984-B985, U+B9B4, U+B9BC, U+B9C9, U+B9D9, U+B9DD, U+B9E1, U+BAB0, U+BB34, U+BBC0, U+BBFC, U+BC00, U+BC0F, U+BC16, U+BC18, U+BC1C-BC1D, U+BC31, U+BC95, U+BCA0, U+BCC0, U+BCC4, U+BCF5, U+BE0C, U+C0AD, U+C0B4, U+C0DD, U+C13C, U+C1A1, U+C501, U+C554, U+C558, U+C55E, U+C564, U+C57D, U+C591, U+C5BC, U+C5C5, U+C5C7, U+C5ED, U+C5F0, U+C608, U+C628, U+C62E, U+C644, U+C65C, U+C6B0, U+C6C1, U+C6D0, U+C6F9, U+C784, U+C7AC, U+C7C1, U+C808, U+C811, U+C870, U+C900, U+C99D, U+C9C1, U+C9C4, U+CBE4, U+CC28-CC29, U+CC30, U+CC45, U+CCD0, U+CD09, U+CD5C, U+CD94, U+CE58, U+CE5C, U+CE69, U+CE6D, U+CFE0, U+D07C, U+D0A4, U+D0B5, U+D0DC, U+D1A0, U+D2B9, U+D305, U+D3B8, U+D53C, U+D560, U+D5C8, U+D638, U+D658, U+D6A8, U+D765;
+  src: url("/assets/fonts/gowun-batang-ext.fdcec2cc.woff2") format("woff2");
+  unicode-range: U+B7, U+300C-300D, U+AC01, U+AC10, U+AC12, U+AC19, U+AC74, U+AC80, U+ACA0, U+ACA8, U+ACB0, U+ACBD, U+ACF5, U+AD00, U+AD6D, U+AD8C, U+ADDC, U+ADFC, U+AE00, U+AE08, U+AE34, U+AE41, U+AED8, U+AF2D, U+AF34, U+B00C, U+B0A8, U+B0BC, U+B0C5, U+B123, U+B137, U+B204, U+B2A5-B2A6, U+B2F4-B2F5, U+B2F9, U+B370, U+B41C, U+B454, U+B458, U+B461, U+B4F1, U+B5A4, U+B610, U+B77D, U+B78C, U+B7EC, U+B7FD, U+B839, U+B85D, U+B8E8, U+B8F0, U+B960, U+B974, U+B978, U+B984-B985, U+B9B0, U+B9B4, U+B9BC-B9BD, U+B9C9, U+B9D9, U+B9DD, U+B9E1, U+BAA8, U+BAB0, U+BB34, U+BBC0, U+BBF8, U+BBFC, U+BC00, U+BC0F, U+BC16, U+BC18, U+BC1B-BC1D, U+BC31, U+BC95, U+BCA0, U+BCC0, U+BCC4, U+BCF5, U+BD80, U+BD88, U+BE0C, U+C0AC-C0AD, U+C0B4, U+C0DD, U+C13C, U+C168, U+C1A1, U+C4F0, U+C501, U+C554, U+C558, U+C55E, U+C560, U+C564, U+C57D, U+C591, U+C5BC, U+C5C5, U+C5C7, U+C5ED, U+C5F0, U+C608, U+C628, U+C62E, U+C644, U+C65C, U+C678, U+C6B0, U+C6C1, U+C6D0, U+C6F9, U+C720, U+C784, U+C7AC, U+C7C1, U+C804, U+C808, U+C811, U+C870, U+C900, U+C99D, U+C9C1, U+C9C4, U+C9D1, U+CB59, U+CBE4, U+CC28-CC29, U+CC30, U+CC45, U+CCD0, U+CD09, U+CD5C, U+CD94, U+CE58, U+CE5C, U+CE69, U+CE6D, U+CFE0, U+D07C, U+D0A4, U+D0B5, U+D0C1, U+D0DC, U+D130, U+D1A0, U+D2B9, U+D2BC, U+D305, U+D30C, U+D398, U+D3B8, U+D53C, U+D544, U+D560, U+D568-D569, U+D56D, U+D5C8, U+D638, U+D658, U+D6A8, U+D765;
 }
 
 @font-face {
@@ -927,173 +927,6 @@ html:lang(ko) .wl-lead {
   margin: 0;
 }
 
-/* The notice, set small: the legend, one line that is always shown (what
-   the address is for and how long it is kept, those two in bold), then the
-   whole notice folded behind Details / 자세히 보기, with the policy link
-   beside it. */
-.wl-consent {
-  min-inline-size: 0;
-  margin: 30px 0 0;
-  padding: 0;
-  border: 0;
-}
-
-.wl-legend {
-  padding: 0;
-  margin-bottom: 8px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--ink);
-}
-
-/* Small print is held to about 70 characters a line (28rem; in rem, not ch:
-   Newsreader's wide 0 would let a ch measure run past 80). The field and
-   the button keep the whole column. */
-.wl-brief,
-.wl-notice {
-  max-width: 28rem;
-  margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--ink-2);
-}
-
-.wl-brief {
-  text-wrap: pretty;
-}
-
-.wl-notice {
-  margin-top: 8px;
-  padding: 0;
-  list-style: none;
-}
-
-html:lang(ko) .wl-brief,
-html:lang(ko) .wl-notice,
-html:lang(ko) .wl-more,
-html:lang(ko) .wl-check {
-  line-height: 1.65;
-}
-
-/* Details and the policy link share one printed line. Opened, the notice
-   takes the column under Details and pushes the link below it, so nothing
-   the reader pressed moves. Native <details>: it opens without JavaScript,
-   from the keyboard (Enter, Space), and says expanded or collapsed. */
-.wl-more {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 28px;
-  row-gap: 10px;
-  max-width: 28rem;
-  margin-top: 8px;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-.wl-details {
-  min-width: 0;
-}
-
-.wl-details[open] {
-  flex-basis: 100%;
-}
-
-/* The browser's own display for summary is kept (WebKit has tied the
-   disclosure role to it before); the marker is replaced by the caret. */
-.wl-summary {
-  position: relative;
-  width: fit-content;
-  list-style: none;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.wl-summary::-webkit-details-marker {
-  display: none;
-}
-
-/* The caret: a small hand-drawn chevron that turns down when open. Its
-   stroke is currentColor, so forced colours draw it in the theme's text. */
-.wl-caret {
-  display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  margin-right: 0.3em;
-  vertical-align: -0.04em;
-  overflow: visible;
-  color: var(--pen);
-}
-
-.wl-caret path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.wl-details[open] .wl-caret {
-  rotate: 90deg;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .wl-caret {
-    transition: rotate 0.18s var(--ease-pen);
-  }
-}
-
-/* A taller target than the line (about 44px), as for the colophon's
-   links; the line itself doesn't grow. */
-.wl-summary::after,
-.wl-policy::after {
-  content: "";
-  position: absolute;
-  inset: -11px -8px;
-}
-
-.wl-policy {
-  position: relative;
-}
-
-/* Open, the targets stop short of the notice between them. */
-.wl-details[open] > .wl-summary::after {
-  bottom: -4px;
-}
-
-.wl-details[open] + .wl-policy::after {
-  top: -4px;
-}
-
-.wl-summary:focus-visible {
-  outline: 2px solid var(--pen);
-  outline-offset: 3px;
-  border-radius: 3px;
-}
-
-.wl-notice li {
-  position: relative;
-  padding-left: 1em;
-  text-wrap: pretty;
-}
-
-.wl-notice li + li {
-  margin-top: 5px;
-}
-
-.wl-notice li::before {
-  content: "–";
-  position: absolute;
-  left: 0;
-  color: var(--ink-2);
-}
-
-/* Hangul is taller than Newsreader's x-height: lift the dash to its middle. */
-html:lang(ko) .wl-notice li::before {
-  top: -0.08em;
-}
-
 /* The Korean middle dot (수집·이용) from the Korean face: Newsreader's sits
    at its own x-height and reads as a period beside Hangul. */
 .mid {
@@ -1104,17 +937,7 @@ strong {
   font-weight: 600;
 }
 
-.wl-brief strong,
-.wl-notice strong {
-  color: var(--ink);
-}
-
-/* Printed links: a fine underline that clears the descenders. Details
-   wears the same underline: in this print, what can be pressed is
-   underlined, and its caret says it opens rather than leaves. */
-.wl-notice a,
-.wl-policy,
-.wl-summary > span,
+/* Printed links: a fine underline that clears the descenders. */
 .wl-err a,
 .wl-status a,
 .wl-aside a,
@@ -1128,9 +951,6 @@ strong {
 }
 
 @media (hover: hover) {
-  .wl-notice a:hover,
-  .wl-policy:hover,
-  .wl-summary:hover > span,
   .wl-status a:hover,
   .wl-aside a:hover,
   .reply-msg a:hover,
@@ -1138,84 +958,6 @@ strong {
     text-decoration-color: var(--ink);
     text-decoration-thickness: 2px;
   }
-}
-
-/* The two boxes, drawn by hand: a wobbly square, a tick that runs past its
-   corner, and, when one is missing, a loose ring around it. The whole label
-   is the target. */
-.wl-check {
-  display: grid;
-  grid-template-columns: 30px minmax(0, 1fr);
-  column-gap: 8px;
-  align-items: start;
-  max-width: 28rem;
-  margin-top: 14px;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-/* No lone 동의합니다. or "from Telicity." on a last line. */
-.wl-check > span {
-  text-wrap: pretty;
-}
-
-.wl-check input {
-  --cb-box: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M5.6 7.1C11.1 6.5 18.1 6.2 24.5 6.6M23.8 5.8C24.1 11.6 24 18.1 23.6 24.4M24.4 23.7C18.1 24 11.6 24.1 6.3 23.8M6.9 24.5C6.5 18.1 6.4 11.6 6.7 6.2' fill='none' stroke='%23171b22' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
-  --cb-box-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M6.7 7C11.6 6.6 18.3 6.5 23.8 6.7C24 11.6 23.9 18.2 23.6 23.6C18.2 23.9 11.7 24 6.8 23.7C6.5 18.1 6.4 11.7 6.7 7Z' fill='%23171b22' fill-opacity='0.07'/%3E%3Cpath d='M5.6 7.1C11.1 6.5 18.1 6.2 24.5 6.6M23.8 5.8C24.1 11.6 24 18.1 23.6 24.4M24.4 23.7C18.1 24 11.6 24.1 6.3 23.8M6.9 24.5C6.5 18.1 6.4 11.6 6.7 6.2' fill='none' stroke='%23171b22' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
-  --cb-tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M9.4 15.4C11 16.8 12.3 18.6 13.5 20.9C16.6 13.8 21.3 7.6 27.3 2.9' fill='none' stroke='%23171b22' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --cb-ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M16.2 2.4C23.4 2.6 28.7 7.6 28.5 14.9C28.3 22.5 22.4 27.9 14.9 27.7C7.6 27.5 2.1 22.2 2.3 14.7C2.5 7.9 7.7 3.1 14.4 2.9C17 2.8 19.9 3.5 21.8 4.8' fill='none' stroke='%23171b22' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  -webkit-appearance: none;
-  appearance: none;
-  /* Positioned, so the box, not the 44px targets of Details and the policy
-     link above it, takes taps on its top edge where those targets reach. */
-  position: relative;
-  width: 30px;
-  height: 30px;
-  /* The label's 15px, not the control font (11px in WebKit, 13.33px in
-     Chrome), so the em below means the same in every engine. The box's
-     centre (15px is half of it) then sits 0.67em below the label's top: the
-     middle of the first line's ink, in English (between cap height and
-     x-height) and in Hangul alike, so one rule serves both pages. */
-  font-size: inherit;
-  margin: calc(0.67em - 15px) 0 0;
-  border: 0;
-  border-radius: 6px;
-  background: var(--cb-box) center / 30px 30px no-repeat;
-  cursor: pointer;
-}
-
-.wl-check input:checked {
-  background-image: var(--cb-tick), var(--cb-box);
-}
-
-@media (hover: hover) {
-  .wl-check:hover input {
-    background-image: var(--cb-box-hover);
-  }
-
-  .wl-check:hover input:checked {
-    background-image: var(--cb-tick), var(--cb-box-hover);
-  }
-}
-
-.wl-check input:focus-visible {
-  outline: 2px solid var(--pen);
-  outline-offset: 0;
-}
-
-.wl-check input:active {
-  translate: 0 1px;
-}
-
-.wl-check input[aria-invalid="true"] {
-  background-image: var(--cb-ring), var(--cb-box);
-}
-
-.wl-check input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* The honeypot: off screen, out of the tab order, hidden from assistive
@@ -1288,9 +1030,10 @@ html:lang(ko) .wl-err {
   line-height: 1.7;
 }
 
-/* The way out, as easy to find as the way in: under the button (and under
-   any message), a quiet printed line to the unsubscribe page. It steps aside
-   once the sign-up is done; the confirmation links the page itself. */
+/* Under the button (and under any message), one quiet printed line: signing
+   up is the consent, with the privacy policy and the way out beside it, as
+   easy to find as the way in. It steps aside once the sign-up is done; the
+   confirmation links the unsubscribe page itself. */
 .wl .wl-aside {
   margin: 18px 0 0;
   font-size: 0.9375rem;
@@ -1317,8 +1060,9 @@ html:lang(ko) .wl-aside {
   white-space: nowrap;
 }
 
-/* Done: the notice and the button step aside; the line keeps the address
-   and ends in the endpoint dot; the confirmation sits under it. */
+/* Done: the button and the printed line under it step aside; the email
+   line keeps the address and ends in the endpoint dot; the confirmation
+   sits under it. */
 .wl.is-done .wl-status {
   margin-top: 26px;
   max-width: 34rem;
@@ -1566,9 +1310,6 @@ html:lang(ko) .wl-aside {
 .foot a:active,
 .ko-line a:active,
 .doc a:active,
-.wl-notice a:active,
-.wl-policy:active,
-.wl-summary:active,
 .wl-status a:active,
 .wl-aside a:active,
 .reply-msg a:active {
@@ -1997,15 +1738,6 @@ html:lang(ko) .doc {
 
   .wl-input:-webkit-autofill {
     -webkit-text-fill-color: currentcolor;
-  }
-
-  .wl-check input {
-    -webkit-appearance: checkbox;
-    appearance: auto;
-    width: 20px;
-    height: 20px;
-    margin: 0.2em 5px 0;
-    background: none;
   }
 
   .dot-fill {

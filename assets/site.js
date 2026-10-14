@@ -49,8 +49,8 @@
     { rootMargin: "100000px 0px 0px 0px", threshold: [0.5, 0.99] }
   );
 
-  // The sign-up row is tall (the notice and the boxes are in it): it starts
-  // when its first line, the one marked data-draw-at, is wholly on screen.
+  // The sign-up row starts when its first line, the one marked data-draw-at,
+  // is wholly on screen.
   for (const el of document.querySelectorAll("[data-draw]")) io.observe(el.querySelector(".strike, [data-draw-at]") || el);
 })();
 
@@ -60,10 +60,10 @@
 // a page of its own. With it they post with fetch (the same urlencoded body,
 // plus Accept: application/json) and answer in place:
 //   loading  the button says so (data-pen-sending) and is aria-disabled
-//   error    the email field or the missing boxes are marked aria-invalid,
-//            the words go under the field or under the button, focus goes
-//            to the first thing to fix
-//   done     the notice, the button and the unsubscribe line step aside,
+//   error    a bad email field is marked aria-invalid and gets the words
+//            under it and focus; other errors go under the button, which
+//            takes focus
+//   done     the button and the line under it step aside,
 //            the line keeps the address and gets its endpoint dot, the
 //            confirmation (with its date) takes focus
 // The messages for errors found here are the form's data-msg-* attributes;
@@ -94,7 +94,6 @@
 
   for (const form of document.querySelectorAll("form[data-wl]")) {
     const email = form.elements.email;
-    const boxes = Array.from(form.querySelectorAll('input[type="checkbox"]'));
     const button = form.querySelector('button[type="submit"]');
     const label = button.querySelector(".wl-btn");
     const idle = label.textContent;
@@ -117,7 +116,6 @@
 
     function reset() {
       mark(email, false);
-      for (const b of boxes) mark(b, false);
       fill(err, "");
       fill(status, "");
       status.classList.remove("vh");
@@ -133,17 +131,15 @@
         return;
       }
       fill(status, text);
-      const missing = code === "consent" ? boxes.filter((b) => !b.checked) : [];
-      for (const b of missing) mark(b, true, status.id);
-      (missing[0] || button).focus();
+      button.focus();
     }
 
     function done(text) {
       form.classList.add("is-done");
       email.readOnly = true;
-      // The notice, the button and the way to unsubscribe step aside (the
-      // confirmation links the unsubscribe page itself).
-      for (const el of form.querySelectorAll(".wl-consent, .wl-act, .wl-aside")) el.hidden = true;
+      // The button and the line under it step aside (the confirmation links
+      // the unsubscribe page itself).
+      for (const el of form.querySelectorAll(".wl-act, .wl-aside")) el.hidden = true;
       fill(status, text);
       status.tabIndex = -1;
       status.focus();
@@ -156,20 +152,12 @@
       }
     });
 
-    for (const b of boxes) {
-      b.addEventListener("change", () => {
-        if (b.checked) mark(b, false);
-        if (boxes.every((x) => x.checked) && form.classList.contains("is-error") && !email.hasAttribute("aria-invalid")) fill(status, "");
-      });
-    }
-
     form.addEventListener("submit", async (ev) => {
       ev.preventDefault();
       if (busy || form.classList.contains("is-done")) return;
       reset();
       const value = email.value.trim();
       if (!value || !EMAIL.test(value) || email.validity.typeMismatch) return fail("invalid", msg("invalid"));
-      if (boxes.some((b) => !b.checked)) return fail("consent", msg("consent"));
 
       busy = true;
       form.classList.add("is-loading");

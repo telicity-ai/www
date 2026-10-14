@@ -15,7 +15,8 @@
 //   {date}           the consent date in Korea time (see kstDate)
 export const COPY = /* COPY-JSON */ {
   "consentVersions": [
-    "2026-10-12"
+    "2026-10-12",
+    "2026-10-15"
   ],
   "pen": [
     "backHome",
@@ -37,7 +38,6 @@ export const COPY = /* COPY-JSON */ {
     "success": "You’re signed up. Telicity recorded your consent to receive advertising emails (launch and product news) on {date} (Korea time). We won’t send a separate confirmation email. You can withdraw at any time at telicity.ai/unsubscribe/ or by writing to hello@telicity.ai.",
     "errorTitle": "You’re not signed up yet.",
     "errorInvalid": "That email address is missing or incomplete. Check that it’s written like name@example.com.",
-    "errorConsent": "We need both consents to send you the news. Check both boxes to sign up.",
     "errorRate": "Too many requests came from this network in a short time. Wait a while, then try again.",
     "errorServer": "Our server couldn’t save your sign-up just now. Try again in a few minutes. If it keeps failing, let us know at hello@telicity.ai.",
     "backHome": "Back to Telicity",
@@ -57,7 +57,6 @@ export const COPY = /* COPY-JSON */ {
     "success": "신청을 마쳤습니다. 텔리시티(Telicity)의 광고성 정보(출시 소식과 서비스 소식) 이메일 수신 동의가 {date}에 처리되었습니다. 확인 메일은 따로 보내지 않습니다. 수신 동의는 telicity.ai/ko/unsubscribe/에서 언제든 철회하실 수 있고 hello@telicity.ai로 요청하셔도 됩니다.",
     "errorTitle": "아직 신청되지 않았습니다.",
     "errorInvalid": "이메일 주소가 비어 있거나 형식이 맞지 않습니다. name@example.com처럼 적혀 있는지 확인해 주십시오.",
-    "errorConsent": "소식을 보내 드리려면 두 항목에 모두 동의하셔야 합니다. 두 칸에 모두 표시해 주십시오.",
     "errorRate": "이 네트워크에서 짧은 시간에 요청이 많이 들어왔습니다. 잠시 뒤에 다시 시도해 주십시오.",
     "errorServer": "저희 서버에 문제가 있어 신청을 저장하지 못했습니다. 몇 분 뒤에 다시 시도해 주십시오. 계속 안 되면 hello@telicity.ai로 알려 주십시오.",
     "backHome": "텔리시티로 돌아가기",

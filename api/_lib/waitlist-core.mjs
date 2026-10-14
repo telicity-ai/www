@@ -112,9 +112,6 @@ export function normalizeEmail(raw) {
   return s;
 }
 
-const YES = new Set(["yes", "on", "true", "1"]);
-const isYes = (v) => typeof v === "string" && YES.has(v.trim().toLowerCase());
-
 // ---------- Request checks ----------
 
 // Same-origin posts only. A browser always sends Origin on a POST (older
@@ -251,8 +248,8 @@ export const UNSUBSCRIBE_LUA =
 
 // ---------- Replies ----------
 
-const STATUS = { ok: 200, invalid: 400, consent: 400, version: 400, rate: 429, server: 503, forbidden: 403, too_large: 413, unsupported: 415 };
-const MESSAGE = { invalid: "errorInvalid", consent: "errorConsent", rate: "errorRate" };
+const STATUS = { ok: 200, invalid: 400, version: 400, rate: 429, server: 503, forbidden: 403, too_large: 413, unsupported: 415 };
+const MESSAGE = { invalid: "errorInvalid", rate: "errorRate" };
 
 function reply(kind, code, lang, json, ms) {
   const c = COPY[lang];
@@ -316,10 +313,10 @@ export async function signup(req, deps) {
   if (typeof f.wl_note === "string" && f.wl_note.trim()) return reply("signup", "ok", lang, json, now);
   const email = normalizeEmail(f.email);
   if (!email) return reply("signup", "invalid", lang, json, now);
-  if (!isYes(f.consent_privacy) || !isYes(f.consent_ads)) return reply("signup", "consent", lang, json, now);
-  // The record says which notice was shown and on which page, so both must
-  // come from the page itself: nothing is filled in for a client that never
-  // loaded it.
+  // Signing up is the consent: the line under the button says so (since
+  // notice 2026-10-15; 2026-10-12 also had two required boxes). The record
+  // says which notice was shown and on which page, so both must come from
+  // the page itself: nothing is filled in for a client that never loaded it.
   const version = f.consent_version;
   if (!version || !COPY.consentVersions.includes(version)) return reply("signup", "version", lang, json, now);
   const page = f.page;

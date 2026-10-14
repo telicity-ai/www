@@ -77,7 +77,7 @@
       "isPartOf": { "@id": "https://telicity.ai/#website" },
       "about": { "@id": "https://telicity.ai/#organization" },
       "primaryImageOfPage": "https://telicity.ai/og.png?v=2",
-      "dateModified": "2026-10-14"
+      "dateModified": "2026-10-15"
     }
   ]
 }
@@ -117,7 +117,7 @@
     </div>
 
     <div class="row row-cta" id="waitlist" data-draw>
-      <form class="wl" action="/api/waitlist/" method="post" aria-label="News sign-up" data-wl data-pen-sending="Signing you up…" data-msg-invalid="That email address is missing or incomplete. Check that it’s written like name@example.com." data-msg-consent="We need both consents to send you the news. Check both boxes to sign up." data-msg-server="Our server couldn’t save your sign-up just now. Try again in a few minutes. If it keeps failing, let us know at hello@telicity.ai.">
+      <form class="wl" action="/api/waitlist/" method="post" aria-label="News sign-up" data-wl data-pen-sending="Signing you up…" data-msg-invalid="That email address is missing or incomplete. Check that it’s written like name@example.com." data-msg-server="Our server couldn’t save your sign-up just now. Try again in a few minutes. If it keeps failing, let us know at hello@telicity.ai.">
         <p class="wl-lead" data-draw-at><span class="writes">We’ll write when there’s news.</span></p>
         <div class="wl-line">
           <svg class="cta-arrow" viewBox="0 0 90.6 33.6" aria-hidden="true"><path class="pen" pathLength="1" d="M2 17.08C2.93 18.91 3.42 21.05 4.75 22.59C6.18 24.21 8.15 25.61 10.41 26.5C13.08 27.58 17.25 28.04 19.98 28.1C22.04 28.16 23.6 27.87 25.37 27.46C27.2 27.06 29.06 26.39 30.8 25.61C32.54 24.82 34.25 23.81 35.81 22.73C37.35 21.63 38.8 20.39 40.05 19.08C41.24 17.83 42.34 16.44 43.21 15.05C43.99 13.75 44.69 12.35 45.09 11.02C45.44 9.8 45.67 8.52 45.62 7.39C45.56 6.35 45.33 5.31 44.86 4.49C44.43 3.74 43.73 3.04 43.01 2.64C42.25 2.2 41.27 2.03 40.34 2C39.35 2 38.25 2.26 37.23 2.64C36.16 3.04 35.06 3.74 34.1 4.49C33.12 5.31 32.16 6.32 31.38 7.39C30.59 8.47 29.93 9.74 29.43 11.02C28.97 12.3 28.65 13.72 28.59 15.05C28.51 16.38 28.65 17.8 29 19.08C29.38 20.36 29.98 21.63 30.77 22.73C31.58 23.84 32.65 24.82 33.81 25.61C35.03 26.42 36.48 27.06 37.96 27.46C39.53 27.9 40.98 27.93 42.95 28.1C49.41 28.53 60.73 29.03 70.88 28.01C77.25 27.38 83.05 26.27 88.27 24.82"/><path class="pen" pathLength="1" d="M81.31 18.59C83.92 20.62 86.25 22.65 88.56 24.68C85.67 26.71 83.05 29.03 80.44 31.64"/></svg>
@@ -128,33 +128,13 @@
           <svg class="wl-dot" viewBox="0 0 16 16" aria-hidden="true"><circle class="dot-fill" cx="7.6" cy="8.4" r="4.6"/><circle class="pen" cx="8.4" cy="7.8" r="4.4"/></svg>
         </div>
         <p class="wl-err" id="wl-email-err" aria-live="polite"></p>
-        <fieldset class="wl-consent">
-          <legend class="wl-legend">How we’ll use your email address</legend>
-          <p class="wl-brief"><strong>We use your email address only to send you Telicity launch and product news, which is advertising, and we keep it until you withdraw your consent.</strong> Every two years we’ll ask whether you want to keep receiving news.</p>
-          <div class="wl-more">
-            <details class="wl-details">
-              <summary class="wl-summary"><svg class="wl-caret" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M4.3 2.4C5.9 3.7 7.5 5 8.9 6.1C7.4 7.2 5.9 8.4 4.5 9.7"/></svg><span>Details</span></summary>
-              <ul class="wl-notice">
-                <li>Purpose: <strong>Telicity will use your email address to send you launch and product news. These are advertising emails.</strong></li>
-                <li>What we keep: your email address, and a record of your consent (date and time, the version of this notice, and the language and page you signed up on).</li>
-                <li>How long: <strong>Until you withdraw your consent. We then delete it without delay. Every two years from the day you agree, we’ll ask whether you want to keep receiving news, and we’ll delete your data if you don’t confirm by the date we give.</strong></li>
-                <li>You can refuse. If you do, you won’t receive the news, and nothing else changes.</li>
-                <li>Vercel and Upstash, both US companies, process and store sign-ups for us outside Korea. Our <a href="/privacy/#s7">Privacy Policy</a> lists the countries and other details.</li>
-                <li>People under 14 can’t sign up.</li>
-              </ul>
-            </details>
-            <a class="wl-policy" href="/privacy/">Privacy Policy</a>
-          </div>
-          <label class="wl-check"><input type="checkbox" name="consent_privacy" value="yes" required><span>(Required) I’m 14 or older, and I agree that Telicity may collect and use my personal information as described above.</span></label>
-          <label class="wl-check"><input type="checkbox" name="consent_ads" value="yes" required><span>(Required) I agree to receive advertising emails (launch and product news) from Telicity.</span></label>
-        </fieldset>
         <p class="wl-hp" aria-hidden="true"><label for="wl-note">Leave this field empty</label> <input id="wl-note" name="wl_note" type="text" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></p>
         <input type="hidden" name="lang" value="en">
         <input type="hidden" name="page" value="/">
-        <input type="hidden" name="consent_version" value="2026-10-12">
+        <input type="hidden" name="consent_version" value="2026-10-15">
         <p class="wl-act"><button class="cta wl-submit" type="submit"><span class="wl-btn">Sign up</span><svg viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true"><path class="pen" pathLength="1" d="M2 6c28-2 78-1 116-3"/></svg></button></p>
         <p class="wl-status" id="wl-status" aria-live="polite"></p>
-        <p class="wl-aside">Already signed up? <a href="/unsubscribe/">Unsubscribe</a></p>
+        <p class="wl-aside">By signing up, you agree to receive news from Telicity by email. Details are in our <a href="/privacy/">Privacy Policy</a>, and you can <a href="/unsubscribe/">unsubscribe</a> anytime.</p>
       </form>
     </div>
   </main>

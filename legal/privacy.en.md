@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Effective October 14, 2026
+Effective October 15, 2026
 
 Telicity (텔리시티) handles the personal information of people who visit telicity.ai, sign up for news there, or write to hello@telicity.ai as this policy describes. As Article 30 of Korea’s Personal Information Protection Act (PIPA) requires, it sets out what we collect and why, how long we keep it, and when and how we delete it. We process only the minimum each purpose needs.
 
@@ -31,7 +31,7 @@ We process personal information only for the purposes below. If a purpose change
 - Your email address
 - A record of your consent: the date and time, the version of the notice you agreed to, the language you signed up in (Korean or English), and the address of the page you signed up on
 
-The legal basis is PIPA Article 15(1)(1), your consent. We ask separately for your consent to receive advertising, under Article 50(1) of Korea’s Act on Promotion of Information and Communications Network Utilization and Information Protection (the Network Act). We keep every version of the consent notice, so we can show what you agreed to.
+The legal basis is your consent, under PIPA Article 15(1)(1) and, for advertising, Article 50(1) of Korea’s Act on Promotion of Information and Communications Network Utilization and Information Protection (the Network Act). As the line right under the sign-up button says, entering your email address and signing up means you agree to the processing described in this policy and to receiving our news by email. We keep every version of the consent notice, so we can show what you agreed to.
 
 ### Without your consent
 
@@ -149,7 +149,7 @@ telicity.ai doesn’t use cookies. We don’t use analytics, advertising, or beh
 
 ## 12. Children under 14
 
-We don’t accept sign-ups from children under 14. The sign-up form asks you to confirm that you are 14 or older. If we learn that we hold a child’s information, we delete it without delay.
+We don’t accept sign-ups from children under 14. If you are under 14, please don’t sign up. If we learn that we hold a child’s information, we delete it without delay.
 
 ## 13. Privacy officer
 
@@ -172,6 +172,7 @@ We don’t process sensitive information, unique identification numbers, or pseu
 
 ## 16. Changes to this policy
 
-- This is the first version, effective October 14, 2026.
+- This version is effective October 15, 2026.
+- What changed from the previous version (effective October 14, 2026, which applied through October 14): the sign-up form no longer has two consent checkboxes; signing up is the consent (sections 2 and 12). Everything else is the same.
 - If it changes, we will announce it on this page before the change takes effect, and keep earlier versions here with the dates they applied.
 - The Korean version at telicity.ai/ko/privacy/ is the original. If the two differ, the Korean version applies.
