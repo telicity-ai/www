@@ -1,24 +1,27 @@
 # Telicity
 
-> Telicity (telicity.ai) is a company building the operating system and infrastructure for AI, starting with a personal AI assistant and twin that analyzes a person’s intent, turns it into a clear goal, and completes it.
+> A world for AI twins that think like you. Telicity is building an environment where AI agents act on your intent and judgment and collaborate with others.
 
-Not to be confused with telicity, the linguistics term, although the company is named after it. In linguistics, telicity is the property of an action that has a built-in endpoint: “run a mile” is telic, “run” is not. The company chose the name because it builds software that carries what a person means through to a finished result.
+- Korean name: 텔리시티.
+- Status: in development. The product is not publicly available; the site accepts launch waitlist registrations.
+- The English page is at https://telicity.ai/ and the Korean page at https://telicity.ai/ko/.
+- Home and Pocket scenes are interactive product previews with sample data, not live agent sessions. A PM cursor moves from the visitor’s pointer position and presses the campaign brief to open Pocket. A PM, designer, and marketer then work on the same document. They leave their editing positions at slightly different moments, with their paths toward the shared circle overlapping naturally. Each arrival fills one of its three segments. Once the circle is full at 3/3 agreement, green confetti bursts across the demo window, followed by a 👍 reaction from each cursor in turn.
+- One scroll gesture plays one complete collaboration step in at most 1.5 seconds, then waits for the next gesture. Scrolling upward rewinds one completed step. After the last step or before the first, scrolling continues through the page. Use the step buttons to play or replay a chosen step. Reduced motion displays results without animation; short screens use step buttons and static states. Feedback choices and the user’s final approval remain available.
+- The visitor’s cursor follows the pointer across the landing page with a city label such as teliseoul or telitokyo, falling back to telicity. City labels are not saved. The separate User profile inside the preview may keep an optional name in the current tab’s session storage. The page does not read Chrome profile information.
+- Contact: hello@telicity.ai.
+- Updated: 2026-11-01.
 
-- Korean name: 텔리시티. Also written as Telicity AI.
-- Status: in development.
-- Contact: hello@telicity.ai (general, partnership and press inquiries).
-- The site has the same content in English (https://telicity.ai/) and Korean (https://telicity.ai/ko/).
-
-텔리시티(Telicity)는 AI를 위한 운영체제와 인프라를 만드는 회사입니다. 첫 단계로 사람의 의도를 파악해 분명한 목표로 정리하고 끝까지 해내는 개인 AI 비서이자 사용자를 닮아 가는 트윈을 개발하고 있습니다.
+텔리시티는 당신의 의도와 판단을 이어받은 에이전트가 활동하고 협업하는 공간을 만들고 있습니다. 공개 출시 전이며 대기 신청을 받고 있습니다. 화면의 Home·Pocket 협업 장면은 예시 데이터를 사용한 미리보기입니다. PM 커서가 방문자의 포인터 위치에서 기획안으로 다가가 눌러 엽니다. 각 커서는 작업 위치에서 조금씩 다른 시점에 출발하며, 원으로 향하는 이동이 자연스럽게 겹칩니다. 도착한 PM·디자이너·마케터가 원의 세 칸을 채웁니다. 3/3으로 원이 가득 차면 데모 창 전체에 녹색 confetti가 터진 뒤 각 커서가 차례로 👍 반응을 남깁니다. 스크롤 한 번에 한 단계가 1.5초 안에 끝까지 재생되고 다음 입력을 기다립니다. 위로 올리면 완료한 단계를 하나 되감으며, 마지막 단계 뒤와 첫 단계 전에는 페이지를 계속 이동합니다. 단계 버튼으로 원하는 단계를 재생하거나 다시 볼 수 있습니다. 모션 감소에서는 애니메이션 없이 결과를 표시하고, 화면 높이가 낮으면 단계 버튼으로 정적인 상태를 봅니다.
 
 ## Pages
 
-- [Telicity (English)](https://telicity.ai/index.md): What Telicity is building, why, and where the name comes from.
-- [텔리시티(한국어)](https://telicity.ai/ko/index.md): 같은 내용의 한국어 페이지.
+- [Telicity (English)](https://telicity.ai/index.md): AI twins, collaboration, product principles, and launch waitlist.
+- [텔리시티(한국어)](https://telicity.ai/ko/index.md): AI 트윈, 협업, 제품 원칙과 출시 대기 신청.
 
 ## Optional
 
-- [Full text](https://telicity.ai/llms-full.txt): Both pages in one file.
+- [Full text](https://telicity.ai/llms-full.txt): Both page summaries in one file.
+- [Waitlist](https://telicity.ai/#waitlist): Receive news when Telicity opens.
 - [GitHub](https://github.com/telicity-ai): Telicity on GitHub.
-- [Privacy Policy](https://telicity.ai/privacy/): How Telicity handles the email addresses people leave for news. The Korean original is at https://telicity.ai/ko/privacy/.
-- [Sitemap](https://telicity.ai/sitemap.xml)
+- [Privacy Policy](https://telicity.ai/privacy/): How Telicity handles waitlist email addresses. [Korean original](https://telicity.ai/ko/privacy/).
+- [Sitemap](https://telicity.ai/sitemap.xml): English and Korean landing pages and privacy policies.

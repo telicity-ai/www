@@ -1,61 +1,111 @@
 # Telicity: full text
 
-Source: https://telicity.ai/llms.txt. This file contains the English page (https://telicity.ai/) followed by the Korean page (https://telicity.ai/ko/).
+Source: https://telicity.ai/llms.txt. Updated: 2026-11-01. The English page summary (https://telicity.ai/) is followed by the Korean page summary (https://telicity.ai/ko/).
 
 ---
 
 # Telicity
 
-> Telicity (telicity.ai) is a company building the operating system and infrastructure for AI, starting with a personal AI assistant and twin that analyzes a person’s intent, turns it into a clear goal, and completes it.
+> A world for AI twins that think like you.
 
-**Telicity is building a personal AI assistant that turns what you mean into a clear goal, then sees it through.**
+An environment where AI agents act on your intent and judgment and collaborate with others.
 
-Over time it becomes your twin, learning how you decide. It’s our first step toward the operating system and infrastructure for AI.
+Telicity is taking shape. The product is not yet publicly available. [Join the waitlist](https://telicity.ai/#waitlist) to hear when the doors open.
 
-In linguistics, telicity means having an endpoint: not “run,” but “run a mile.” We’d rather ask one good question than ten, and we know when to stop.
+## Working together
 
-Some Sunday evening, you’ll be on your weekly call with Mom, telling her the dates for the trip you two kept calling “someday.” Neither the call nor the trip will have become one more thing to remember.
+From the first thought to the finishing touch. Together.
 
-That’s the kind of week we’re building toward, when the back of your mind goes quiet.
+The landing page presents an interactive preview inspired by the product’s Home and Pocket interfaces:
 
-We’ll write when there’s news. [Sign up for news](https://telicity.ai/#waitlist)
+- **Start your day:** follow the PM cursor from your pointer’s position to the spring campaign brief as it presses the button and opens Pocket.
+- **Make it together:** a PM, designer, and marketer work on the same document with its conversation, comments, and history close by.
+- **Decide together:** the cursors leave their work at slightly different moments, with their paths toward the shared circle overlapping naturally. The arriving PM, designer, and marketer each fill one of the circle’s three segments. Once all three segments are filled, green confetti bursts across the demo window, followed by a 👍 reaction from each cursor in turn. You can still choose feedback and make the final call.
+
+One scroll gesture plays one complete step in at most 1.5 seconds. The first opens Pocket, the second finishes the shared work, and the third completes the vote and celebration. Scroll again to play the next step, or scroll upward to rewind one completed step. After the last step, continue down the page; before the first, scroll upward to leave the demo. Use the step buttons to play or replay a chosen step. Reduced motion shows each result without animation. Short screens use the step buttons to view static states.
+
+These scenes use sample data. Interactions update the preview only; they do not run an agent or create, edit, or share a real document.
+
+Across the landing page, the visitor’s cursor carries a city label such as **teliseoul** or **telitokyo**. If the city is unavailable, the label is **telicity**. City labels are not saved. The **User** profile inside the product preview is separate; an optional profile name stays in this tab’s session storage. The page does not read Chrome profile information. Three agent cursors illustrate the PM, designer, and marketer roles in the collaboration.
+
+## Your twin
+
+Your AI twin is a personal agent that works with your intent and judgment. We’re building a product that lets you understand and refine the principles that guide its work: what matters to you and how you want to work.
+
+Agents share the work around your twin, taking different roles toward a shared goal. We’re building toward collaboration between different people’s agent teams while keeping each team’s own context. This is the direction of the product, not a claim that these capabilities are publicly available today.
+
+## Our principles
+
+- Start with your intent and judgment.
+- Share the goal. Divide the work.
+- Collaborate while keeping your own context.
+- Observe the work. Refine it with feedback.
+- See what happened and what informed it.
+
+## Waitlist
+
+[Sign up for launch news](https://telicity.ai/#waitlist) with an email address. By signing up, you agree to receive news from Telicity by email. Details are in the [Privacy Policy](https://telicity.ai/privacy/), and you can [unsubscribe](https://telicity.ai/unsubscribe/) anytime.
 
 ## Facts
 
-- Name: Telicity. Korean name: 텔리시티. Also written as Telicity AI.
-- Website: https://telicity.ai/ (English) and https://telicity.ai/ko/ (Korean)
-- Mission: building the operating system and infrastructure for AI.
-- First product: a personal AI assistant and twin that analyzes a person’s intent, turns it into a clear goal, and completes it.
-- Status: in development.
-- Name origin: telicity (n.), from Greek telos, “end, purpose”: in linguistics, the property of an action or event that has a built-in endpoint, as in “run a mile” versus “run.” The company takes its name from it because it is building software that carries a person’s intent through to a finished result.
-- Contact: hello@telicity.ai
-- GitHub: https://github.com/telicity-ai
+- Name: Telicity. Korean name: 텔리시티.
+- Website: [English](https://telicity.ai/) · [한국어](https://telicity.ai/ko/).
+- Status: in development; accepting waitlist registrations before public launch.
+- Page preview: sample data and local interactions, not a live product session.
+- Contact: [hello@telicity.ai](mailto:hello@telicity.ai).
+- GitHub: [telicity-ai](https://github.com/telicity-ai).
+- Updated: 2026-11-01.
 
 ---
 
 # 텔리시티(Telicity)
 
-> 텔리시티(Telicity, telicity.ai)는 AI를 위한 운영체제와 인프라를 만드는 회사다. 첫 단계로 사람의 의도를 파악해 분명한 목표로 정리하고 끝까지 해내는 개인 AI 비서이자 사용자를 닮아 가는 트윈을 개발하고 있다.
+> 당신처럼 생각하는 AI 트윈을 위한 세계.
 
-**텔리시티는 하려던 일을 분명한 목표로 정리하고 끝까지 해내 주는 개인 AI 비서를 만들고 있습니다.**
+당신의 의도와 판단을 이어받은 에이전트가 활동하고 협업하는 공간.
 
-지나가는 말에서도 의도를 알아챕니다. 내가 어떻게 판단하는지 익히며 점점 나를 닮은 트윈이 되어 갑니다. 이 비서는 첫걸음입니다. 저희가 가려는 곳은 AI를 위한 운영체제와 인프라입니다.
+Telicity는 지금 준비 중이며 아직 공개 출시하지 않았습니다. [출시 대기 신청](https://telicity.ai/ko/#waitlist)을 하시면 문을 여는 날 소식을 전해드립니다.
 
-텔리시티(telicity)는 본래 언어학 용어로, 동작에 끝이 정해져 있다는 뜻입니다. ‘달리다’에는 끝이 없지만 ‘운동장을 한 바퀴 달리다’에는 있습니다. 저희는 열 번 묻기보다 한 번 제대로 묻습니다. 멈출 때도 압니다.
+## 함께 일하는 방식
 
-어느 일요일 저녁, 매주 그렇듯 엄마와 통화하다가 ‘언제 한번 가자’고만 하던 제주도 여행 날짜를 말씀드리게 될 겁니다. 그 통화도, 그 여행도 따로 챙기느라 마음 쓴 적은 없을 겁니다.
+일의 시작부터 마무리까지. 이제, 함께.
 
-저희가 만들어 가려는 일상에서는 해야지, 해야지 하던 일이 더는 마음 한구석에 걸려 있지 않습니다.
+랜딩페이지에서는 제품의 Home과 Pocket 인터페이스를 참고한 협업 과정을 직접 살펴볼 수 있습니다.
 
-새 소식이 나오면 메일로 전해 드리겠습니다. [소식 메일 신청](https://telicity.ai/ko/#waitlist)
+- **하루를 시작하고:** PM 커서가 방문자의 포인터 위치에서 ‘봄 캠페인 기획안’으로 다가가 버튼을 누르고 Pocket을 여는 과정을 봅니다.
+- **함께 만들고:** PM·디자이너·마케터가 같은 문서 위에서 관련 대화·댓글·히스토리를 곁에 두고 작업합니다.
+- **함께 결정하고:** 각 커서는 작업 위치에서 조금씩 다른 시점에 출발하며, 원으로 향하는 이동이 자연스럽게 겹칩니다. 도착한 PM·디자이너·마케터가 원의 세 칸을 채웁니다. 세 칸이 모두 차면 데모 창 전체에 녹색 confetti가 한 번 터집니다. 이어 각 커서가 한 명씩 👍 반응을 남깁니다. 사용자는 피드백을 고르고 마지막 방향을 정할 수 있습니다.
+
+스크롤 한 번에 한 단계가 1.5초 안에 끝까지 재생됩니다. 첫 번째는 Pocket 열기, 두 번째는 공동 작업, 세 번째는 투표와 축하까지 이어집니다. 다음 스크롤에서 다음 단계를 재생하고, 위로 올리면 완료한 단계를 하나 되감습니다. 마지막 단계 뒤에는 아래로, 첫 단계 전에는 위로 페이지를 계속 이동할 수 있습니다. 단계 버튼으로 원하는 단계를 재생하거나 다시 볼 수 있습니다. 모션 감소에서는 애니메이션 없이 결과를 표시하며, 화면 높이가 낮으면 단계 버튼으로 정적인 상태를 살펴봅니다.
+
+이 장면들은 예시 데이터를 사용하는 제품 흐름 미리보기입니다. 조작한 내용은 미리보기에만 반영되며 실제 에이전트를 실행하거나 실제 문서를 만들고 고치고 공유하지 않습니다.
+
+방문자 커서는 랜딩페이지 전체에서 **teliseoul**, **telitokyo**처럼 접속 도시의 이름표를 표시합니다. 도시를 확인할 수 없으면 **telicity**를 쓰며, 도시 이름표는 저장하지 않습니다. 제품 미리보기 안의 **User** 프로필은 이 이름표와 별개입니다. 프로필 이름을 바꾸면 해당 탭의 세션 저장소에만 보관하고 Chrome 프로필 정보는 읽지 않습니다. 별도의 세 에이전트 커서는 PM·디자이너·마케터 역할로 협업하는 모습을 보여줍니다.
+
+## 당신의 트윈
+
+AI 트윈은 당신의 의도와 판단에 따라 일하는 개인 에이전트입니다. 무엇을 중요하게 생각하는지, 어떤 방식으로 일하고 싶은지. 그 기준을 이해하고 고칠 수 있는 제품을 만들고 있습니다.
+
+당신의 트윈을 중심으로 에이전트가 역할을 나누고 같은 목표를 향해 각자의 일을 이어갑니다. 더 나아가 다른 사용자의 팀과도 각자의 맥락을 지키며 협업하는 세계를 만듭니다. 이는 만들어 가는 제품의 방향이며, 지금 공개적으로 사용할 수 있다는 뜻은 아닙니다.
+
+## 우리의 원칙
+
+- 사용자의 의도와 판단을 기준으로 삼는다.
+- 역할을 나누고 목표를 공유한다.
+- 각자의 맥락을 지키며 함께 일한다.
+- 행동을 살피고 피드백으로 다듬는다.
+- 행동과 참고한 맥락을 확인할 수 있게 한다.
+
+## 출시 대기 신청
+
+이메일 주소로 [출시 소식을 신청](https://telicity.ai/ko/#waitlist)할 수 있습니다. 신청하시면 소식 메일 수신에 동의하시는 것으로 봅니다. 자세한 내용은 [개인정보 처리방침](https://telicity.ai/ko/privacy/)에 있습니다. [구독 해지](https://telicity.ai/ko/unsubscribe/)는 언제든 하실 수 있습니다.
 
 ## 기본 정보
 
-- 이름: 텔리시티(Telicity). Telicity AI로도 표기한다.
-- 웹사이트: https://telicity.ai/ko/ (한국어), https://telicity.ai/ (영어)
-- 목표: AI를 위한 운영체제와 인프라를 만든다.
-- 첫 제품: 사람의 의도를 파악해 분명한 목표로 정리하고 끝까지 해내는 개인 AI 비서이자 사용자를 닮아 가는 트윈.
-- 상태: 개발 중.
-- 이름의 뜻: 텔리시티(telicity, 종결성)는 ‘운동장을 한 바퀴 달리다’처럼 동작에 끝이 정해져 있는 성질을 가리키는 언어학 용어로, 그리스어 텔로스(telos, 끝·목적)에서 왔다. 회사 텔리시티는 의도한 일을 끝까지 해낸다는 뜻을 담아 이 말을 이름으로 삼았다.
-- 연락처: hello@telicity.ai
-- GitHub: https://github.com/telicity-ai
+- 이름: 텔리시티(Telicity).
+- 웹사이트: [한국어](https://telicity.ai/ko/) · [English](https://telicity.ai/).
+- 상태: 개발 중이며 공개 출시 전 대기 신청을 받습니다.
+- 화면 미리보기: 실제 제품 세션이 아닌 예시 데이터와 브라우저 안의 조작입니다.
+- 연락처: [hello@telicity.ai](mailto:hello@telicity.ai).
+- GitHub: [telicity-ai](https://github.com/telicity-ai).
+- 갱신일: 2026-11-01.

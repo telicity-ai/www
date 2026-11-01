@@ -23,6 +23,7 @@ import re
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parent.parent
 LEGAL = ROOT / "legal"
@@ -47,9 +48,19 @@ META = {
 }
 
 def mark_svg():
-    """The logo, read from index.html so it stays one drawing."""
-    s = (ROOT / "index.html").read_text(encoding="utf-8")
-    return re.search(r'<svg viewBox="0 0 32.7 21.7".*?</svg>', s, re.S).group(0)
+    """Keep the policy masthead independent of the landing page's branding."""
+    svg = ElementTree.fromstring((ROOT / "assets" / "mark.svg").read_text(encoding="utf-8"))
+    ns = "{http://www.w3.org/2000/svg}"
+    path, eye = svg.find(ns + "path"), svg.find(ns + "circle")
+    # Preserve the existing inline markup (including its animation hooks) so
+    # regenerating a policy does not change its presentation or checked output.
+    return (
+        f'<svg viewBox="{svg.get("viewBox")}" fill="none" stroke="currentColor" '
+        'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        f'<path class="ink" pathLength="1" d="{path.get("d")}"/>'
+        f'<circle class="eye dab" cx="{eye.get("cx")}" cy="{eye.get("cy")}" '
+        f'r="{eye.get("r")}" fill="currentColor" stroke="none"/></svg>'
+    )
 
 
 # ---------- Markdown, the small subset the policies use ----------
