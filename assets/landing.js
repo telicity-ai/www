@@ -53,7 +53,6 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   let paintedScene = null;
   let paintedPinned = false;
   let geometry = null;
-  let intendedBoundary = 0;
   let internalPosition = null;
   let bypassTour = false;
   let currentName = 'User';
@@ -65,7 +64,6 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     onState(state) {
       track.dataset.playback = state.busy ? 'playing' : 'idle';
       track.dataset.completed = String(state.completed);
-      if (!state.busy) intendedBoundary = state.completed;
     },
   });
 
@@ -94,7 +92,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   function showStaticStage(scene) {
     const step = Math.max(0, Math.min(2, Number(scene)));
     releaseCapture();
-    alignBoundary(step + 1);
+    alignTour();
     player.show(step, previewProgress(step), step + 1);
   }
 
@@ -171,20 +169,21 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     return Boolean(geometry && window.scrollY >= geometry.start - 4 && window.scrollY <= geometry.end + 4);
   }
 
-  function alignBoundary(completed, capture = false) {
+  function alignTour(capture = false) {
     if (!geometry) return;
-    intendedBoundary = completed;
-    internalPosition = Math.max(0, geometry.start + completed * geometry.travel / 3);
+    const owned = entryGuard.getState();
+    const position = owned.captured ? owned.position : window.scrollY;
+    internalPosition = Math.max(0, Math.min(geometry.end, Math.max(geometry.start, position)));
     if (capture) entryGuard.capture(internalPosition);
     else entryGuard.update(internalPosition);
     track.dataset.captured = String(entryGuard.getState().captured);
-    // The workspace is already pinned, so this only advances the short page
-    // track. Its animation is played by time and is independent of wheel speed.
+    // Every step owns the same page position. Moving the document between
+    // steps would shift the section heading and its green background edge.
     window.scrollTo({ top: internalPosition, behavior: 'instant' });
   }
 
   function runStep(step, reverse = false) {
-    alignBoundary(reverse ? step : step + 1, true);
+    alignTour(true);
     player.play(step, { reverse, instant: reducedMotion.matches });
   }
 
@@ -238,7 +237,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     track.classList.add('is-enhanced');
     const start = track.getBoundingClientRect().top + window.scrollY - pinTop;
     geometry = { start, end: start + travel, travel };
-    if (wasPinned) alignBoundary(intendedBoundary);
+    if (wasPinned) alignTour();
     const state = player.getState();
     paint(state.progress, state.step);
   }
@@ -288,7 +287,12 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     const entersBelow = direction < 0 && position > geometry.end + 4 && position - distance <= geometry.end + 4;
     if (!captured && !isPinned() && !entersAbove && !entersBelow) return false;
     const fresh = isFresh();
-    if (!fresh || player.getState().busy) return true;
+    const state = player.getState();
+    // After releasing an end of the tour, the rest of that gesture belongs
+    // to the page even while it is still inside the short sticky track.
+    const leaving = direction > 0 ? state.completed === 3 : state.completed === 0;
+    if (!captured && !state.busy && leaving && !entersAbove && !entersBelow) return false;
+    if (!fresh || state.busy) return true;
     if (!captured && entersAbove) player.reset();
     if (!captured && entersBelow) player.show(2, 1, 3);
     const { completed } = player.getState();
