@@ -12,7 +12,9 @@
 - 신청: `assets/site.js`와 기존 `api/waitlist.mjs`·Upstash 저장 흐름을 유지합니다. 동의 문구 판은 `2026-10-15`이며 개인정보 처리방침과 구독 해지 경로도 같습니다. 서버 없이 연 미리보기는 신청 저장을 처리하지 못합니다.
 - 검색용 문서: `index.md`, `ko/index.md`, `llms.txt`, `llms-full.txt`에 현재 소개와 예시 범위를 함께 적습니다. `site.webmanifest`는 새 브랜드 아이콘을 참조합니다.
 
-- 링크 미리보기: 영어·한국어 페이지의 Open Graph와 Twitter 메타데이터는 공통 `og-telicity.png`를 사용합니다. 1200×630의 불투명 PNG에 승인된 로고를 배치했으며, 중앙 정사각형으로 잘려도 로고 전체가 보입니다. macOS에서 `swift tools/brand/share-card.swift`로 다시 생성합니다. 이미지를 바꿀 때는 두 페이지의 이미지 URL 버전도 갱신합니다.
+- 링크 미리보기: 영어·한국어 페이지의 Open Graph와 Twitter 메타데이터는 공통 `og-telicity.png`를 사용합니다. 공유 카드의 제목·설명·이미지 대체 문구는 페이지 언어에 맞추고, Open Graph에는 반대 언어 locale도 지정합니다. 1200×630의 불투명 PNG에 승인된 로고를 배치했으며, 중앙 정사각형으로 잘려도 로고 전체가 보입니다. macOS에서 `swift tools/brand/share-card.swift`로 다시 생성합니다. 이미지를 바꿀 때는 두 페이지의 이미지 URL 버전도 갱신합니다.
+
+- 파비콘: `icon.svg`는 승인된 C1 심볼을 라이트 모드의 petrol(`#193E45`)과 다크 모드의 paper(`#F5F4EE`)로 표시합니다. 한·영 페이지는 `prefers-color-scheme`별 정적 SVG도 지정하며, ICO(16/32/48px)·32px PNG fallback을 제공합니다. Apple 180px·manifest 192/512px 홈 화면 아이콘은 paper 배경과 petrol 심볼로 가독성을 유지합니다. `swift tools/brand/icons.swift`로 생성하며, 변경 시 아이콘 URL의 버전도 갱신합니다. 기존 밝은 공유 이미지는 테마와 관계없이 동일하게 사용합니다.
 
 ### 로컬에서 보기
 
@@ -56,6 +58,7 @@ node --test tools/tests/tour-player.test.mjs
 node --test tools/tests/tour-entry.test.mjs
 node --test tools/tests/tour-touch.test.mjs
 node --test tools/tests/share-card.test.mjs
+node --test tools/tests/icon-assets.test.mjs
 python3 tools/legal.py --check
 ```
 
