@@ -2,6 +2,7 @@ import { createCollaboration, collaborationFrame, previewProgress, scrollTravel 
 import { createStepPlayer, createGestureGate } from './tour-player.js?v=20261101-fast-motion-2';
 import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
 import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
+import { createScrollSettler } from './scroll-settle.js?v=20261101-context-scene';
 
 /* Scroll changes one anchored workspace. Each agent action settles and stops. */
 (() => {
@@ -78,7 +79,7 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
     track.dataset.progress = progress.toFixed(4);
     track.dataset.step = String(step);
     paintedPinned = isPinned();
-    collaboration.render(frame, { reducedMotion: reducedMotion.matches, scrollDriven: paintedPinned && player.getState().busy, staticPreview: !geometry });
+    collaboration.render(frame, { reducedMotion: reducedMotion.matches, scrollDriven: (paintedPinned || entrySettler.getState().busy) && player.getState().busy, staticPreview: !geometry });
   }
 
   function presentManualStage(scene) {
@@ -151,15 +152,25 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
       window.scrollTo({ top: position, behavior: 'instant' });
     },
   });
+  const entrySettler = createScrollSettler({
+    onFrame(position) {
+      internalPosition = position;
+      entryGuard.update(position);
+      window.scrollTo({ top: position, behavior: 'instant' });
+    },
+    onFinish() { track.dataset.entry = 'held'; },
+  });
   let scrollFrame = 0;
   let layoutFrame = 0;
   let touch = null;
 
   function releaseCapture() {
+    entrySettler.cancel();
     touchEntry.cancel();
     entryGuard.release();
     internalPosition = null;
     track.dataset.captured = 'false';
+    track.dataset.entry = 'free';
   }
 
   function cancelPlayback() {
@@ -172,22 +183,31 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
     return Boolean(geometry && window.scrollY >= geometry.start - 4 && window.scrollY <= geometry.end + 4);
   }
 
-  function alignTour(capture = false) {
+  function alignTour(capture = false, settle = false) {
     if (!geometry) return;
+    entrySettler.cancel();
     const owned = entryGuard.getState();
     const position = owned.captured ? owned.position : window.scrollY;
-    internalPosition = Math.max(0, Math.min(geometry.end, Math.max(geometry.start, position)));
+    internalPosition = settle ? geometry.start : Math.max(0, Math.min(geometry.end, Math.max(geometry.start, position)));
+    if (settle && !reducedMotion.matches && Math.abs(window.scrollY - internalPosition) > 1) {
+      entryGuard.capture(Math.max(0, window.scrollY));
+      track.dataset.captured = 'true';
+      track.dataset.entry = 'settling';
+      entrySettler.start(Math.max(0, window.scrollY), internalPosition);
+      return;
+    }
     if (capture) entryGuard.capture(internalPosition);
     else entryGuard.update(internalPosition);
     track.dataset.captured = String(entryGuard.getState().captured);
+    track.dataset.entry = entryGuard.getState().captured ? 'held' : 'free';
     // Every step owns the same page position. Moving the document between
     // steps would shift the section heading and its green background edge.
     window.scrollTo({ top: internalPosition, behavior: 'instant' });
   }
 
-  function runStep(step, reverse = false) {
+  function runStep(step, reverse = false, settle = false) {
     touchEntry.cancel();
-    alignTour(true);
+    alignTour(true, settle);
     player.play(step, { reverse, instant: reducedMotion.matches });
   }
 
@@ -221,6 +241,7 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
   function configureScroll() {
     layoutFrame = 0;
     const wasPinned = isPinned() || entryGuard.getState().captured;
+    const previousGeometry = geometry;
     reserveCaptionHeight();
     if (reducedMotion.matches || compactScreen.matches) {
       useStaticLayout();
@@ -241,7 +262,8 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
     track.classList.add('is-enhanced');
     const start = track.getBoundingClientRect().top + window.scrollY - pinTop;
     geometry = { start, end: start + travel, travel };
-    if (wasPinned) alignTour();
+    const unchanged = previousGeometry && Math.abs(previousGeometry.start - start) < 1 && previousGeometry.travel === travel;
+    if (wasPinned && !(entrySettler.getState().busy && unchanged)) alignTour();
     const state = player.getState();
     paint(state.progress, state.step);
   }
@@ -265,10 +287,10 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
       if (touch) touch.used = true;
       if (entryDirection > 0) {
         player.reset();
-        runStep(0);
+        runStep(0, false, true);
       } else {
-        player.show(2, 1, 3);
-        runStep(2, true);
+        releaseCapture();
+        cancelPlayback();
       }
       return;
     }
@@ -300,27 +322,26 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
 
   function routeIntent(direction, distance, isFresh, target) {
     if (!geometry || bypassTour || editable(target) || scrollablePanel(target)) return false;
+    // Only a downward entry owns a scene. Returning up the page is immediate.
+    if (direction < 0) {
+      releaseCapture();
+      if (player.getState().busy) cancelPlayback();
+      return false;
+    }
     const position = window.scrollY;
     const captured = entryGuard.getState().captured;
     const entersAbove = direction > 0 && position < geometry.start - 4 && position + distance >= geometry.start - 4;
-    const entersBelow = direction < 0 && position > geometry.end + 4 && position - distance <= geometry.end + 4;
-    if (!captured && !isPinned() && !entersAbove && !entersBelow) return false;
+    if (!captured && !isPinned() && !entersAbove) return false;
     const fresh = isFresh();
     const state = player.getState();
     // After releasing an end of the tour, the rest of that gesture belongs
     // to the page even while it is still inside the short sticky track.
-    const leaving = direction > 0 ? state.completed === 3 : state.completed === 0;
-    if (!captured && !state.busy && leaving && !entersAbove && !entersBelow) return false;
+    if (!captured && !state.busy && state.completed === 3 && !entersAbove) return false;
     if (!fresh || state.busy) return true;
     if (!captured && entersAbove) player.reset();
-    if (!captured && entersBelow) player.show(2, 1, 3);
     const { completed } = player.getState();
     if (direction > 0 && completed < 3) {
-      runStep(completed);
-      return true;
-    }
-    if (direction < 0 && completed > 0) {
-      runStep(completed - 1, true);
+      runStep(completed, false, !captured && entersAbove);
       return true;
     }
     // At either end a new gesture belongs to the page again.
@@ -346,11 +367,8 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
       if (window.scrollY < geometry.start) {
         releaseCapture();
         player.reset();
-      } else if (window.scrollY > geometry.end) {
-        releaseCapture();
-        player.show(2, 1, 3);
       }
-      touchEntry.begin(window.scrollY, geometry);
+      if (window.scrollY < geometry.start) touchEntry.begin(window.scrollY, geometry);
     }
     touch = event.touches.length === 1 ? {
       x: event.touches[0].clientX,
@@ -365,6 +383,12 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
     if (!touch || event.touches.length !== 1 || !touch.capture) return;
     const point = event.touches[0];
     const vertical = touch.y - point.clientY;
+    if (vertical < 0) {
+      releaseCapture();
+      if (player.getState().busy) cancelPlayback();
+      touch.capture = false;
+      return;
+    }
     const horizontal = touch.x - point.clientX;
     const distance = Math.abs(touch.lastY - point.clientY);
     touch.lastY = point.clientY;

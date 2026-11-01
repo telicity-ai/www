@@ -10,25 +10,48 @@ const center = frame => ({ x: frame.x + frame.size / 2, y: frame.y + frame.size 
 
 test('the symbol grows at the viewport center and holds before moving', () => {
   const first = brandIntroFrame(0, options);
-  const grown = brandIntroFrame(250, options);
-  assert.equal(first.size, 19.200000000000003);
-  assert.equal(grown.size, 96);
+  const grown = brandIntroFrame(800, options);
+  assert.equal(first.size, 28.799999999999997);
+  assert.equal(grown.size, 192);
   assert.deepEqual(center(first), { x: 640, y: 360 });
   assert.deepEqual(center(grown), { x: 640, y: 360 });
-  assert.deepEqual(center(brandIntroFrame(439, options)), { x: 640, y: 360 });
+  assert.deepEqual(center(brandIntroFrame(1099, options)), { x: 640, y: 360 });
   assert.equal(first.pageOpacity, 0);
   assert.equal(first.backgroundOpacity, 1);
 });
 
+test('the opening point becomes the larger mark before the recognition hold', () => {
+  const point = brandIntroFrame(0, options);
+  assert.equal(point.phase, 'dot');
+  assert.equal(point.dotOpacity, 1);
+  assert.equal(point.markOpacity, 0);
+  assert.equal(brandIntroFrame(350, options).phase, 'emerging');
+  const middle = brandIntroFrame(530, options);
+  assert.ok(middle.dotOpacity > 0 && middle.dotOpacity < 1);
+  assert.ok(middle.markOpacity > 0 && middle.markOpacity < 1);
+  const ready = brandIntroFrame(800, options);
+  assert.equal(ready.phase, 'holding');
+  assert.equal(ready.dotOpacity, 0);
+  assert.equal(ready.markOpacity, 1);
+  assert.equal(ready.size, 192);
+  assert.deepEqual(center(ready), { x: 640, y: 360 });
+  assert.deepEqual(center(brandIntroFrame(1100, options)), center(ready));
+  for (let time = 0; time <= 2300; time += 10) {
+    const frame = brandIntroFrame(time, options);
+    assert.ok(frame.dotOpacity >= 0 && frame.dotOpacity <= 1);
+    assert.ok(frame.markOpacity >= 0 && frame.markOpacity <= 1);
+  }
+});
+
 test('the handoff converges on the actual hero mark without overshoot', () => {
-  for (let time = 440; time <= 1120; time++) {
+  for (let time = 1100; time <= 2200; time++) {
     const frame = brandIntroFrame(time, options);
     const point = center(frame);
     assert.equal(point.x, 640);
     assert.ok(point.y >= 183 && point.y <= 360);
-    assert.ok(frame.size >= 54 && frame.size <= 96);
+    assert.ok(frame.size >= 54 && frame.size <= 192);
   }
-  const settled = brandIntroFrame(1120, options);
+  const settled = brandIntroFrame(2200, options);
   assert.deepEqual(center(settled), { x: 640, y: 183 });
   assert.equal(settled.size, 54);
   assert.equal(settled.x, 613);
@@ -39,44 +62,44 @@ test('the handoff converges on the actual hero mark without overshoot', () => {
 test('the page appears as the paper cover clears, before the handoff ends', () => {
   let previousPage = 0;
   let previousCover = 1;
-  for (let time = 0; time <= 1280; time += 10) {
+  for (let time = 0; time <= 2300; time += 10) {
     const frame = brandIntroFrame(time, options);
     assert.ok(frame.pageOpacity >= previousPage && frame.pageOpacity <= 1);
     assert.ok(frame.backgroundOpacity <= previousCover && frame.backgroundOpacity >= 0);
     previousPage = frame.pageOpacity;
     previousCover = frame.backgroundOpacity;
   }
-  assert.ok(brandIntroFrame(700, options).pageOpacity > 0);
-  assert.ok(brandIntroFrame(700, options).backgroundOpacity < 1);
-  assert.equal(brandIntroFrame(960, options).pageOpacity, 1);
-  assert.equal(brandIntroFrame(960, options).backgroundOpacity, 0);
+  assert.ok(brandIntroFrame(1600, options).pageOpacity > 0);
+  assert.ok(brandIntroFrame(1600, options).backgroundOpacity < 1);
+  assert.equal(brandIntroFrame(2050, options).pageOpacity, 1);
+  assert.equal(brandIntroFrame(2050, options).backgroundOpacity, 0);
 });
 
-test('late frames finish at exactly the hero geometry within 1.28 seconds', () => {
-  const end = brandIntroFrame(1280, options);
+test('late frames finish at exactly the hero geometry within 2.3 seconds', () => {
+  const end = brandIntroFrame(2300, options);
   assert.equal(end.done, true);
   assert.equal(end.x, 613);
   assert.equal(end.y, 156);
-  assert.equal(end.scale, 54 / 96);
-  assert.equal(brandIntroFrame(1279, options).done, false);
+  assert.equal(end.scale, 54 / 192);
+  assert.equal(brandIntroFrame(2299, options).done, false);
   assert.deepEqual(brandIntroFrame(5000, options), end);
 });
 
 test('mobile and off-center hero marks use measured coordinates rather than fixed offsets', () => {
   const mobile = { viewport: { width: 375, height: 812 }, target: { left: 166.5, top: 122, width: 42, height: 42 } };
   assert.deepEqual(center(brandIntroFrame(0, mobile)), { x: 187.5, y: 406 });
-  const end = brandIntroFrame(1280, mobile);
+  const end = brandIntroFrame(2300, mobile);
   assert.deepEqual(center(end), { x: 187.5, y: 143 });
-  const shifted = brandIntroFrame(1280, { ...options, target: { left: 45, top: 116, width: 64, height: 64 } });
+  const shifted = brandIntroFrame(2300, { ...options, target: { left: 45, top: 116, width: 64, height: 64 } });
   assert.deepEqual(center(shifted), { x: 77, y: 148 });
 });
 
 test('the same time reconstructs the same pose after jumps and reverse sampling', () => {
-  const times = [0, 120, 250, 440, 620, 900, 1120, 1280];
+  const times = [0, 180, 350, 600, 800, 1100, 1600, 2200, 2300];
   const forward = times.map(time => brandIntroFrame(time, options));
   assert.deepEqual([...times].reverse().map(time => brandIntroFrame(time, options)).reverse(), forward);
   brandIntroFrame(900, options);
-  assert.deepEqual(brandIntroFrame(1280, options), forward.at(-1));
+  assert.deepEqual(brandIntroFrame(2300, options), forward.at(-1));
 });
 
 test('reduced motion gives the completed page immediately', () => {
@@ -168,7 +191,7 @@ test('a first input cancels the cover immediately and removes pending work', () 
   for (const input of ['wheel', 'touchstart', 'keydown', 'pointerdown', 'resize']) {
     const env = environment();
     initBrandIntro(env.doc, env.win);
-    env.advance(700);
+    env.advance(1600);
     assert.equal(env.classes.has('intro-revealing'), true);
     assert.ok(Number(env.root.style.values.get('--intro-page-opacity')) > 0);
     env.win.dispatch(input);
@@ -194,9 +217,9 @@ test('completion and the independent bootstrap fallback clean up every hidden st
   for (const removeBootstrap of [false, true]) {
     const env = environment();
     const controller = initBrandIntro(env.doc, env.win);
-    env.advance(700);
+    env.advance(1600);
     if (removeBootstrap) env.classes.delete('intro-pending');
-    env.advance(580);
+    env.advance(700);
     assert.equal(env.classes.has('intro-pending'), false);
     assert.equal(env.classes.has('intro-revealing'), false);
     assert.equal(env.frames.size, 0);

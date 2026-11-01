@@ -7,7 +7,7 @@ const input = { base: { x: 90, y: 120 }, center: { x: 265, y: 286 }, rotation: -
 test('context unfolds from the twin and settles before the next section', () => {
   const beginning = contextPose({ ...input, progress: 0 });
   assert.equal(beginning.opacity, 0);
-  assert.equal(beginning.scale, 0.82);
+  assert.equal(beginning.scale, 0.18);
   assert.equal(beginning.x, 175);
   assert.equal(beginning.y, 166);
   for (let index = 0; index < 7; index++) {
@@ -19,7 +19,7 @@ test('context unfolds from the twin and settles before the next section', () => 
 });
 
 test('cards unfold at different points instead of appearing as one block', () => {
-  const poses = [0, 1, 2, 3, 4, 5, 6].map(index => contextPose({ ...input, progress: 0.20, index }));
+  const poses = [0, 1, 2, 3, 4, 5, 6].map(index => contextPose({ ...input, progress: 0.45, index }));
   assert.ok(poses[0].opacity > 0);
   assert.equal(poses.at(-1).opacity, 0);
   assert.ok(new Set(poses.map(pose => pose.x)).size >= 4);

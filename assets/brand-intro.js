@@ -1,5 +1,7 @@
-const INTRO_DURATION = 1280;
-const MARK_SIZE = 96;
+// Causal's captured reference settles at about 1.9s after the first frame.
+// Give the larger Telicity mark a short recognition hold before its handoff.
+const INTRO_DURATION = 2300;
+const MARK_SIZE = 192;
 const clamp = value => Math.max(0, Math.min(1, value));
 const phase = (value, start, end) => clamp((value - start) / (end - start));
 const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
@@ -13,9 +15,9 @@ export function brandIntroFrame(elapsed, { viewport, target, reducedMotion = fal
   const time = Number.isFinite(elapsed) ? Math.max(0, elapsed) : 0;
   const finished = reducedMotion || time >= INTRO_DURATION;
   const destination = { x: target.left + target.width / 2, y: target.top + target.height / 2 };
-  const handoff = finished ? 1 : easeInOut(phase(time, 440, 1120));
-  const emerging = easeOut(phase(time, 0, 250));
-  const grown = MARK_SIZE * (0.2 + 0.8 * emerging);
+  const handoff = finished ? 1 : easeInOut(phase(time, 1100, 2200));
+  const emerging = easeOut(phase(time, 350, 800));
+  const grown = MARK_SIZE * (0.15 + 0.85 * emerging);
   const targetSize = Math.min(target.width, target.height);
   const size = finished ? targetSize : grown + (targetSize - grown) * handoff;
   const centerX = viewport.width / 2 + (destination.x - viewport.width / 2) * handoff;
@@ -25,11 +27,14 @@ export function brandIntroFrame(elapsed, { viewport, target, reducedMotion = fal
     y: centerY - size / 2,
     size,
     scale: size / MARK_SIZE,
-    pageOpacity: finished ? 1 : smooth(phase(time, 440, 900)),
-    backgroundOpacity: finished ? 0 : 1 - smooth(phase(time, 440, 960)),
-    revealing: finished || time >= 440,
+    dotOpacity: finished ? 0 : 1 - smooth(phase(time, 350, 800)),
+    dotScale: 0.4 + 0.6 * easeOut(phase(time, 0, 350)) + 0.65 * smooth(phase(time, 350, 800)),
+    markOpacity: finished ? 1 : smooth(phase(time, 350, 680)),
+    pageOpacity: finished ? 1 : smooth(phase(time, 1100, 1980)),
+    backgroundOpacity: finished ? 0 : 1 - smooth(phase(time, 1100, 2050)),
+    revealing: finished || time >= 1100,
     done: finished,
-    phase: finished ? 'complete' : time < 250 ? 'emerging' : time < 440 ? 'holding' : time < 1120 ? 'moving' : 'settled',
+    phase: finished ? 'complete' : time < 350 ? 'dot' : time < 800 ? 'emerging' : time < 1100 ? 'holding' : time < 2200 ? 'moving' : 'settled',
   };
 }
 
@@ -78,7 +83,7 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
   listen(reduced, 'change', event => { if (event.matches) finish(); });
   listen(doc, 'visibilitychange', () => { if (doc.visibilityState === 'hidden') finish(); });
   // An asset that never becomes drawable must not leave a blank loading page.
-  safetyTimeout = win.setTimeout(finish, 1600);
+  safetyTimeout = win.setTimeout(finish, 3000);
 
   function start() {
     if (finished || !root.classList.contains('intro-pending')) { finish(); return; }
@@ -96,6 +101,9 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
       root.classList.toggle('intro-revealing', frame.revealing);
       root.style.setProperty('--intro-page-opacity', String(frame.pageOpacity));
       overlay.style.setProperty('--intro-background-opacity', String(frame.backgroundOpacity));
+      overlay.style.setProperty('--intro-dot-opacity', String(frame.dotOpacity));
+      overlay.style.setProperty('--intro-dot-scale', String(frame.dotScale));
+      mark.style.opacity = String(frame.markOpacity);
       mark.style.transform = `translate3d(${frame.x.toFixed(3)}px, ${frame.y.toFixed(3)}px, 0) scale(${frame.scale.toFixed(6)})`;
       frameId = win.requestAnimationFrame(paint);
     }
