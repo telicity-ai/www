@@ -175,6 +175,37 @@
   line-height: 1.55;
 }
 
+/* The canonical sentence reserves its final line breaks throughout editing. */
+.revision-line { position: relative; }
+.revision-line.is-editing > [data-revision] { opacity: 0; }
+.revision-edit {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.revision-line.is-editing > .revision-edit { visibility: visible; }
+.revision-edit .is-selected {
+  background: var(--color-sage);
+  box-shadow: 0 0 0 1px var(--color-sage);
+}
+.revision-caret {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  vertical-align: -.12em;
+}
+.revision-caret::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 1px;
+  height: 1.1em;
+  background: var(--color-petrol);
+}
+
 .document-copy.is-agent-editing {
   background: var(--color-mist);
   color: var(--color-petrol);
@@ -200,8 +231,8 @@
   border-radius: 50%;
   background: var(--color-panel);
   color: var(--color-petrol);
-  opacity: 0;
-  transform: translate(-50%, -50%);
+  opacity: var(--huddle-reveal, 0);
+  transform: translate(-50%, -50%) scale(var(--huddle-scale, .94));
 }
 
 .vote-progress {
@@ -237,7 +268,6 @@
   stroke-linejoin: round;
 }
 
-.huddle-space[data-active="true"] .huddle-anchor { opacity: 1; }
 .huddle-space[data-agreed="true"] .huddle-anchor {
   background: var(--color-mist);
 }
@@ -255,7 +285,8 @@
   min-height: 2lh;
   color: var(--color-muted);
   font: 400 9px/1.65 var(--font-body);
-  opacity: 0;
+  opacity: var(--huddle-summary-reveal, 0);
+  transform: translateY(var(--huddle-summary-offset, 3px));
 }
 
 .huddle-summary [data-vote-count] {
@@ -271,7 +302,6 @@
   overflow-wrap: anywhere;
 }
 
-.huddle-space[data-active="true"] .huddle-summary { opacity: 1; }
 .huddle-space[data-agreed="true"] .huddle-summary { color: var(--color-petrol); }
 
 /* Name tags fan outward as each teammate approaches their voting slot. */

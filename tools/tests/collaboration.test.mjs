@@ -24,6 +24,36 @@ test('working together precedes voting on the same proposal', () => {
   assert.ok(frames.filter(frame => frame.scene < 2).every(frame => frame.voteCount === 0));
 });
 
+test('the vote invitation prepares during editing and is ready before any cursor votes', () => {
+  let previous = 0;
+  let previousSummary = 0;
+  for (const frame of frames) {
+    assert.ok(frame.huddleReveal >= previous && frame.huddleReveal <= 1);
+    assert.ok(frame.huddleSummary >= previousSummary && frame.huddleSummary <= frame.huddleReveal);
+    if (frame.voteCount) {
+      assert.equal(frame.huddleReveal, 1);
+      assert.equal(frame.huddleSummary, 1);
+    }
+    previous = frame.huddleReveal;
+    previousSummary = frame.huddleSummary;
+  }
+  assert.equal(collaborationFrame(0.515).huddleReveal, 0);
+  assert.ok(frames.some(frame => frame.scene === 1 && frame.huddleReveal > 0 && frame.huddleReveal < 1));
+  assert.ok(frames.some(frame => frame.scene === 1 && frame.huddleSummary > 0 && frame.huddleSummary < 1));
+});
+
+test('the invitation has no jump when the next step starts or the timeline reverses', () => {
+  const before = collaborationFrame(0.569999);
+  const next = collaborationFrame(0.57);
+  assert.ok(1 - before.huddleReveal < 0.000001);
+  assert.ok(1 - before.huddleSummary < 0.000001);
+  assert.equal(next.huddleReveal, 1);
+  assert.equal(next.huddleSummary, 1);
+  const points = [0.515, 0.525, 0.54, 0.555, 0.57, 0.7];
+  const forward = points.map(value => collaborationFrame(value));
+  assert.deepEqual([...points].reverse().map(value => collaborationFrame(value)).reverse(), forward);
+});
+
 test('the three cursor votes arrive individually before unanimous agreement', () => {
   assert.deepEqual(distinct(frames.map(frame => frame.voteCount)), [0, 1, 2, 3]);
   assert.ok(frames.some(frame => frame.voteCount === 3 && !frame.agreed));
