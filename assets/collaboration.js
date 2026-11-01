@@ -1,4 +1,5 @@
 import { getPointerPosition } from './pointer-position.js';
+import { documentEditFrame } from './draft-edit.js?v=20261101-typing-vote';
 
 const clamp = value => Math.max(0, Math.min(1, value));
 const phase = (value, start, end) => clamp((value - start) / (end - start));
@@ -75,12 +76,14 @@ export function collaborationFrame(value) {
   const voteSignals = voteTimes.map(time => easeOut(phase(progress, time, time + 0.025)));
   const voteProgress = voteSignals.reduce((sum, signal) => sum + signal, 0) / agents.length;
   const reactions = reactionTimes.map(time => easeOut(phase(progress, time, time + 0.025)));
+  const huddleReveal = smooth(phase(progress, 0.515, 0.57));
+  const huddleSummary = smooth(phase(progress, 0.535, 0.57));
   let beat;
   if (scene === 0) beat = progress < 0.02 ? 'home' : progress < 0.21 ? 'approach' : 'click';
   else if (scene === 1) beat = progress < 0.37 ? 'open' : progress < 0.51 ? 'collaborate' : 'draft';
   else beat = reactions.some(Boolean) ? 'reactions' : progress > 0.80 && progress < 0.90 ? 'celebration' : agreed ? 'consensus' : voteCount ? `vote-${voteCount}` : 'proposal';
   return {
-    progress, scene, beat, votes, voteCount, agreed, voteSignals, voteProgress, celebration, reactions,
+    progress, scene, beat, votes, voteCount, agreed, voteSignals, voteProgress, celebration, reactions, huddleReveal, huddleSummary,
     pressed: progress >= 0.21 && progress < 0.25,
     click: progress >= 0.21 && progress < 0.25 ? phase(progress, 0.21, 0.25) : null,
   };
@@ -99,6 +102,19 @@ export function createCollaboration({ workspace, language }) {
   const huddle = workspace.querySelector('.huddle-space');
   const voteSlots = [...workspace.querySelectorAll('.vote-progress-fill')];
   const pieces = [...workspace.querySelectorAll('.confetti-piece')];
+  const revision = workspace.querySelector('[data-revision]');
+  const revisionLine = revision.parentElement;
+  const defaultRevision = documentEditFrame(1, ko ? 'ko' : 'en').text;
+  const editOverlay = document.createElement('span');
+  editOverlay.className = 'revision-edit';
+  editOverlay.setAttribute('aria-hidden', 'true');
+  const editLeading = document.createElement('span');
+  const editChanging = document.createElement('span');
+  const editCaret = document.createElement('span');
+  editCaret.className = 'revision-caret';
+  const editTrailing = document.createElement('span');
+  editOverlay.append(editLeading, editChanging, editCaret, editTrailing);
+  revisionLine.append(editOverlay);
   let homeOrigin = null;
   let homeClick = { x: 0.36, y: 0.48 };
 
@@ -107,7 +123,7 @@ export function createCollaboration({ workspace, language }) {
     if (element && element.textContent !== value) element.textContent = value;
   };
 
-  function render(frame, { reducedMotion = false, scrollDriven = false } = {}) {
+  function render(frame, { reducedMotion = false, scrollDriven = false, staticPreview = false } = {}) {
     const { progress: p, scene } = frame;
     const bounds = workspace.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
@@ -153,7 +169,7 @@ export function createCollaboration({ workspace, language }) {
     const compact = bounds.width < 560;
     const bases = [inDoc(0.41, 0.54), inDoc(0.17, 0.30), inDoc(0.80, 0.40)];
     const workEnds = [
-      textPoint('.agent-selection p', 0.65, 0.55, bases[0]),
+      textPoint('[data-revision]', 0.65, 0.55, bases[0]),
       textPoint('.reference-note > span', 0.50, 0.65, bases[1]),
       textPoint('.document-copy', compact ? 0.68 : 0.92, 0.78, bases[2]),
     ];
@@ -183,15 +199,35 @@ export function createCollaboration({ workspace, language }) {
     workspace.dataset.storyBeat = frame.beat;
     campaign.classList.toggle('is-agent-pressed', frame.pressed && !reducedMotion);
     campaign.classList.toggle('is-agent-hovered', scene === 0 && p >= 0.16);
-    const draftOpacity = scene === 1 ? phase(p, 0.385, 0.43) : 1;
+    const draftOpacity = scene === 1 ? phase(p, 0.27, 0.305) : 1;
     selection.style.opacity = String(reducedMotion ? 1 : draftOpacity);
     selection.setAttribute('aria-hidden', String(scene === 1 && draftOpacity === 0));
-    workspace.querySelector('.reference-note').classList.toggle('is-agent-reviewed', scene === 1 && p >= 0.425);
-    workspace.querySelector('.document-copy').classList.toggle('is-agent-editing', scene === 1 && p >= 0.44);
+    const edit = documentEditFrame(p, ko ? 'ko' : 'en');
+    // Keep the final copy in the document for layout, accessibility, and the
+    // cursor's target. Only its visual overlay changes while the draft is edited.
+    const editing = !reducedMotion && scene === 1 && p < 0.535 && revision.textContent === defaultRevision;
+    revisionLine.classList.toggle('is-editing', editing);
+    if (editing) {
+      if (editLeading.textContent !== edit.leading) editLeading.textContent = edit.leading;
+      if (editChanging.textContent !== edit.changing) editChanging.textContent = edit.changing;
+      if (editTrailing.textContent !== edit.trailing) editTrailing.textContent = edit.trailing;
+      editChanging.classList.toggle('is-selected', edit.selected);
+      editCaret.style.opacity = edit.caret ? '1' : '0';
+    }
+    workspace.querySelector('.reference-note').classList.toggle('is-agent-reviewed', scene > 0 && p >= 0.425);
+    workspace.querySelector('.document-copy').classList.toggle('is-agent-editing', scene > 0 && p >= 0.44);
 
     const effectiveVotes = reducedMotion && scene === 2 ? [true, true, true] : frame.votes;
     const effectiveAgreement = reducedMotion && scene === 2 ? true : frame.agreed;
-    huddle.dataset.active = String(scene === 2);
+    const prepared = staticPreview && scene > 0;
+    const reveal = prepared ? 1 : reducedMotion ? Number(scene === 2) : frame.huddleReveal;
+    const summaryReveal = prepared ? 1 : reducedMotion ? Number(scene === 2) : frame.huddleSummary;
+    huddle.dataset.active = String(reveal > 0);
+    huddle.style.setProperty('--huddle-reveal', String(reveal));
+    huddle.style.setProperty('--huddle-summary-reveal', String(summaryReveal));
+    huddle.style.setProperty('--huddle-scale', String(0.94 + reveal * 0.06));
+    huddle.style.setProperty('--huddle-summary-offset', `${(3 * (1 - summaryReveal)).toFixed(2)}px`);
+    huddle.querySelector('.huddle-summary').setAttribute('aria-hidden', String(summaryReveal === 0));
     huddle.dataset.agreed = String(effectiveAgreement);
     voteSlots.forEach((slot, index) => {
       slot.style.strokeDashoffset = String(1 - (reducedMotion && scene === 2 ? 1 : frame.voteSignals[index]));

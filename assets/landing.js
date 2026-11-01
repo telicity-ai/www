@@ -1,4 +1,4 @@
-import { createCollaboration, collaborationFrame, previewProgress, scrollTravel } from './collaboration.js?v=20261101-fast-motion-2';
+import { createCollaboration, collaborationFrame, previewProgress, scrollTravel } from './collaboration.js?v=20261101-typing-vote';
 import { createStepPlayer, createGestureGate } from './tour-player.js?v=20261101-fast-motion-2';
 import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
 import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
@@ -78,7 +78,7 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
     track.dataset.progress = progress.toFixed(4);
     track.dataset.step = String(step);
     paintedPinned = isPinned();
-    collaboration.render(frame, { reducedMotion: reducedMotion.matches, scrollDriven: paintedPinned && player.getState().busy });
+    collaboration.render(frame, { reducedMotion: reducedMotion.matches, scrollDriven: paintedPinned && player.getState().busy, staticPreview: !geometry });
   }
 
   function presentManualStage(scene) {
