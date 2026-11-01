@@ -1,6 +1,7 @@
 import { createCollaboration, collaborationFrame, previewProgress, scrollTravel } from './collaboration.js?v=20261101-fast-motion-2';
 import { createStepPlayer, createGestureGate } from './tour-player.js?v=20261101-fast-motion-2';
 import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
+import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
 
 /* Scroll changes one anchored workspace. Each agent action settles and stops. */
 (() => {
@@ -143,6 +144,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   const caption = $('.tour-caption', track);
   const compactScreen = matchMedia('(max-height: 680px) and (max-width: 560px)');
   const wheelGate = createGestureGate(220);
+  const touchEntry = createTouchEntry();
   const entryGuard = createTourEntryGuard({
     onAlign(position) {
       internalPosition = position;
@@ -154,6 +156,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   let touch = null;
 
   function releaseCapture() {
+    touchEntry.cancel();
     entryGuard.release();
     internalPosition = null;
     track.dataset.captured = 'false';
@@ -183,6 +186,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   }
 
   function runStep(step, reverse = false) {
+    touchEntry.cancel();
     alignTour(true);
     player.play(step, { reverse, instant: reducedMotion.matches });
   }
@@ -217,11 +221,11 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   function configureScroll() {
     layoutFrame = 0;
     const wasPinned = isPinned() || entryGuard.getState().captured;
+    reserveCaptionHeight();
     if (reducedMotion.matches || compactScreen.matches) {
       useStaticLayout();
       return;
     }
-    reserveCaptionHeight();
     const height = Math.ceil(sticky.getBoundingClientRect().height);
     const minimumTop = $('.site-header').getBoundingClientRect().height + 12;
     if (height + minimumTop > window.innerHeight) {
@@ -253,6 +257,21 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     // Once a gesture owns the demo, residual native scroll must only correct
     // its position. It must never cancel playback or choose another step.
     if (entryGuard.handleScroll(position)) return;
+    // A swipe can begin above the demo and coast through its short track.
+    // Native panning is already active, so catch that entry here and keep
+    // the whole gesture on one scene rather than cancelling it mid-touch.
+    const entryDirection = touchEntry.consume(position, geometry);
+    if (entryDirection) {
+      if (touch) touch.used = true;
+      if (entryDirection > 0) {
+        player.reset();
+        runStep(0);
+      } else {
+        player.show(2, 1, 3);
+        runStep(2, true);
+      }
+      return;
+    }
     if (internalPosition !== null && Math.abs(position - internalPosition) < 4) {
       internalPosition = null;
       return;
@@ -310,6 +329,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
   }
 
   window.addEventListener('wheel', event => {
+    touchEntry.cancel();
     if (event.ctrlKey || event.metaKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY) || !event.deltaY) return;
     const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
     const delta = event.deltaY * unit;
@@ -321,6 +341,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     const target = event.target instanceof Element ? event.target : document.body;
     const protectedStart = editable(target) || scrollablePanel(target);
     const captured = entryGuard.getState().captured;
+    touchEntry.cancel();
     if (geometry && event.touches.length === 1 && !protectedStart && !captured && !isPinned()) {
       if (window.scrollY < geometry.start) {
         releaseCapture();
@@ -329,6 +350,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
         releaseCapture();
         player.show(2, 1, 3);
       }
+      touchEntry.begin(window.scrollY, geometry);
     }
     touch = event.touches.length === 1 ? {
       x: event.touches[0].clientX,
@@ -374,12 +396,14 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
     }
   }, { passive: false });
   function endTouch() {
+    touchEntry.end();
     touch = null;
   }
   window.addEventListener('touchend', endTouch, { passive: true });
   window.addEventListener('touchcancel', endTouch, { passive: true });
 
   window.addEventListener('keydown', event => {
+    touchEntry.cancel();
     const target = event.target instanceof Element ? event.target : document.body;
     if (editable(target)) return;
     if (event.key === 'Escape' && (isPinned() || entryGuard.getState().captured)) {
@@ -397,6 +421,7 @@ import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
 
   window.addEventListener('scroll', schedulePagePosition, { passive: true });
   window.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') touchEntry.cancel();
     // A deliberate scrollbar drag is page navigation, rather than a step.
     if (event.pointerType === 'mouse' && event.button === 0 && event.clientX >= document.documentElement.clientWidth - 16) {
       releaseCapture();
