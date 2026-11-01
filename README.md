@@ -12,8 +12,6 @@
 - 신청: `assets/site.js`와 기존 `api/waitlist.mjs`·Upstash 저장 흐름을 유지합니다. 동의 문구 판은 `2026-10-15`이며 개인정보 처리방침과 구독 해지 경로도 같습니다. 서버 없이 연 미리보기는 신청 저장을 처리하지 못합니다.
 - 검색용 문서: `index.md`, `ko/index.md`, `llms.txt`, `llms-full.txt`에 현재 소개와 예시 범위를 함께 적습니다. `site.webmanifest`는 새 브랜드 아이콘을 참조합니다.
 
-- 맥락과 로고 연출: `assets/context-field.js`·`assets/context-field.css`는 트윈 주변의 메모·기획안·기준 조각을 스크롤에 따라 펼치고, 가까운 포인터에 작게 반응하며 서로 다른 리듬으로 떠 있게 합니다. 화면 밖에서는 재생을 멈추며, 모션 감소와 키보드 포커스에서는 안정된 배치를 표시합니다. `assets/brand-intro.js`·`assets/brand-intro.css`는 중앙 심볼을 실제 히어로 로고 좌표로 1.28초 안에 옮깁니다. 해시 이동·스크롤 복원·모션 감소에서는 건너뛰고, 첫 입력이나 이미지 지연 시 즉시 기본 페이지를 보여줍니다. 초기 부트스트랩은 1.9초 안에 항상 해제됩니다.
-
 - 링크 미리보기: 영어·한국어 페이지의 Open Graph와 Twitter 메타데이터는 공통 `og-telicity.png`를 사용합니다. 1200×630의 불투명 PNG에 승인된 로고를 배치했으며, 중앙 정사각형으로 잘려도 로고 전체가 보입니다. macOS에서 `swift tools/brand/share-card.swift`로 다시 생성합니다. 이미지를 바꿀 때는 두 페이지의 이미지 URL 버전도 갱신합니다.
 
 ### 로컬에서 보기
@@ -25,6 +23,8 @@ python3 -m http.server 4173
 ```
 
 정적 서버에는 Vercel Function이 없으므로 실제 대기 신청 저장은 기존 Vercel 실행 환경과 설정에서 확인합니다. 도시 자동 추정도 배포 환경의 헤더를 사용하므로 localhost의 기본 커서 이름표는 `telicity`입니다. 로컬에서만 [서울 협업 미리보기](http://localhost:4173/ko/?city=Seoul#together)나 [도쿄 미리보기](http://localhost:4173/ko/?city=Tokyo)로 이름표를 확인할 수 있습니다. 배포된 페이지에서는 이 쿼리를 무시합니다.
+
+- 맥락과 로고 연출: `assets/context-field.js`·`assets/context-field.css`는 트윈 주변의 메모·기획안·기준 조각을 스크롤에 따라 펼치고, 가까운 포인터에 작게 반응하며 서로 다른 리듬으로 떠 있게 합니다. 화면 밖에서는 재생을 멈추며, 모션 감소와 키보드 포커스에서는 안정된 배치를 표시합니다. `assets/brand-intro.js`·`assets/brand-intro.css`는 중앙 심볼을 실제 히어로 로고 좌표로 1.28초 안에 옮깁니다. 해시 이동·스크롤 복원·모션 감소에서는 건너뛰고, 첫 입력이나 이미지 지연 시 즉시 기본 페이지를 보여줍니다. 초기 부트스트랩은 1.9초 안에 항상 해제됩니다.
 
 ### 현행 검증 안내
 
