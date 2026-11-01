@@ -7,13 +7,12 @@ const easeOut = value => 1 - (1 - clamp(value)) ** 3;
 // One scroll position reconstructs the point, the growing mark, and its context.
 export function contextSceneFrame(progress, { reducedMotion = false, mobile = false } = {}) {
   const p = reducedMotion ? 1 : clamp(finite(progress));
-  const mark = smooth(phase(p, 0.12, 0.34));
+  const reveal = smooth(phase(p, 0.12, 0.34));
   const destination = mobile ? 0.4 : 0.5;
   return {
     progress: p,
-    dotOpacity: 1 - mark,
-    markOpacity: mark,
-    coreScale: 0.1 + mark * 0.9,
+    coreReveal: reveal,
+    coreAnchorOffset: 1 - reveal,
     coreY: 0.22 + (destination - 0.22) * smooth(phase(p, 0.14, 0.4)),
     coreOpacity: 1,
     introOpacity: 1 - smooth(phase(p, 0.18, 0.4)),

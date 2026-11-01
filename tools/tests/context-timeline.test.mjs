@@ -7,7 +7,7 @@ const samples = Array.from({ length: 1001 }, (_, index) => contextSceneFrame(ind
 
 test('the scene starts as one point with no cards or final copy', () => {
   assert.deepEqual(contextSceneFrame(0), {
-    progress: 0, dotOpacity: 1, markOpacity: 0, coreScale: 0.1,
+    progress: 0, coreReveal: 0, coreAnchorOffset: 1,
     coreY: 0.22, coreOpacity: 1, introOpacity: 1, copyOpacity: 0,
   });
   for (let index = 0; index < 7; index++) {
@@ -19,17 +19,17 @@ test('the scene starts as one point with no cards or final copy', () => {
   }
 });
 
-test('the point becomes a mark continuously before context spreads', () => {
-  assert.equal(contextSceneFrame(0.12).markOpacity, 0);
-  assert.equal(contextSceneFrame(0.34).markOpacity, 1);
+test('one opaque lower lobe uncovers the mark continuously before context spreads', () => {
+  assert.equal(contextSceneFrame(0.12).coreReveal, 0);
+  assert.equal(contextSceneFrame(0.34).coreReveal, 1);
   const middle = contextSceneFrame(0.23);
-  assert.ok(middle.markOpacity > 0 && middle.markOpacity < 1);
-  assert.ok(middle.dotOpacity > 0 && middle.dotOpacity < 1);
-  assert.ok(middle.coreScale > 0.1 && middle.coreScale < 1);
+  assert.ok(middle.coreReveal > 0 && middle.coreReveal < 1);
+  assert.equal(middle.coreAnchorOffset + middle.coreReveal, 1);
+  assert.equal(middle.coreOpacity, 1);
   for (const edge of [0.12, 0.14, 0.18, 0.34, 0.4, 0.75, 0.88]) {
     const before = contextSceneFrame(edge - 0.000001);
     const after = contextSceneFrame(edge + 0.000001);
-    for (const key of ['dotOpacity', 'markOpacity', 'coreScale', 'coreY', 'introOpacity', 'copyOpacity']) {
+    for (const key of ['coreReveal', 'coreAnchorOffset', 'coreY', 'introOpacity', 'copyOpacity']) {
       assert.ok(Math.abs(before[key] - after[key]) < 0.0001, `${key} must not jump at ${edge}`);
     }
   }
@@ -43,10 +43,11 @@ test('the core settles before final copy and all reveal values stay ordered', ()
   assert.equal(contextSceneFrame(0.88).copyOpacity, 1);
   let previous = samples[0];
   for (const frame of samples) {
-    for (const key of ['markOpacity', 'coreScale', 'coreY', 'copyOpacity']) assert.ok(frame[key] >= previous[key]);
-    for (const key of ['dotOpacity', 'introOpacity']) assert.ok(frame[key] <= previous[key]);
+    for (const key of ['coreReveal', 'coreY', 'copyOpacity']) assert.ok(frame[key] >= previous[key]);
+    for (const key of ['coreAnchorOffset', 'introOpacity']) assert.ok(frame[key] <= previous[key]);
     assert.ok(Object.values(frame).every(value => Number.isFinite(value) && value >= 0 && value <= 1));
-    assert.equal(frame.dotOpacity + frame.markOpacity, 1);
+    assert.equal(frame.coreOpacity, 1);
+    assert.equal(frame.coreAnchorOffset + frame.coreReveal, 1);
     previous = frame;
   }
 });
@@ -100,8 +101,8 @@ test('reduced motion exposes the complete stationary composition', () => {
   for (const progress of [0, 0.3, 1]) {
     const frame = contextSceneFrame(progress, { reducedMotion: true });
     assert.equal(frame.progress, 1);
-    assert.equal(frame.markOpacity, 1);
-    assert.equal(frame.dotOpacity, 0);
+    assert.equal(frame.coreReveal, 1);
+    assert.equal(frame.coreAnchorOffset, 0);
     assert.equal(frame.coreY, 0.5);
     assert.equal(frame.copyOpacity, 1);
     assert.equal(frame.introOpacity, 0);

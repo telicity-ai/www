@@ -188,8 +188,8 @@ test('compact viewports expose the finished stationary composition without captu
   const env = environment({ width: 375, height: 500 });
   assert.equal(env.section.classList.contains('is-enhanced'), false);
   assert.equal(env.section.dataset.progress, '1.0000');
-  assert.equal(env.section.style.getPropertyValue('--core-dot-opacity'), '0');
-  assert.equal(env.section.style.getPropertyValue('--core-mark-opacity'), '1');
+  assert.equal(env.section.style.getPropertyValue('--core-reveal'), '1');
+  assert.equal(env.section.style.getPropertyValue('--core-anchor-offset'), '0');
   assert.equal(env.section.style.getPropertyValue('--scene-copy-opacity'), '1');
   assert.ok(env.items.every(item => item.style.getPropertyValue('--context-opacity') === '1.0000'));
   assert.equal(env.frames.size, 0);

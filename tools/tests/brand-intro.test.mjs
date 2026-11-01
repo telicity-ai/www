@@ -8,38 +8,49 @@ const options = {
 };
 const center = frame => ({ x: frame.x + frame.size / 2, y: frame.y + frame.size / 2 });
 
-test('the symbol grows at the viewport center and holds before moving', () => {
+test('the lower-lobe opening point is centered before the full mark recognition hold', () => {
   const first = brandIntroFrame(0, options);
   const grown = brandIntroFrame(800, options);
-  assert.equal(first.size, 28.799999999999997);
+  assert.equal(first.size, 192);
   assert.equal(grown.size, 192);
-  assert.deepEqual(center(first), { x: 640, y: 360 });
+  const point = {
+    x: first.x + first.size * 0.6944001039797363,
+    y: first.y + first.size * 0.7770594717603514,
+  };
+  assert.deepEqual(point, { x: 640, y: 360 });
   assert.deepEqual(center(grown), { x: 640, y: 360 });
   assert.deepEqual(center(brandIntroFrame(1099, options)), { x: 640, y: 360 });
   assert.equal(first.pageOpacity, 0);
   assert.equal(first.backgroundOpacity, 1);
 });
 
-test('the opening point becomes the larger mark before the recognition hold', () => {
+test('one opaque mark expands from its lower lobe without a crossfade', () => {
   const point = brandIntroFrame(0, options);
   assert.equal(point.phase, 'dot');
-  assert.equal(point.dotOpacity, 1);
-  assert.equal(point.markOpacity, 0);
-  assert.equal(brandIntroFrame(350, options).phase, 'emerging');
-  const middle = brandIntroFrame(530, options);
-  assert.ok(middle.dotOpacity > 0 && middle.dotOpacity < 1);
-  assert.ok(middle.markOpacity > 0 && middle.markOpacity < 1);
+  assert.equal(point.markOpacity, 1);
+  assert.equal(point.markReveal, 0);
+  assert.equal(point.clipRadius, 4);
+  const dot = brandIntroFrame(350, options);
+  assert.equal(dot.phase, 'emerging');
+  assert.equal(dot.clipRadius, 10);
+  const middle = brandIntroFrame(575, options);
+  assert.equal(middle.markReveal, 0.5);
+  assert.equal(middle.markOpacity, 1);
+  assert.ok(middle.clipRadius > 10 && middle.clipRadius < 192 * 1.05);
+  assert.equal(Object.hasOwn(middle, 'dotOpacity'), false);
   const ready = brandIntroFrame(800, options);
   assert.equal(ready.phase, 'holding');
-  assert.equal(ready.dotOpacity, 0);
-  assert.equal(ready.markOpacity, 1);
+  assert.equal(ready.markReveal, 1);
+  assert.equal(ready.clipRadius, 192 * 1.05);
   assert.equal(ready.size, 192);
   assert.deepEqual(center(ready), { x: 640, y: 360 });
   assert.deepEqual(center(brandIntroFrame(1100, options)), center(ready));
+  let previousRadius = 0;
   for (let time = 0; time <= 2300; time += 10) {
     const frame = brandIntroFrame(time, options);
-    assert.ok(frame.dotOpacity >= 0 && frame.dotOpacity <= 1);
-    assert.ok(frame.markOpacity >= 0 && frame.markOpacity <= 1);
+    assert.equal(frame.markOpacity, 1);
+    assert.ok(frame.clipRadius >= previousRadius);
+    previousRadius = frame.clipRadius;
   }
 });
 
@@ -87,7 +98,8 @@ test('late frames finish at exactly the hero geometry within 2.3 seconds', () =>
 
 test('mobile and off-center hero marks use measured coordinates rather than fixed offsets', () => {
   const mobile = { viewport: { width: 375, height: 812 }, target: { left: 166.5, top: 122, width: 42, height: 42 } };
-  assert.deepEqual(center(brandIntroFrame(0, mobile)), { x: 187.5, y: 406 });
+  const first = brandIntroFrame(0, mobile);
+  assert.deepEqual({ x: first.x + first.size * 0.6944001039797363, y: first.y + first.size * 0.7770594717603514 }, { x: 187.5, y: 406 });
   const end = brandIntroFrame(2300, mobile);
   assert.deepEqual(center(end), { x: 187.5, y: 143 });
   const shifted = brandIntroFrame(2300, { ...options, target: { left: 45, top: 116, width: 64, height: 64 } });

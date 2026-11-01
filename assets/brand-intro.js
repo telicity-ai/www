@@ -2,6 +2,9 @@
 // Give the larger Telicity mark a short recognition hold before its handoff.
 const INTRO_DURATION = 2300;
 const MARK_SIZE = 192;
+// The opening point is a circular crop inside the approved lower lobe.
+const DOT_ANCHOR = { x: 0.6944001039797363, y: 0.7770594717603514 };
+const FULL_CLIP_RADIUS = MARK_SIZE * 1.05;
 const clamp = value => Math.max(0, Math.min(1, value));
 const phase = (value, start, end) => clamp((value - start) / (end - start));
 const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
@@ -16,20 +19,22 @@ export function brandIntroFrame(elapsed, { viewport, target, reducedMotion = fal
   const finished = reducedMotion || time >= INTRO_DURATION;
   const destination = { x: target.left + target.width / 2, y: target.top + target.height / 2 };
   const handoff = finished ? 1 : easeInOut(phase(time, 1100, 2200));
-  const emerging = easeOut(phase(time, 350, 800));
-  const grown = MARK_SIZE * (0.15 + 0.85 * emerging);
+  const markReveal = finished ? 1 : smooth(phase(time, 350, 800));
+  const dotRadius = 4 + 6 * easeOut(phase(time, 0, 350));
   const targetSize = Math.min(target.width, target.height);
-  const size = finished ? targetSize : grown + (targetSize - grown) * handoff;
-  const centerX = viewport.width / 2 + (destination.x - viewport.width / 2) * handoff;
-  const centerY = viewport.height / 2 + (destination.y - viewport.height / 2) * handoff;
+  const size = finished ? targetSize : MARK_SIZE + (targetSize - MARK_SIZE) * handoff;
+  const centerX = viewport.width / 2 + (destination.x - viewport.width / 2) * handoff
+    - (DOT_ANCHOR.x - 0.5) * size * (1 - markReveal);
+  const centerY = viewport.height / 2 + (destination.y - viewport.height / 2) * handoff
+    - (DOT_ANCHOR.y - 0.5) * size * (1 - markReveal);
   return {
     x: centerX - size / 2,
     y: centerY - size / 2,
     size,
     scale: size / MARK_SIZE,
-    dotOpacity: finished ? 0 : 1 - smooth(phase(time, 350, 800)),
-    dotScale: 0.4 + 0.6 * easeOut(phase(time, 0, 350)) + 0.65 * smooth(phase(time, 350, 800)),
-    markOpacity: finished ? 1 : smooth(phase(time, 350, 680)),
+    markReveal,
+    clipRadius: dotRadius + (FULL_CLIP_RADIUS - dotRadius) * markReveal,
+    markOpacity: 1,
     pageOpacity: finished ? 1 : smooth(phase(time, 1100, 1980)),
     backgroundOpacity: finished ? 0 : 1 - smooth(phase(time, 1100, 2050)),
     revealing: finished || time >= 1100,
@@ -101,9 +106,7 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
       root.classList.toggle('intro-revealing', frame.revealing);
       root.style.setProperty('--intro-page-opacity', String(frame.pageOpacity));
       overlay.style.setProperty('--intro-background-opacity', String(frame.backgroundOpacity));
-      overlay.style.setProperty('--intro-dot-opacity', String(frame.dotOpacity));
-      overlay.style.setProperty('--intro-dot-scale', String(frame.dotScale));
-      mark.style.opacity = String(frame.markOpacity);
+      overlay.style.setProperty('--intro-clip-radius', `${frame.clipRadius.toFixed(4)}px`);
       mark.style.transform = `translate3d(${frame.x.toFixed(3)}px, ${frame.y.toFixed(3)}px, 0) scale(${frame.scale.toFixed(6)})`;
       frameId = win.requestAnimationFrame(paint);
     }

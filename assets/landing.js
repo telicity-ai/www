@@ -2,7 +2,7 @@ import { createCollaboration, collaborationFrame, previewProgress, scrollTravel 
 import { createStepPlayer, createGestureGate } from './tour-player.js?v=20261101-fast-motion-2';
 import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
 import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
-import { createScrollSettler } from './scroll-settle.js?v=20261101-context-scene';
+import { createScrollSettler } from './scroll-settle.js?v=20261101-solid-mark';
 
 /* Scroll changes one anchored workspace. Each agent action settles and stops. */
 (() => {

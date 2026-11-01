@@ -1,5 +1,5 @@
-import { contextPose, contextSceneFrame } from './context-timeline.js?v=20261101-context-scene';
-import { createScrollSettler } from './scroll-settle.js?v=20261101-context-scene';
+import { contextPose, contextSceneFrame } from './context-timeline.js?v=20261101-solid-mark';
+import { createScrollSettler } from './scroll-settle.js?v=20261101-solid-mark';
 import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
 import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
 import { createGestureGate } from './tour-player.js?v=20261101-fast-motion-2';
@@ -78,10 +78,9 @@ export function initContextField(field, win = globalThis.window, doc = globalThi
     const scene = contextSceneFrame(progress, { reducedMotion: reduced.matches, mobile });
     section.dataset.progress = progress.toFixed(4);
     section.style.setProperty('--core-y', `${scene.coreY * 100}%`);
-    section.style.setProperty('--core-scale', String(scene.coreScale));
+    section.style.setProperty('--core-reveal', String(scene.coreReveal));
+    section.style.setProperty('--core-anchor-offset', String(scene.coreAnchorOffset));
     section.style.setProperty('--core-opacity', String(scene.coreOpacity));
-    section.style.setProperty('--core-dot-opacity', String(scene.dotOpacity));
-    section.style.setProperty('--core-mark-opacity', String(scene.markOpacity));
     section.style.setProperty('--scene-intro-opacity', String(scene.introOpacity));
     section.style.setProperty('--scene-copy-opacity', String(scene.copyOpacity));
     section.querySelector('.context-copy').setAttribute('aria-hidden', String(scene.copyOpacity === 0));

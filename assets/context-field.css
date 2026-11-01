@@ -74,25 +74,17 @@
   transform-origin: center;
   pointer-events: none;
 }
-.context-field .context-dot {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-petrol);
-  opacity: var(--core-dot-opacity, 0);
-  transform: translate(-50%, -50%);
-}
 .context-field .context-mark {
   display: block;
   width: 100%;
   height: 100%;
   max-width: none;
   object-fit: contain;
-  opacity: var(--core-mark-opacity, 1);
-  transform: scale(var(--core-scale, 1));
+  /* The point is a crop inside the approved lower lobe, never a second layer.
+   * Offset that lobe to the scene origin, then uncover the same opaque mark. */
+  opacity: 1;
+  clip-path: circle(calc(10px + 100% * var(--core-reveal, 1)) at 69.44001% 77.70595%);
+  transform: translate3d(calc(-19.44001% * var(--core-anchor-offset, 0)), calc(-27.70595% * var(--core-anchor-offset, 0)), 0);
   transform-origin: center;
 }
 .context-field .context-item {
@@ -217,8 +209,7 @@
 .context-field .intent-caption { display: none; }
 .context-field.is-updated .intent-twin { animation: none; }
 .context-section:not(.is-enhanced) .context-core { top: 50%; opacity: 1; transform: translate(-50%, -50%); }
-.context-section:not(.is-enhanced) .context-dot { opacity: 0; }
-.context-section:not(.is-enhanced) .context-mark,
+.context-section:not(.is-enhanced) .context-mark { clip-path: none; transform: none; }
 .context-section:not(.is-enhanced) .context-copy { opacity: 1; }
 .context-section:not(.is-enhanced) .context-item { opacity: 1; transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)); will-change: auto; }
 
@@ -291,7 +282,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .context-section .context-item { opacity: 1 !important; transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)) !important; will-change: auto; }
-  .context-section .context-dot { opacity: 0 !important; }
-  .context-section .context-mark,
+  .context-section .context-mark { clip-path: none !important; transform: none !important; }
   .context-section .context-copy { opacity: 1 !important; }
 }
