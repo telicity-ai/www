@@ -139,6 +139,8 @@ function environment({ reduced = false, hash = '', scrollY = 0, navigation = 'na
   let sequence = 0;
   const frames = new Map();
   const timers = new Map();
+  const events = [];
+  const decodes = [];
   const classes = new Set(['intro-pending']);
   const styles = () => {
     const values = new Map();
@@ -158,12 +160,16 @@ function environment({ reduced = false, hash = '', scrollY = 0, navigation = 'na
     remove: (...names) => names.forEach(name => classes.delete(name)),
     toggle(name, active) { if (active) classes.add(name); else classes.delete(name); },
   } };
-  const mark = { complete: ready, naturalWidth: ready ? 1000 : 0, style: {}, decode: () => new Promise(() => {}) };
+  const mark = {
+    complete: ready, naturalWidth: ready ? 1000 : 0, style: {},
+    decode: () => new Promise((resolve, reject) => decodes.push({ resolve, reject })),
+  };
   const target = { ...mark, getBoundingClientRect: () => options.target };
   const overlay = { querySelector: () => mark, style: styles(), dataset: {} };
   const media = { ...host(), matches: reduced };
   const win = {
     ...host(), ...options.viewport,
+    Event: class { constructor(type) { this.type = type; } },
     innerWidth: options.viewport.width, innerHeight: options.viewport.height,
     location: { hash }, scrollY,
     matchMedia: () => media,
@@ -174,8 +180,14 @@ function environment({ reduced = false, hash = '', scrollY = 0, navigation = 'na
     clearTimeout(id) { timers.delete(id); },
   };
   const doc = { ...host(), documentElement: root, visibilityState: 'visible', querySelector: selector => selector === '.brand-intro' ? overlay : target };
+  doc.dispatchEvent = event => { events.push(event.type); doc.dispatch(event.type, event); return true; };
   return {
-    win, doc, root, overlay, frames, timers, classes,
+    win, doc, root, overlay, frames, timers, classes, events,
+    completeImages() {
+      for (const image of [mark, target]) { image.complete = true; image.naturalWidth = 1000; }
+      decodes.forEach(decode => decode.resolve());
+    },
+    rejectImages() { decodes.forEach(decode => decode.reject(new Error('Image unavailable'))); },
     advance(ms) {
       time += ms;
       const callbacks = [...frames.values()];
@@ -196,13 +208,14 @@ test('history, anchor navigation, restored scrolling, and reduced motion leave t
     assert.equal(env.frames.size, 0);
     assert.equal(env.timers.size, 0);
     assert.equal(env.overlay.dataset.phase, 'complete');
+    assert.deepEqual(env.events, ['telicity:intro-ready']);
   }
 });
 
 test('a first input cancels the cover immediately and removes pending work', () => {
   for (const input of ['wheel', 'touchstart', 'keydown', 'pointerdown', 'resize']) {
     const env = environment();
-    initBrandIntro(env.doc, env.win);
+    const controller = initBrandIntro(env.doc, env.win);
     env.advance(1600);
     assert.equal(env.classes.has('intro-revealing'), true);
     assert.ok(Number(env.root.style.values.get('--intro-page-opacity')) > 0);
@@ -213,16 +226,87 @@ test('a first input cancels the cover immediately and removes pending work', () 
     assert.equal(env.timers.size, 0);
     assert.equal(env.root.style.values.has('--intro-page-opacity'), false);
     assert.ok([...env.win.listeners.values()].every(listeners => listeners.size === 0));
+    controller.cancel();
+    assert.deepEqual(env.events, ['telicity:intro-ready']);
   }
 });
 
 test('an image that never decodes fails open instead of showing an endless loading screen', () => {
   const env = environment({ ready: false });
   initBrandIntro(env.doc, env.win);
-  env.advance(220);
+  env.advance(1499);
+  assert.equal(env.classes.has('intro-pending'), true);
+  assert.equal(env.frames.size, 0);
+  assert.equal(env.events.length, 0);
+  env.advance(1);
   assert.equal(env.classes.has('intro-pending'), false);
   assert.equal(env.frames.size, 0);
   assert.equal(env.timers.size, 0);
+  assert.deepEqual(env.events, ['telicity:intro-ready']);
+});
+
+test('a logo decoded after 1.4 seconds still gets a full 2.3-second automatic playback', async () => {
+  const env = environment({ ready: false });
+  initBrandIntro(env.doc, env.win);
+  env.advance(1400);
+  assert.equal(env.classes.has('intro-pending'), true);
+  assert.equal(env.frames.size, 0);
+  assert.equal(env.events.length, 0);
+  env.completeImages();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(env.overlay.dataset.phase, 'dot');
+  assert.equal(env.frames.size, 1);
+  assert.deepEqual(env.events, ['telicity:intro-ready']);
+  env.advance(2299);
+  assert.equal(env.classes.has('intro-pending'), true, 'an old startup watchdog must not truncate playback');
+  assert.equal(env.overlay.dataset.phase, 'settled');
+  env.advance(1);
+  assert.equal(env.classes.has('intro-pending'), false);
+  assert.equal(env.overlay.dataset.phase, 'complete');
+  assert.equal(env.frames.size, 0);
+  assert.equal(env.timers.size, 0);
+  assert.deepEqual(env.events, ['telicity:intro-ready']);
+});
+
+test('an ordinary first entry completes automatically without a wheel, touch or key event', () => {
+  const env = environment();
+  initBrandIntro(env.doc, env.win);
+  assert.equal(env.overlay.dataset.phase, 'dot');
+  assert.deepEqual(env.events, ['telicity:intro-ready']);
+  env.advance(800);
+  assert.equal(env.overlay.dataset.phase, 'holding');
+  env.advance(300);
+  assert.equal(env.overlay.dataset.phase, 'moving');
+  env.advance(1200);
+  assert.equal(env.overlay.dataset.phase, 'complete');
+  assert.equal(env.classes.has('intro-pending'), false);
+  assert.equal(env.frames.size, 0);
+  assert.equal(env.timers.size, 0);
+  assert.deepEqual(env.events, ['telicity:intro-ready']);
+});
+
+test('a decoding failure and a late resolution after cancellation both leave the page visible', async () => {
+  for (const reject of [true, false]) {
+    const env = environment({ ready: false });
+    initBrandIntro(env.doc, env.win);
+    if (reject) env.rejectImages();
+    else { env.win.dispatch('wheel'); env.completeImages(); }
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(env.classes.has('intro-pending'), false);
+    assert.equal(env.frames.size, 0);
+    assert.equal(env.timers.size, 0);
+    assert.deepEqual(env.events, ['telicity:intro-ready']);
+  }
+});
+
+test('the playback safety timer releases the page even if animation frames stop arriving', () => {
+  const env = environment();
+  initBrandIntro(env.doc, env.win);
+  env.frames.clear();
+  env.advance(3000);
+  assert.equal(env.classes.has('intro-pending'), false);
+  assert.equal(env.timers.size, 0);
+  assert.deepEqual(env.events, ['telicity:intro-ready']);
 });
 
 test('completion and the independent bootstrap fallback clean up every hidden state', () => {
@@ -236,6 +320,7 @@ test('completion and the independent bootstrap fallback clean up every hidden st
     assert.equal(env.classes.has('intro-revealing'), false);
     assert.equal(env.frames.size, 0);
     assert.equal(env.timers.size, 0);
+    assert.deepEqual(env.events, ['telicity:intro-ready']);
     assert.doesNotThrow(() => controller.cancel());
   }
 });

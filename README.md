@@ -26,7 +26,7 @@ python3 -m http.server 4173
 
 정적 서버에는 Vercel Function이 없으므로 실제 대기 신청 저장은 기존 Vercel 실행 환경과 설정에서 확인합니다. 도시 자동 추정도 배포 환경의 헤더를 사용하므로 localhost의 기본 커서 이름표는 `telicity`입니다. 로컬에서만 [서울 협업 미리보기](http://localhost:4173/ko/?city=Seoul#together)나 [도쿄 미리보기](http://localhost:4173/ko/?city=Tokyo)로 이름표를 확인할 수 있습니다. 배포된 페이지에서는 이 쿼리를 무시합니다.
 
-- 맥락과 로고 연출: `assets/context-field.js`·`assets/context-field.css`는 트윈 주변의 메모·기획안·기준 조각을 스크롤에 따라 펼치고, 가까운 포인터에 작게 반응하며 서로 다른 리듬으로 떠 있게 합니다. 화면 밖에서는 재생을 멈추며, 모션 감소와 키보드 포커스에서는 안정된 배치를 표시합니다. `assets/brand-intro.js`·`assets/brand-intro.css`는 로고 하단의 둥근 부분에서 심볼 전체가 드러난 뒤 실제 히어로 로고 좌표로 2.3초에 걸쳐 이동합니다. 별도 점을 겹치거나 서로 투명하게 전환하지 않고, 원본 로고 하나의 원형 마스크를 확장합니다. 맥락 장면도 같은 방식으로 중간 스크롤에서 불투명한 실루엣을 유지합니다. 레퍼런스의 두 차례 프레임 녹화에서 약 1.90·1.92초의 안착을 계측한 뒤 인식 시간을 더 확보했습니다. 해시 이동·스크롤 복원·모션 감소에서는 건너뛰고, 첫 입력이나 이미지 지연 시 즉시 기본 페이지를 보여줍니다. 초기 부트스트랩은 3.5초 안에 항상 해제됩니다. 맥락 영역은 전체 화면의 점에서 시작합니다. 말과 행동에 담긴 판단 구조와 내 AI TWIN의 가치를 설명하는 두 문장이 스크롤에 따라 앞에서부터 딥그린으로 채워지고, 다 읽은 뒤 심볼·맥락 카드가 차례로 펼쳐집니다. 같은 텍스트를 단어 단위로 칠해 모바일 줄바꿈에도 읽는 순서를 유지하며, 위로 스크롤하면 같은 진행률로 되돌아갑니다. 정적 보기·모션 감소·강제 색상에서는 문구 전체를 바로 읽을 수 있습니다. `assets/context-timeline.js`가 점·심볼·카드 전개를 계산하고 `assets/scroll-settle.js`가 두 장면의 하향 진입에만 작은 정착 모션을 적용합니다. 상향은 즉시 일반 스크롤로 전환합니다. 높이가 부족하거나 모션 감소를 선택하면 완성된 정적 구성을 보여줍니다.
+- 맥락과 로고 연출: `assets/context-field.js`·`assets/context-field.css`는 트윈 주변의 메모·기획안·기준 조각을 스크롤에 따라 펼치고, 가까운 포인터에 작게 반응하며 서로 다른 리듬으로 떠 있게 합니다. 화면 밖에서는 재생을 멈추며, 모션 감소와 키보드 포커스에서는 안정된 배치를 표시합니다. `assets/brand-intro.js`·`assets/brand-intro.css`는 로고 하단의 둥근 부분에서 심볼 전체가 드러난 뒤 실제 히어로 로고 좌표로 2.3초에 걸쳐 이동합니다. 별도 점을 겹치거나 서로 투명하게 전환하지 않고, 원본 로고 하나의 원형 마스크를 확장합니다. 맥락 장면도 같은 방식으로 중간 스크롤에서 불투명한 실루엣을 유지합니다. 레퍼런스의 두 차례 프레임 녹화에서 약 1.90·1.92초의 안착을 계측한 뒤 인식 시간을 더 확보했습니다. 해시 이동·스크롤 복원·모션 감소에서는 건너뛰고, 스크롤을 기다리지 않고 접속 직후 자동 재생하며, 첫 입력 시에는 기본 페이지를 바로 보여줍니다. 로고가 1.5초 안에 준비되지 않으면 연출을 건너뜁니다. 보안 정책에서 실행할 수 있는 외부 `assets/brand-intro-boot.js`가 첫 화면을 준비하고 모듈 준비 신호를 받으면 타이머를 넘겨줍니다. 모듈이 시작되지 않으면 3.5초에 복구하며, 시작한 재생에도 별도의 3초 안전 타이머가 있습니다. 맥락 영역은 전체 화면의 점에서 시작합니다. 말과 행동에 담긴 판단 구조와 내 AI TWIN의 가치를 설명하는 두 문장이 스크롤에 따라 앞에서부터 딥그린으로 채워지고, 다 읽은 뒤 심볼·맥락 카드가 차례로 펼쳐집니다. 같은 텍스트를 단어 단위로 칠해 모바일 줄바꿈에도 읽는 순서를 유지하며, 위로 스크롤하면 같은 진행률로 되돌아갑니다. 정적 보기·모션 감소·강제 색상에서는 문구 전체를 바로 읽을 수 있습니다. `assets/context-timeline.js`가 점·심볼·카드 전개를 계산하고 `assets/scroll-settle.js`가 두 장면의 하향 진입에만 작은 정착 모션을 적용합니다. 상향은 즉시 일반 스크롤로 전환합니다. 높이가 부족하거나 모션 감소를 선택하면 완성된 정적 구성을 보여줍니다.
 
 ### 현행 검증 안내
 
@@ -41,6 +41,7 @@ node --check assets/context-field.js
 node --check assets/context-timeline.js
 node --check assets/scroll-settle.js
 node --check assets/brand-intro.js
+node --check assets/brand-intro-boot.js
 node --check assets/cursor.js
 node --check assets/pointer-position.js
 node --check assets/city-name.mjs
@@ -55,6 +56,7 @@ node --test tools/tests/context-timeline.test.mjs
 node --test tools/tests/context-controller.test.mjs
 node --test tools/tests/scroll-settle.test.mjs
 node --test tools/tests/brand-intro.test.mjs
+node --test tools/tests/brand-intro-boot.test.mjs
 node --test tools/tests/tour-player.test.mjs
 node --test tools/tests/tour-entry.test.mjs
 node --test tools/tests/tour-touch.test.mjs
