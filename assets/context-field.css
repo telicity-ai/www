@@ -14,15 +14,27 @@
 .context-section .context-intro {
   position: relative;
   z-index: 4;
-  width: min(760px, calc(100% - 48px));
+  width: min(1120px, calc(100% - 64px));
   margin: 0 auto 32px;
   text-align: center;
 }
-.context-section .context-intro h2 { font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.25; }
-.context-section .context-intro p {
-  margin-top: 14px;
-  color: var(--color-muted);
-  font: 400 15px/1.7 var(--font-body);
+.context-section .context-intro h2 {
+  font: 500 clamp(1.375rem, 2.35vw, 2rem)/1.6 var(--font-body);
+  letter-spacing: -.035em;
+  word-break: keep-all;
+}
+.context-section .context-value-line { display: block; }
+.context-section .context-value-word { display: inline-block; }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .context-section.is-enhanced .context-value-word {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(90deg,
+      var(--color-petrol) 0%, var(--color-petrol) var(--word-fill, 100%),
+      var(--color-line) var(--word-fill, 100%), var(--color-line) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
 }
 .context-section.is-enhanced { padding: 0; }
 .context-section.is-enhanced .context-track {
@@ -241,8 +253,7 @@
   .context-section.twin-section { padding: 72px 0 80px; }
   .context-section.is-enhanced { padding: 0; }
   .context-section .context-intro { width: calc(100% - 40px); margin-bottom: 28px; }
-  .context-section .context-intro h2 { font-size: 30px; line-height: 1.3; }
-  .context-section .context-intro p { margin-top: 12px; font-size: 12px; }
+  .context-section .context-intro h2 { font-size: clamp(20px, 5.6vw, 22px); line-height: 1.65; }
   .context-section .context-field.intent-demo { width: calc(100% - 40px); height: 600px; }
   .context-section.is-enhanced .context-field.intent-demo { height: 100%; }
   .context-field .context-core { width: 112px; height: 112px; }
@@ -281,7 +292,11 @@
   .context-section:not(.is-enhanced) .context-copy { top: 49%; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .context-section .context-value-word { background: none !important; color: var(--color-petrol) !important; -webkit-text-fill-color: currentColor !important; }
   .context-section .context-item { opacity: 1 !important; transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)) !important; will-change: auto; }
   .context-section .context-mark { clip-path: none !important; transform: none !important; }
   .context-section .context-copy { opacity: 1 !important; }
+}
+@media (forced-colors: active) {
+  .context-section .context-value-word { background: none !important; color: CanvasText !important; -webkit-text-fill-color: currentColor !important; }
 }

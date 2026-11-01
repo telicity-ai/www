@@ -19,7 +19,7 @@ test('context unfolds from the twin and settles before the next section', () => 
 });
 
 test('cards unfold at different points instead of appearing as one block', () => {
-  const poses = [0, 1, 2, 3, 4, 5, 6].map(index => contextPose({ ...input, progress: 0.45, index }));
+  const poses = [0, 1, 2, 3, 4, 5, 6].map(index => contextPose({ ...input, progress: 0.593, index }));
   assert.ok(poses[0].opacity > 0);
   assert.equal(poses.at(-1).opacity, 0);
   assert.ok(new Set(poses.map(pose => pose.x)).size >= 4);

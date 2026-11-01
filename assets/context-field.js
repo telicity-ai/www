@@ -1,4 +1,4 @@
-import { contextPose, contextSceneFrame } from './context-timeline.js?v=20261101-solid-mark';
+import { contextPose, contextSceneFrame } from './context-timeline.js?v=20261101-context-value';
 import { createScrollSettler } from './scroll-settle.js?v=20261101-solid-mark';
 import { createTourEntryGuard } from './tour-entry.js?v=20261101-entry-guard';
 import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
@@ -13,6 +13,15 @@ export function initContextField(field, win = globalThis.window, doc = globalThi
   const track = section.querySelector('.context-track');
   const stage = section.querySelector('.context-stage');
   const items = [...field.querySelectorAll('[data-context-item]')];
+  // Keep the actual words in reading order so wrapping never restarts a line's fill.
+  let textLength = 0;
+  const words = [...section.querySelectorAll('[data-context-word]')].map(node => {
+    const start = textLength;
+    const length = Array.from(node.textContent || '').length;
+    textLength += length + 1;
+    return { node, start, length: Math.max(1, length) };
+  });
+  textLength = Math.max(1, textLength - 1);
   const reduced = win.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = win.matchMedia('(hover: hover) and (pointer: fine)');
   const gate = createGestureGate(220);
@@ -83,6 +92,11 @@ export function initContextField(field, win = globalThis.window, doc = globalThi
     section.style.setProperty('--core-opacity', String(scene.coreOpacity));
     section.style.setProperty('--scene-intro-opacity', String(scene.introOpacity));
     section.style.setProperty('--scene-copy-opacity', String(scene.copyOpacity));
+    const readingPosition = scene.textProgress * textLength;
+    words.forEach(({ node, start, length }) => {
+      const fill = clamp((readingPosition - start) / length);
+      node.style.setProperty('--word-fill', `${(fill * 100).toFixed(3)}%`);
+    });
     section.querySelector('.context-copy').setAttribute('aria-hidden', String(scene.copyOpacity === 0));
     const intensity = mobile ? bounds.width < 320 ? 0.5 : 0.65 : 1;
     const cursor = pointer && finePointer.matches && !mobile ? { x: pointer.x - bounds.left, y: pointer.y - bounds.top } : null;

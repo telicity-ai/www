@@ -3,20 +3,24 @@ const finite = (value, fallback = 0) => Number.isFinite(value) ? value : fallbac
 const phase = (value, start, end) => clamp((value - start) / (end - start));
 const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
 const easeOut = value => 1 - (1 - clamp(value)) ** 3;
+// Let the value statement finish before the mark and its context unfold.
+const artProgress = value => phase(value, 0.26, 1);
 
 // One scroll position reconstructs the point, the growing mark, and its context.
 export function contextSceneFrame(progress, { reducedMotion = false, mobile = false } = {}) {
   const p = reducedMotion ? 1 : clamp(finite(progress));
-  const reveal = smooth(phase(p, 0.12, 0.34));
+  const art = artProgress(p);
+  const reveal = smooth(phase(art, 0.12, 0.34));
   const destination = mobile ? 0.4 : 0.5;
   return {
     progress: p,
+    textProgress: phase(p, 0, 0.24),
     coreReveal: reveal,
     coreAnchorOffset: 1 - reveal,
-    coreY: 0.22 + (destination - 0.22) * smooth(phase(p, 0.14, 0.4)),
+    coreY: 0.22 + (destination - 0.22) * smooth(phase(art, 0.14, 0.4)),
     coreOpacity: 1,
-    introOpacity: 1 - smooth(phase(p, 0.18, 0.4)),
-    copyOpacity: smooth(phase(p, 0.75, 0.88)),
+    introOpacity: 1 - smooth(phase(p, 0.30, 0.40)),
+    copyOpacity: smooth(phase(art, 0.75, 0.88)),
   };
 }
 
@@ -27,7 +31,7 @@ export function contextPose({ progress = 1, time = 0, index = 0, base = {}, cent
   if (reducedMotion) return { x: 0, y: 0, rotation: angle, scale: 1, opacity: 1 };
   const item = Math.max(0, Math.min(6, Math.floor(finite(index))));
   const start = 0.34 + item * 0.035;
-  const reveal = easeOut(phase(clamp(finite(progress)), start, start + 0.24));
+  const reveal = easeOut(phase(artProgress(clamp(finite(progress))), start, start + 0.24));
   const strength = Math.max(0.25, Math.min(1.4, finite(depth, 1))) * clamp(finite(intensity, 1));
   const clock = Math.max(0, finite(time)) / 1000;
   const current = clock * 0.67 + item * 1.43;

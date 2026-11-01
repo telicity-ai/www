@@ -65,6 +65,11 @@ function environment({ height = 900, width = 1280, reduced = false, tour = null 
   const stage = new Element('stage', track);
   const copy = new Element('copy', field);
   const header = new Element('header', body);
+  const words = ['나의', '기준을', '이해하는'].map(text => {
+    const word = new Element('word', section);
+    word.textContent = text;
+    return word;
+  });
   const items = Array.from({ length: 7 }, (_, index) => {
     const item = new Element('button', field);
     item.dataset = { index: String(index), rotation: String(index - 3), depth: '1' };
@@ -103,10 +108,11 @@ function environment({ height = 900, width = 1280, reduced = false, tour = null 
     return { left: 40, top: enhanced ? Math.max(pinTop, 1000 - win.scrollY) : 1000 - win.scrollY, width: win.innerWidth - 80, height: fieldHeight };
   };
   section.querySelector = selector => ({ '.context-track': track, '.context-stage': stage, '.context-copy': copy })[selector] || null;
+  section.querySelectorAll = selector => selector === '[data-context-word]' ? words : [];
   field.querySelectorAll = selector => selector === '[data-context-item]' ? items : [];
   const dispose = initContextField(field, win, doc);
   return {
-    win, doc, field, section, items, frames, scrolls, dispose, reducedMedia,
+    win, doc, field, section, items, words, frames, scrolls, dispose, reducedMedia,
     advance(ms = 16) {
       time += ms;
       const callbacks = [...frames.values()];
@@ -144,6 +150,28 @@ test('layout notifications and focus never accumulate parallel visual RAF loops'
   env.dispose();
   assert.equal(env.frames.size, 0);
   assert.ok([...env.win.listeners.values()].every(listeners => listeners.size === 0));
+});
+
+test('scroll fills text in reading order across wrapped words, and upward scroll reverses it', () => {
+  const env = environment();
+  const start = 1000 - Number.parseFloat(env.section.style.getPropertyValue('--context-sticky-top'));
+  const travel = Number.parseFloat(env.section.style.getPropertyValue('--context-travel'));
+  const readAt = progress => {
+    env.win.scrollY = start + travel * progress;
+    env.win.dispatch('scroll');
+    env.advance();
+    return env.words.map(word => Number.parseFloat(word.style.getPropertyValue('--word-fill')));
+  };
+  assert.deepEqual(readAt(0), [0, 0, 0]);
+  const middle = readAt(0.12);
+  assert.equal(middle[0], 100);
+  assert.ok(middle[1] > 0 && middle[1] < 100);
+  assert.equal(middle[2], 0);
+  assert.equal(env.section.style.getPropertyValue('--core-reveal'), '0');
+  assert.deepEqual(readAt(0.24), [100, 100, 100]);
+  assert.deepEqual(readAt(0.12), middle);
+  assert.deepEqual(readAt(0), [0, 0, 0]);
+  env.dispose();
 });
 
 test('downward entry owns the spring arrival and corrects inertia, while upward input releases it', () => {
@@ -192,6 +220,7 @@ test('compact viewports expose the finished stationary composition without captu
   assert.equal(env.section.style.getPropertyValue('--core-anchor-offset'), '0');
   assert.equal(env.section.style.getPropertyValue('--scene-copy-opacity'), '1');
   assert.ok(env.items.every(item => item.style.getPropertyValue('--context-opacity') === '1.0000'));
+  assert.ok(env.words.every(word => word.style.getPropertyValue('--word-fill') === '100.000%'));
   assert.equal(env.frames.size, 0);
   assert.equal(env.wheel(1000).defaultPrevented, false);
   env.notifyResize();
