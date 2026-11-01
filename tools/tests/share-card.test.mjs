@@ -35,6 +35,13 @@ for (const path of ['index.html', 'ko/index.html']) {
     assert.equal(png[25], 2, 'use an opaque RGB PNG for broad crawler support');
     assert.ok(png.length < 5 * 1024 * 1024);
     assert.equal(meta.get('twitter:card'), 'summary_large_image');
+    assert.equal(meta.get('twitter:title'), meta.get('og:title'));
+    assert.equal(meta.get('twitter:description'), meta.get('og:description'));
+    assert.ok(meta.get('twitter:title')?.trim());
+    assert.ok(meta.get('twitter:description')?.trim());
+    assert.equal(meta.get('og:locale'), path.startsWith('ko/') ? 'ko_KR' : 'en_US');
+    assert.equal(meta.get('og:locale:alternate'), path.startsWith('ko/') ? 'en_US' : 'ko_KR');
+    assert.equal(meta.get('og:url'), path.startsWith('ko/') ? 'https://telicity.ai/ko/' : 'https://telicity.ai/');
     assert.equal(meta.get('twitter:image'), image.href);
     assert.ok(meta.get('twitter:image:alt')?.trim());
   });
