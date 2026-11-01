@@ -1,0 +1,302 @@
+/* Hallmark · component: context scene · genre: modern-minimal · theme: Telicity brand
+ * One point unfolds into the context surrounding a personal twin.
+ * Pre-emit critique: P5 H5 E4 S5 R5 V4 */
+
+.context-section.twin-section {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 88px 0 96px;
+  background: var(--color-paper);
+}
+.context-section .context-track { position: relative; }
+.context-section .context-stage { position: relative; min-height: 540px; }
+.context-section .context-intro {
+  position: relative;
+  z-index: 4;
+  width: min(1120px, calc(100% - 64px));
+  margin: 0 auto 32px;
+  text-align: center;
+}
+.context-section .context-intro h2 {
+  font: 500 clamp(1.375rem, 2.35vw, 2rem)/1.6 var(--font-body);
+  letter-spacing: -.035em;
+  word-break: keep-all;
+}
+.context-section .context-value-line { display: block; }
+.context-section .context-value-word { display: inline-block; }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .context-section.is-enhanced .context-value-word {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(90deg,
+      var(--color-petrol) 0%, var(--color-petrol) var(--word-fill, 100%),
+      var(--color-line) var(--word-fill, 100%), var(--color-line) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+}
+.context-section.is-enhanced { padding: 0; }
+.context-section.is-enhanced .context-track {
+  height: calc(var(--context-stage-height, 720px) + var(--context-travel, 1200px));
+}
+.context-section.is-enhanced .context-stage {
+  position: sticky;
+  top: var(--context-sticky-top, 96px);
+  height: var(--context-stage-height, min(900px, calc(100svh - 96px)));
+}
+.context-section.is-enhanced .context-intro {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  margin: 0;
+  opacity: var(--scene-intro-opacity, 1);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.context-section .context-field.intent-demo {
+  position: relative;
+  display: block;
+  width: min(1440px, calc(100% - 80px));
+  max-width: none;
+  height: 800px;
+  min-height: 0;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  isolation: isolate;
+}
+.context-section.is-enhanced .context-field.intent-demo {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+.context-field .context-core {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: var(--core-y, 50%);
+  width: 200px;
+  height: 200px;
+  opacity: var(--core-opacity, 1);
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  pointer-events: none;
+}
+.context-field .context-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  /* The point is a crop inside the approved lower lobe, never a second layer.
+   * Offset that lobe to the scene origin, then uncover the same opaque mark. */
+  opacity: 1;
+  clip-path: circle(calc(10px + 100% * var(--core-reveal, 1)) at 69.44001% 77.70595%);
+  transform: translate3d(calc(-19.44001% * var(--core-anchor-offset, 0)), calc(-27.70595% * var(--core-anchor-offset, 0)), 0);
+  transform-origin: center;
+}
+.context-field .context-item {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  opacity: var(--context-opacity, 1);
+  transform: translate3d(calc(-50% + var(--context-x, 0px)), calc(-50% + var(--context-y, 0px)), 0)
+    rotate(var(--context-rotate, var(--base-rotation, 0deg))) scale(var(--context-scale, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+.context-field .context-item[data-index="0"] { left: 50%; top: 8%; --base-rotation: -3deg; }
+.context-field .context-item[data-index="1"] { left: 15%; top: 29%; --base-rotation: -8deg; }
+.context-field .context-item[data-index="2"] { left: 85%; top: 24%; --base-rotation: 7deg; }
+.context-field .context-item[data-index="3"] { left: 18%; top: 66%; --base-rotation: -5deg; }
+.context-field .context-item[data-index="4"] { left: 83%; top: 64%; --base-rotation: 4deg; }
+.context-field .context-item[data-index="5"] { left: 34%; top: 86%; --base-rotation: -6deg; }
+.context-field .context-item[data-index="6"] { left: 73%; top: 85%; --base-rotation: 8deg; }
+.context-field .context-paper {
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-panel);
+  color: var(--color-petrol);
+  box-shadow: 0 10px 32px var(--color-shadow);
+}
+.context-field .intent-source {
+  min-height: 44px;
+  gap: 10px;
+  padding: 10px 20px;
+  font: 500 13px/1.5 var(--font-body);
+}
+.context-field .intent-source [data-user-name] {
+  max-width: 9ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.context-field .intent-source .avatar { width: 26px; height: 26px; }
+.context-field .context-note { width: 230px; padding: 20px 22px 24px; }
+.context-field .context-note > small,
+.context-field .context-brief > small,
+.context-field .context-reference > small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-muted);
+  font: 500 11px/1.5 var(--font-body);
+}
+.context-field .context-paper small > .icon { width: 13px; height: 13px; }
+.context-field .context-note > p {
+  margin-top: 28px;
+  font: 500 20px/1.55 var(--font-body);
+  letter-spacing: -.03em;
+}
+.context-field .context-note > p span { display: block; }
+.context-field .context-note > i {
+  display: block;
+  width: 42px;
+  height: 2px;
+  margin-top: 20px;
+  background: var(--color-sage);
+}
+.context-field .context-brief { width: 210px; min-height: 196px; padding: 20px; }
+.context-field .context-brief > strong {
+  display: block;
+  margin-top: 28px;
+  font: 550 24px/1.35 var(--font-display);
+  letter-spacing: -.04em;
+}
+.context-field .context-brief > p { margin-top: 10px; color: var(--color-muted); font: 400 11px/1.65 var(--font-body); }
+.context-field .context-document-lines { display: grid; gap: 7px; margin-top: 24px; }
+.context-field .context-document-lines span { display: block; width: 100%; height: 4px; background: var(--color-mist); }
+.context-field .context-document-lines span:nth-child(2) { width: 78%; }
+.context-field .context-document-lines span:nth-child(3) { width: 54%; }
+.context-field .context-choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 12px 18px;
+  border-color: var(--color-line);
+  font: 500 13px/1.5 var(--font-body);
+  white-space: nowrap;
+}
+.context-field .context-choice > .icon { width: 15px; height: 15px; }
+.context-field .context-choice[aria-pressed="true"],
+.context-field .context-choice[data-state="success"] { border-color: var(--color-petrol); background: var(--color-petrol); color: var(--color-paper); }
+.context-field .context-choice:focus-visible { outline: 2px solid var(--color-petrol); outline-offset: 4px; }
+.context-field .context-choice:active { transform: translateY(1px); }
+.context-field .context-choice:disabled,
+.context-field .context-choice[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.context-field .context-choice[data-state="loading"] { opacity: .6; cursor: progress; }
+.context-field .context-choice[data-state="error"] { border-color: var(--color-error); color: var(--color-error); background: var(--color-paper); }
+.context-field .context-item:focus-within {
+  z-index: 5;
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)) !important;
+}
+.context-field .context-reference { width: 210px; padding: 16px 18px 18px; }
+.context-field .context-swatches { display: flex; height: 66px; gap: 5px; margin-top: 16px; }
+.context-field .context-swatches span { flex: 1; border-radius: 2px; background: var(--color-sage); }
+.context-field .context-swatches span:first-child { flex: 1.45; background: var(--color-petrol); }
+.context-field .context-swatches span:last-child { background: var(--color-mist); }
+.context-field .context-copy.intent-twin {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: calc(var(--core-y, 50%) + 112px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 280px;
+  text-align: center;
+  opacity: var(--scene-copy-opacity, 1);
+  transform: translate(-50%, 0);
+}
+.context-field .context-copy > strong { font: 500 18px/1.5 var(--font-body); }
+.context-field .context-copy > p { width: 100%; min-height: 38px; margin-top: 10px; color: var(--color-muted); font: 400 12px/1.6 var(--font-body); }
+.context-field .context-copy > img { display: none; }
+.context-field .intent-caption { display: none; }
+.context-field.is-updated .intent-twin { animation: none; }
+.context-section:not(.is-enhanced) .context-core { top: 50%; opacity: 1; transform: translate(-50%, -50%); }
+.context-section:not(.is-enhanced) .context-mark { clip-path: none; transform: none; }
+.context-section:not(.is-enhanced) .context-copy { opacity: 1; }
+.context-section:not(.is-enhanced) .context-item { opacity: 1; transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)); will-change: auto; }
+
+@media (hover: hover) {
+  .context-field .context-choice:hover:not(:disabled):not([aria-disabled="true"]) { border-color: var(--color-petrol); }
+  .context-field .context-choice:not([aria-pressed="true"]):hover { background: var(--color-mist); }
+}
+@media (max-width: 1000px) {
+  .context-section .context-field.intent-demo { width: calc(100% - 64px); }
+  .context-field .context-core { width: 160px; height: 160px; }
+  .context-field .context-item[data-index="1"] { left: 20%; }
+  .context-field .context-item[data-index="2"] { left: 80%; }
+  .context-field .context-item[data-index="3"] { left: 18%; }
+  .context-field .context-item[data-index="4"] { left: 82%; }
+  .context-field .context-item[data-index="5"] { left: 31%; }
+  .context-field .context-item[data-index="6"] { left: 75%; }
+  .context-field .context-note { width: 180px; padding: 16px 18px 20px; }
+  .context-field .context-note > p { margin-top: 20px; font-size: 16px; }
+  .context-field .context-brief { width: 166px; min-height: 168px; padding: 16px; }
+  .context-field .context-brief > strong { font-size: 20px; margin-top: 20px; }
+  .context-field .context-reference { width: 166px; padding: 13px 14px 14px; }
+  .context-field .context-swatches { height: 52px; margin-top: 13px; }
+  .context-field .context-choice { padding: 10px 13px; min-height: 46px; font-size: 11px; }
+  .context-field .context-copy.intent-twin { top: calc(var(--core-y, 50%) + 92px); width: 240px; }
+  .context-field .context-copy > strong { font-size: 17px; }
+  .context-field .context-copy > p { font-size: 11px; }
+}
+@media (max-width: 560px) {
+  .context-section.twin-section { padding: 72px 0 80px; }
+  .context-section.is-enhanced { padding: 0; }
+  .context-section .context-intro { width: calc(100% - 40px); margin-bottom: 28px; }
+  .context-section .context-intro h2 { font-size: clamp(20px, 5.6vw, 22px); line-height: 1.65; }
+  .context-section .context-field.intent-demo { width: calc(100% - 40px); height: 600px; }
+  .context-section.is-enhanced .context-field.intent-demo { height: 100%; }
+  .context-field .context-core { width: 112px; height: 112px; }
+  .context-field .context-item[data-index="0"] { top: 9%; }
+  .context-field .context-item[data-index="1"] { left: 21%; top: 27%; }
+  .context-field .context-item[data-index="2"] { left: 81%; top: 25%; }
+  .context-field .context-item[data-index="3"] { left: 17%; top: 63%; }
+  .context-field .context-item[data-index="4"] { left: 83%; top: 63%; }
+  .context-field .context-item[data-index="5"] { left: 25%; top: 84%; }
+  .context-field .context-item[data-index="6"] { left: 78%; top: 83%; }
+  .context-field .intent-source { min-height: 44px; padding: 7px 11px; font-size: 11px; }
+  .context-field .intent-source .avatar { width: 22px; height: 22px; }
+  .context-field .context-note { width: 116px; padding: 11px 12px 12px; }
+  .context-field .context-note > small,
+  .context-field .context-brief > small,
+  .context-field .context-reference > small { font-size: 8px; }
+  .context-field .context-paper small > .icon { width: 11px; height: 11px; }
+  .context-field .context-note > p { margin-top: 12px; font-size: 11px; line-height: 1.6; }
+  .context-field .context-note > i { width: 27px; margin-top: 11px; }
+  .context-field .context-brief { width: 102px; min-height: 115px; padding: 10px 11px; }
+  .context-field .context-brief > strong { margin-top: 12px; font-size: 13px; }
+  .context-field .context-brief > p { margin-top: 7px; font-size: 8px; }
+  .context-field .context-document-lines { margin-top: 12px; gap: 4px; }
+  .context-field .context-document-lines span { height: 2px; }
+  .context-field .context-choice { min-height: 44px; padding: 9px 10px; gap: 5px; font-size: 9px; }
+  .context-field .context-choice > .icon { width: 11px; height: 11px; }
+  .context-field .context-item[data-index="3"] .context-choice { min-width: 104px; }
+  .context-field .context-item[data-index="4"] .context-choice { min-width: 112px; }
+  .context-field .context-item[data-index="5"] .context-choice { min-width: 118px; }
+  .context-field .context-reference { width: 111px; padding: 9px 10px 10px; }
+  .context-field .context-swatches { height: 36px; margin-top: 9px; gap: 3px; }
+  .context-field .context-copy.intent-twin { top: calc(var(--core-y, 40%) + 9%); width: 166px; }
+  .context-field .context-copy > strong { font-size: 13px; line-height: 1.4; }
+  .context-field .context-copy > p { font-size: 9px; line-height: 1.55; min-height: 28px; margin-top: 6px; }
+  .context-section:not(.is-enhanced) .context-core { top: 40%; }
+  .context-section:not(.is-enhanced) .context-copy { top: 49%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .context-section .context-value-word { background: none !important; color: var(--color-petrol) !important; -webkit-text-fill-color: currentColor !important; }
+  .context-section .context-item { opacity: 1 !important; transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)) !important; will-change: auto; }
+  .context-section .context-mark { clip-path: none !important; transform: none !important; }
+  .context-section .context-copy { opacity: 1 !important; }
+}
+@media (forced-colors: active) {
+  .context-section .context-value-word { background: none !important; color: CanvasText !important; -webkit-text-fill-color: currentColor !important; }
+}

@@ -7,6 +7,15 @@
   <meta name="description" content="당신의 의도와 판단을 이어받은 에이전트가 활동하고 협업하는 공간. Telicity의 출시 소식을 가장 먼저 받아보세요.">
   <meta name="theme-color" content="#F5F4EE">
   <meta name="color-scheme" content="light">
+  <script>
+    (() => { try {
+      if (!location.hash && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('intro-pending');
+        setTimeout(() => document.documentElement.classList.remove('intro-pending', 'intro-revealing'), 3500);
+      }
+    } catch { /* The ordinary page is always the fallback. */ } })();
+  </script>
+  <link rel="preload" href="/assets/telicity/logos/logo-petrol.svg" as="image">
   <link rel="canonical" href="https://telicity.ai/ko/">
   <link rel="alternate" hreflang="en" href="https://telicity.ai/">
   <link rel="alternate" hreflang="ko" href="https://telicity.ai/ko/">
@@ -21,6 +30,8 @@
   <link rel="manifest" href="/site.webmanifest?v=20261101-c1">
   <link rel="stylesheet" href="/assets/landing.css">
   <link rel="stylesheet" href="/assets/collaboration.css?v=20261101-typing-vote">
+  <link rel="stylesheet" href="/assets/context-field.css?v=20261101-context-value">
+  <link rel="stylesheet" href="/assets/brand-intro.css?v=20261101-solid-mark">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Telicity">
   <meta property="og:title" content="당신처럼 생각하는 AI 트윈을 위한 세계.">
@@ -39,11 +50,14 @@
   <meta name="twitter:description" content="당신의 의도와 판단을 이어받은 에이전트가 활동하고 협업하는 공간. Telicity 출시 대기 신청.">
   <meta name="twitter:image" content="https://telicity.ai/og-telicity.png?v=20261101">
   <meta name="twitter:image:alt" content="텔리시티 로고">
-  <script src="/assets/landing.js?v=20261101-typing-vote" type="module"></script>
+  <script src="/assets/brand-intro.js?v=20261101-solid-mark" type="module"></script>
+  <script src="/assets/context-field.js?v=20261101-context-value" type="module"></script>
+  <script src="/assets/landing.js?v=20261101-solid-mark" type="module"></script>
   <script src="/assets/cursor.js" type="module"></script>
   <script src="/assets/site.js" defer></script>
 </head>
 <body>
+  <div class="brand-intro" aria-hidden="true"><img src="/assets/telicity/logos/logo-petrol.svg" alt="" width="1000" height="1000"></div>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
     <symbol id="i-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
@@ -114,9 +128,23 @@
         </div>
       </div>
     </section>
-    <section class="twin-section container" id="your-twin" aria-labelledby="twin-title">
-      <div class="twin-copy"><h2 id="twin-title">당신을 대신하기 전에,<br>당신을 이해하도록.</h2><p>AI 트윈은 당신의 의도와 판단에 따라<br class="desktop-break"> 일하는 개인 에이전트입니다.</p><p>무엇을 중요하게 생각하는지,<br class="desktop-break"> 어떤 방식으로 일하고 싶은지.<br>그 기준을 이해하고 고칠 수 있는 제품을 만들어요.</p><a class="text-link" href="#waitlist">내 트윈을 기다리기 <svg class="icon"><use href="#i-arrow"/></svg></a></div>
-      <div class="intent-demo" id="intent-demo"><div class="intent-source"><span class="avatar avatar-person">U</span><span data-user-name>User</span></div><div class="intent-stem" aria-hidden="true"></div><div class="intent-options" role="group" aria-label="트윈에게 전할 나의 기준"><button data-intent="tone" aria-pressed="true"><svg class="icon"><use href="#i-check"/></svg>담백한 말투</button><button data-intent="context" aria-pressed="false"><svg class="icon"><use href="#i-plus"/></svg>맥락부터 확인</button><button data-intent="review" aria-pressed="false"><svg class="icon"><use href="#i-plus"/></svg>결정은 함께</button></div><div class="intent-stem" aria-hidden="true"></div><div class="intent-twin"><img src="/assets/telicity/logos/logo-petrol.svg" alt="" width="1000" height="1000"><strong>Your twin</strong><p data-intent-result role="status">하고 싶은 말을, 담백하게.</p></div><span class="intent-caption">기준을 눌러, 트윈에게 전해 보세요.</span></div>
+    <section class="twin-section context-section" id="your-twin" aria-labelledby="twin-title">
+      <div class="context-track">
+        <div class="context-stage">
+          <div class="context-intro"><h2 id="twin-title"><span class="context-value-line"><span class="context-value-word" data-context-word>당신이</span> <span class="context-value-word" data-context-word>남긴</span> <span class="context-value-word" data-context-word>말과</span> <span class="context-value-word" data-context-word>행동에는</span> <span class="context-value-word" data-context-word>당신의</span> <span class="context-value-word" data-context-word>판단</span> <span class="context-value-word" data-context-word>구조가</span> <span class="context-value-word" data-context-word>담겨</span> <span class="context-value-word" data-context-word>있습니다.</span></span> <span class="context-value-line"><span class="context-value-word" data-context-word>그</span> <span class="context-value-word" data-context-word>맥락을</span> <span class="context-value-word" data-context-word>이해하고</span> <span class="context-value-word" data-context-word>함께</span> <span class="context-value-word" data-context-word>일할</span> <span class="context-value-word" data-context-word>내</span> <span class="context-value-word" data-context-word>AI</span> <span class="context-value-word" data-context-word>TWIN을</span> <span class="context-value-word" data-context-word>만듭니다.</span></span></h2></div>
+          <div class="intent-demo context-field" id="intent-demo" role="group" aria-label="트윈에게 전할 나의 맥락">
+            <div class="context-core" aria-hidden="true"><img class="context-mark" src="/assets/telicity/logos/logo-petrol.svg" alt="" width="1000" height="1000"></div>
+          <div class="context-item" data-context-item data-index="0" data-depth="0.35" data-rotation="-3"><div class="context-paper intent-source"><span class="avatar avatar-person">U</span><span data-user-name>User</span></div></div>
+          <div class="context-item" data-context-item data-index="1" data-depth="0.8" data-rotation="-8" aria-hidden="true"><div class="context-paper context-note"><small><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>어제의 메모</small><p><span>담백하고,</span><span>조금은 따뜻하게.</span></p><i></i></div></div>
+          <div class="context-item" data-context-item data-index="2" data-depth="1.1" data-rotation="7" aria-hidden="true"><div class="context-paper context-brief"><small><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>기획안</small><strong>봄 캠페인</strong><p>작은 시작을, 함께.</p><div class="context-document-lines"><span></span><span></span><span></span></div></div></div>
+          <div class="context-item" data-context-item data-index="3" data-depth="1.3" data-rotation="-5"><button class="context-paper context-choice" data-intent="tone" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>담백한 말투</span></button></div>
+          <div class="context-item" data-context-item data-index="4" data-depth="1.0" data-rotation="4"><button class="context-paper context-choice" data-intent="context" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>맥락부터 확인</span></button></div>
+          <div class="context-item" data-context-item data-index="5" data-depth="1.2" data-rotation="-6"><button class="context-paper context-choice" data-intent="review" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>결정은 함께</span></button></div>
+          <div class="context-item" data-context-item data-index="6" data-depth="0.85" data-rotation="8" aria-hidden="true"><div class="context-paper context-reference"><small>참고한 장면</small><div class="context-swatches"><span></span><span></span><span></span></div></div></div>
+            <div class="intent-twin context-copy"><strong>Your twin</strong><p data-intent-result role="status">하고 싶은 말을, 담백하게.</p></div>
+          </div>
+        </div>
+      </div>
     </section>
     <section class="team-section" aria-labelledby="team-title"><div class="container team-inner"><div class="team-visual" aria-label="하나의 목표를 나누어 맡는 사용자와 에이전트 팀의 개념도"><div class="team-user"><span class="avatar avatar-person">U</span><span data-user-name>User</span><span>하나의 목표</span></div><div class="team-connection" aria-hidden="true"><span></span></div><div class="team-agents"><div><svg class="icon"><use href="#i-doc"/></svg><span>자료를 살피고</span><small>리서치</small></div><div><img src="/assets/telicity/logos/logo-paper.svg" alt="" width="1000" height="1000"><span>맥락을 이어주고</span><small>나의 트윈</small></div><div><svg class="icon"><use href="#i-chat"/></svg><span>문장을 다듬고</span><small>작성</small></div></div><div class="team-shared"><svg class="icon"><use href="#i-check"/></svg>각자의 역할로, 같은 방향을 향해.</div></div><div class="team-copy"><h2 id="team-title">혼자서 시작한 일도,<br>함께 이룰 수 있도록.</h2><p>당신의 트윈을 중심으로 에이전트가 역할을 나눕니다. 같은 목표를 보고, 각자 맡은 일을 이어갑니다.</p><p>더 나아가 다른 사용자의 팀과도<br class="desktop-break"> 각자의 맥락을 지키며 협업하는 세계를 만듭니다.</p><span class="direction-note">Telicity가 만들어 가는 방향</span></div></div></section>
     <section class="principles-section container" id="principles" aria-labelledby="principles-title"><div class="principles-intro"><h2 id="principles-title">좋은 동료에게는<br>분명한 기준이 있으니까.</h2><p>더 많이 맡기는 것만큼,<br>어떻게 함께 일할지도 중요합니다.</p></div><div class="principle-list">
