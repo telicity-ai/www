@@ -1,0 +1,238 @@
+/* Hallmark · component: context field · genre: modern-minimal · theme: Telicity brand
+ * Scoped collage: the visitor's notes and principles surround their twin.
+ * Pre-emit critique: P5 H4 E4 S5 R5 V4 */
+
+.context-field.intent-demo {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: 540px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  isolation: isolate;
+}
+
+.context-field .context-item {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  opacity: var(--context-opacity, 1);
+  transform: translate3d(calc(-50% + var(--context-x, 0px)), calc(-50% + var(--context-y, 0px)), 0)
+    rotate(var(--context-rotate, var(--base-rotation, 0deg))) scale(var(--context-scale, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.context-field .context-item[data-index="0"] { left: 50%; top: 8%; --base-rotation: -3deg; }
+.context-field .context-item[data-index="1"] { left: 18%; top: 29%; --base-rotation: -8deg; }
+.context-field .context-item[data-index="2"] { left: 79%; top: 27%; --base-rotation: 7deg; }
+.context-field .context-item[data-index="3"] { left: 14%; top: 55%; --base-rotation: -5deg; }
+.context-field .context-item[data-index="4"] { left: 83%; top: 56%; --base-rotation: 4deg; }
+.context-field .context-item[data-index="5"] { left: 27%; top: 84%; --base-rotation: -6deg; }
+.context-field .context-item[data-index="6"] { left: 76%; top: 85%; --base-rotation: 8deg; }
+
+.context-field .context-paper {
+  border: 1px solid var(--color-line);
+  border-radius: 7px;
+  background: var(--color-panel);
+  color: var(--color-petrol);
+  box-shadow: 0 8px 24px var(--color-shadow);
+}
+
+.context-field .intent-source {
+  min-height: 44px;
+  gap: 8px;
+  padding: 8px 15px;
+  font: 500 12px/1.5 var(--font-body);
+}
+.context-field .intent-source [data-user-name] {
+  max-width: 9ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.context-field .intent-source .avatar { width: 24px; height: 24px; }
+
+.context-field .context-note {
+  width: 154px;
+  padding: 14px 15px 16px;
+}
+.context-field .context-note > small,
+.context-field .context-brief > small,
+.context-field .context-reference > small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-muted);
+  font: 500 9px/1.5 var(--font-body);
+}
+.context-field .context-paper small > .icon { width: 11px; height: 11px; }
+.context-field .context-note > p {
+  margin-top: 17px;
+  font: 500 14px/1.65 var(--font-body);
+  letter-spacing: -.03em;
+}
+.context-field .context-note > p span { display: block; }
+.context-field .context-note > i {
+  display: block;
+  width: 34px;
+  height: 2px;
+  margin-top: 13px;
+  background: var(--color-sage);
+}
+
+.context-field .context-brief {
+  width: 146px;
+  min-height: 145px;
+  padding: 14px;
+}
+.context-field .context-brief > strong {
+  display: block;
+  margin-top: 18px;
+  font: 550 17px/1.35 var(--font-display);
+  letter-spacing: -.04em;
+}
+.context-field .context-brief > p {
+  margin-top: 7px;
+  color: var(--color-muted);
+  font: 400 9px/1.65 var(--font-body);
+}
+.context-field .context-document-lines { display: grid; gap: 5px; margin-top: 18px; }
+.context-field .context-document-lines span { display: block; width: 100%; height: 3px; background: var(--color-mist); }
+.context-field .context-document-lines span:nth-child(2) { width: 78%; }
+.context-field .context-document-lines span:nth-child(3) { width: 54%; }
+
+.context-field .context-choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 46px;
+  padding: 10px 14px;
+  border-color: var(--color-line);
+  font: 500 11px/1.5 var(--font-body);
+  white-space: nowrap;
+}
+.context-field .context-choice > .icon { width: 13px; height: 13px; }
+.context-field .context-choice[aria-pressed="true"],
+.context-field .context-choice[data-state="success"] {
+  border-color: var(--color-petrol);
+  background: var(--color-petrol);
+  color: var(--color-paper);
+}
+.context-field .context-choice:focus-visible {
+  outline: 2px solid var(--color-petrol);
+  outline-offset: 4px;
+}
+.context-field .context-choice:active { transform: translateY(1px); }
+.context-field .context-choice:disabled,
+.context-field .context-choice[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.context-field .context-choice[data-state="loading"] { opacity: .6; cursor: progress; }
+.context-field .context-choice[data-state="error"] { border-color: var(--color-error); color: var(--color-error); background: var(--color-paper); }
+.context-field .context-item:focus-within {
+  z-index: 4;
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)) !important;
+}
+
+.context-field .context-reference { width: 145px; padding: 11px 12px 12px; }
+.context-field .context-swatches { display: flex; height: 48px; gap: 4px; margin-top: 11px; }
+.context-field .context-swatches span { flex: 1; border-radius: 2px; background: var(--color-sage); }
+.context-field .context-swatches span:first-child { flex: 1.45; background: var(--color-petrol); }
+.context-field .context-swatches span:last-child { background: var(--color-mist); }
+
+.context-field .intent-twin {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 53%;
+  width: 230px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.context-field .intent-twin > img { display: block; width: 92px; height: auto; margin: 0 auto 12px; }
+.context-field .intent-twin > strong { font: 500 17px/1.5 var(--font-body); }
+.context-field .intent-twin > p {
+  width: 100%;
+  min-height: 38px;
+  margin-top: 11px;
+  color: var(--color-muted);
+  font: 400 11px/1.7 var(--font-body);
+}
+.context-field.is-updated .intent-twin { animation: none; }
+.context-field .intent-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -18px;
+  margin: 0;
+  color: var(--color-muted);
+  font: 400 10px/1.7 var(--font-body);
+  text-align: center;
+}
+
+@media (hover: hover) {
+  .context-field .context-choice:hover:not(:disabled):not([aria-disabled="true"]) { border-color: var(--color-petrol); }
+  .context-field .context-choice:not([aria-pressed="true"]):hover { background: var(--color-mist); }
+}
+
+@media (max-width: 800px) {
+  .context-field.intent-demo { max-width: 580px; justify-self: center; margin-inline: auto; }
+}
+
+@media (max-width: 560px) {
+  .context-field.intent-demo { height: 460px; max-width: 420px; }
+  .context-field .context-item[data-index="0"] { top: 7%; }
+  .context-field .context-item[data-index="1"] { left: 21%; top: 27%; }
+  .context-field .context-item[data-index="2"] { left: 80%; top: 26%; }
+  .context-field .context-item[data-index="3"] { left: 17%; top: 51%; }
+  .context-field .context-item[data-index="4"] { left: 84%; top: 52%; }
+  .context-field .context-item[data-index="5"] { left: 25%; top: 84%; }
+  .context-field .context-item[data-index="6"] { left: 78%; top: 85%; }
+  .context-field .intent-source { padding: 7px 11px; font-size: 11px; }
+  .context-field .intent-source .avatar { width: 22px; height: 22px; }
+  .context-field .context-note { width: 116px; padding: 11px 12px 12px; }
+  .context-field .context-note > small,
+  .context-field .context-brief > small,
+  .context-field .context-reference > small { font-size: 8px; }
+  .context-field .context-note > p { margin-top: 12px; font-size: 11px; line-height: 1.6; }
+  .context-field .context-note > i { width: 27px; margin-top: 11px; }
+  .context-field .context-brief { width: 102px; min-height: 115px; padding: 10px 11px; }
+  .context-field .context-brief > strong { margin-top: 12px; font-size: 13px; }
+  .context-field .context-brief > p { font-size: 8px; }
+  .context-field .context-document-lines { margin-top: 12px; gap: 4px; }
+  .context-field .context-document-lines span { height: 2px; }
+  .context-field .context-choice { min-height: 44px; padding: 9px 10px; gap: 5px; font-size: 9px; }
+  .context-field .context-choice > .icon { width: 11px; height: 11px; }
+  .context-field .context-item[data-index="3"] .context-choice { min-width: 104px; }
+  .context-field .context-item[data-index="4"] .context-choice { min-width: 112px; }
+  .context-field .context-item[data-index="5"] .context-choice { min-width: 118px; }
+  .context-field .context-reference { width: 111px; padding: 9px 10px 10px; }
+  .context-field .context-swatches { height: 36px; margin-top: 9px; gap: 3px; }
+  .context-field .intent-twin { width: 166px; }
+  .context-field .intent-twin > img { width: 64px; margin-bottom: 8px; }
+  .context-field .intent-twin > strong { font-size: 15px; }
+  .context-field .intent-twin > p { font-size: 10px; min-height: 36px; margin-top: 9px; }
+  .context-field .intent-caption { bottom: -14px; font-size: 9px; }
+}
+
+@media (max-width: 359px) {
+  .context-field.intent-demo { height: 430px; }
+  .context-field .context-note > p { font-size: 10px; }
+  .context-field .context-brief { min-height: 108px; }
+  .context-field .context-item[data-index="1"] { top: 27%; }
+  .context-field .context-item[data-index="2"] { left: 83%; }
+  .context-field .context-item[data-index="6"] { top: 86%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .context-field .context-item {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) rotate(var(--base-rotation, 0deg)) !important;
+    will-change: auto;
+  }
+}

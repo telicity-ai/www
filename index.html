@@ -7,15 +7,26 @@
   <meta name="description" content="An environment where AI agents act on your intent and judgment and collaborate with others. Be the first to hear when Telicity opens.">
   <meta name="theme-color" content="#F5F4EE">
   <meta name="color-scheme" content="light">
+  <script>
+    (() => { try {
+      if (!location.hash && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('intro-pending');
+        setTimeout(() => document.documentElement.classList.remove('intro-pending', 'intro-revealing'), 1900);
+      }
+    } catch { /* The ordinary page is always the fallback. */ } })();
+  </script>
   <link rel="canonical" href="https://telicity.ai/">
   <link rel="alternate" hreflang="en" href="https://telicity.ai/">
   <link rel="alternate" hreflang="ko" href="https://telicity.ai/ko/">
   <link rel="alternate" hreflang="x-default" href="https://telicity.ai/">
   <link rel="icon" href="/assets/telicity/logos/logo-petrol.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/telicity/fonts/Manrope-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/assets/telicity/logos/logo-petrol.svg" as="image">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/assets/landing.css">
   <link rel="stylesheet" href="/assets/collaboration.css?v=20261101-typing-vote">
+  <link rel="stylesheet" href="/assets/context-field.css?v=20261101-context">
+  <link rel="stylesheet" href="/assets/brand-intro.css?v=20261101-context">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Telicity">
   <meta property="og:title" content="A world for AI twins that think like you.">
@@ -31,11 +42,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://telicity.ai/og-telicity.png?v=20261101">
   <meta name="twitter:image:alt" content="Telicity logo">
-  <script src="/assets/landing.js?v=20261101-typing-vote" type="module"></script>
+  <script src="/assets/brand-intro.js?v=20261101-context" type="module"></script>
+  <script src="/assets/context-field.js?v=20261101-context" type="module"></script>
+  <script src="/assets/landing.js?v=20261101-context" type="module"></script>
   <script src="/assets/cursor.js" type="module"></script>
   <script src="/assets/site.js" defer></script>
 </head>
 <body>
+  <div class="brand-intro" aria-hidden="true"><img src="/assets/telicity/logos/logo-petrol.svg" alt="" width="1000" height="1000"></div>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
     <symbol id="i-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
@@ -108,7 +122,17 @@
     </section>
     <section class="twin-section container" id="your-twin" aria-labelledby="twin-title">
       <div class="twin-copy"><h2 id="twin-title">To work on your behalf,<br>it starts with understanding you.</h2><p>Your AI twin is a personal agent that works<br class="desktop-break"> with your intent and judgment.</p><p>What matters to you.<br class="desktop-break"> How you want to work.<br>We’re building a product that lets you understand and refine those guiding principles.</p><a class="text-link" href="#waitlist">Meet your twin when it’s ready <svg class="icon"><use href="#i-arrow"/></svg></a></div>
-      <div class="intent-demo" id="intent-demo"><div class="intent-source"><span class="avatar avatar-person">U</span><span data-user-name>User</span></div><div class="intent-stem" aria-hidden="true"></div><div class="intent-options" role="group" aria-label="The principles you share with your twin"><button data-intent="tone" aria-pressed="true"><svg class="icon"><use href="#i-check"/></svg>A simple tone</button><button data-intent="context" aria-pressed="false"><svg class="icon"><use href="#i-plus"/></svg>Context first</button><button data-intent="review" aria-pressed="false"><svg class="icon"><use href="#i-plus"/></svg>Decide together</button></div><div class="intent-stem" aria-hidden="true"></div><div class="intent-twin"><img src="/assets/telicity/logos/logo-petrol.svg" alt="" width="1000" height="1000"><strong>Your twin</strong><p data-intent-result role="status">Say what you mean. Simply.</p></div><span class="intent-caption">Choose a principle to share with your twin.</span></div>
+      <div class="intent-demo context-field" id="intent-demo" role="group" aria-label="The context you share with your twin">
+        <div class="context-item" data-context-item data-index="0" data-depth="0.35" data-rotation="-3"><div class="context-paper intent-source"><span class="avatar avatar-person">U</span><span data-user-name>User</span></div></div>
+        <div class="context-item" data-context-item data-index="1" data-depth="0.8" data-rotation="-8" aria-hidden="true"><div class="context-paper context-note"><small><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Yesterday’s note</small><p><span>Keep it simple.</span><span>A little warm.</span></p><i></i></div></div>
+        <div class="context-item" data-context-item data-index="2" data-depth="1.1" data-rotation="7" aria-hidden="true"><div class="context-paper context-brief"><small><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Project brief</small><strong>Spring campaign</strong><p>A small start, together.</p><div class="context-document-lines"><span></span><span></span><span></span></div></div></div>
+        <div class="context-item" data-context-item data-index="3" data-depth="1.3" data-rotation="-5"><button class="context-paper context-choice" data-intent="tone" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>A simple tone</span></button></div>
+        <div class="context-item" data-context-item data-index="4" data-depth="1.0" data-rotation="4"><button class="context-paper context-choice" data-intent="context" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>Context first</span></button></div>
+        <div class="context-item" data-context-item data-index="5" data-depth="1.2" data-rotation="-6"><button class="context-paper context-choice" data-intent="review" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>Decide together</span></button></div>
+        <div class="context-item" data-context-item data-index="6" data-depth="0.85" data-rotation="8" aria-hidden="true"><div class="context-paper context-reference"><small>A reference to keep</small><div class="context-swatches"><span></span><span></span><span></span></div></div></div>
+        <div class="intent-twin"><img src="/assets/telicity/logos/logo-petrol.svg" alt="" width="1000" height="1000"><strong>Your twin</strong><p data-intent-result role="status">Say what you mean. Simply.</p></div>
+        <span class="intent-caption">Choose what your twin should keep in mind.</span>
+      </div>
     </section>
     <section class="team-section" aria-labelledby="team-title"><div class="container team-inner"><div class="team-visual" aria-label="A concept showing a person and an agent team sharing one goal"><div class="team-user"><span class="avatar avatar-person">U</span><span data-user-name>User</span><span>One shared goal</span></div><div class="team-connection" aria-hidden="true"><span></span></div><div class="team-agents"><div><svg class="icon"><use href="#i-doc"/></svg><span>Explore the sources</span><small>Research</small></div><div><img src="/assets/telicity/logos/logo-paper.svg" alt="" width="1000" height="1000"><span>Carry the context</span><small>My twin</small></div><div><svg class="icon"><use href="#i-chat"/></svg><span>Refine the words</span><small>Writing</small></div></div><div class="team-shared"><svg class="icon"><use href="#i-check"/></svg>Different roles. A shared direction.</div></div><div class="team-copy"><h2 id="team-title">What starts with you<br>can grow with others.</h2><p>Agents share the work around your twin. Each takes a role, carrying their part toward the same goal.</p><p>We’re building toward a world where different people’s teams<br class="desktop-break"> can collaborate while keeping their own context.</p><span class="direction-note">The direction we’re building toward</span></div></div></section>
     <section class="principles-section container" id="principles" aria-labelledby="principles-title"><div class="principles-intro"><h2 id="principles-title">Good collaborators<br>have clear principles.</h2><p>How we work together matters<br>as much as what we take on.</p></div><div class="principle-list">

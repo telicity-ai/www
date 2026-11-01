@@ -513,8 +513,7 @@ import { createTouchEntry } from './tour-touch.js?v=20261101-mobile-entry';
     const result = chosen.length === 0 ? copy.emptyIntent : chosen.length === 1 && chosen[0] === 'tone' ? copy.singleTone : chosen.map(key => copy.intent[key]).join(' · ');
     setText('[data-intent-result]', result);
     const demo = $('#intent-demo');
-    demo.classList.remove('is-updated');
-    requestAnimationFrame(() => demo.classList.add('is-updated'));
+    demo.dataset.selection = chosen.join(',') || 'none';
   }));
 
   // Browser profile identity is not available to websites. Only an optional,

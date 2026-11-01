@@ -1,0 +1,47 @@
+/* Hallmark · component: brand handoff · genre: modern-minimal · theme: Telicity brand 0.9.1
+ * Motion: the centered symbol settles into the existing hero mark.
+ * Pre-emit critique: P5 H4 E4 S5 R5 V4 */
+.brand-intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-cursor) + 10);
+  pointer-events: none;
+  user-select: none;
+}
+
+.brand-intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-paper);
+  opacity: var(--intro-background-opacity, 1);
+}
+
+.brand-intro > img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 96px;
+  height: 96px;
+  max-width: none;
+  margin: 0;
+  transform-origin: 0 0;
+  transform: translate3d(calc(50vw - 9.6px), calc(50vh - 9.6px), 0) scale(.2);
+  will-change: transform;
+}
+
+.intro-pending .brand-intro { display: block; }
+.intro-pending .hero-mark img { visibility: hidden; }
+.intro-pending .site-header,
+.intro-pending main,
+.intro-pending .site-footer { opacity: var(--intro-page-opacity, 0); }
+
+/* The ordinary page is the fallback even if JavaScript cannot run. */
+@media (prefers-reduced-motion: reduce) {
+  .intro-pending .brand-intro { display: none; }
+  .intro-pending .hero-mark img { visibility: visible; }
+  .intro-pending .site-header,
+  .intro-pending main,
+  .intro-pending .site-footer { opacity: 1; }
+}
