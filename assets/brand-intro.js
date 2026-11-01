@@ -55,7 +55,14 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
   let imageTimeout = null;
   let safetyTimeout = null;
   let finished = false;
+  let signaledReady = false;
   const removers = [];
+
+  function signalReady() {
+    if (signaledReady) return;
+    signaledReady = true;
+    doc.dispatchEvent(new win.Event('telicity:intro-ready'));
+  }
 
   function finish() {
     if (finished) return;
@@ -68,6 +75,7 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
     root.style.removeProperty('--intro-page-opacity');
     overlay?.style.removeProperty('--intro-background-opacity');
     if (overlay) overlay.dataset.phase = 'complete';
+    signalReady();
   }
 
   const controller = { cancel: finish };
@@ -87,15 +95,14 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
   listen(win, 'scroll', () => { if (win.scrollY > 4) finish(); }, { passive: true });
   listen(reduced, 'change', event => { if (event.matches) finish(); });
   listen(doc, 'visibilitychange', () => { if (doc.visibilityState === 'hidden') finish(); });
-  // An asset that never becomes drawable must not leave a blank loading page.
-  safetyTimeout = win.setTimeout(finish, 3000);
-
   function start() {
     if (finished || !root.classList.contains('intro-pending')) { finish(); return; }
     if (!mark.complete || !mark.naturalWidth || !target.complete || !target.naturalWidth) { finish(); return; }
     const bounds = target.getBoundingClientRect();
     const viewport = { width: win.innerWidth, height: win.innerHeight };
     if (!validBox(bounds)) { finish(); return; }
+    // Budget the playback separately from image loading on a cold connection.
+    safetyTimeout = win.setTimeout(finish, 3000);
     const started = win.performance.now();
     function paint(now) {
       frameId = null;
@@ -111,11 +118,13 @@ export function initBrandIntro(doc = globalThis.document, win = globalThis.windo
       frameId = win.requestAnimationFrame(paint);
     }
     paint(started);
+    signalReady();
   }
 
   if (mark.complete && mark.naturalWidth && target.complete && target.naturalWidth) start();
   else {
-    imageTimeout = win.setTimeout(finish, 220);
+    // SVG decoding may take more than a single network round trip.
+    imageTimeout = win.setTimeout(finish, 1500);
     const decode = image => typeof image.decode === 'function' ? image.decode() : Promise.reject(new Error('Image is not ready'));
     Promise.all([decode(mark), decode(target)]).then(() => {
       if (imageTimeout !== null) win.clearTimeout(imageTimeout);
